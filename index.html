@@ -1,0 +1,2048 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Libretto Vendite — Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#17161B; --ink-soft:#8B8894; --ink-faint:#B4B0BC;
+    --card:rgba(255,255,255,0.74); --card-solid:#FFFFFF; --shell:rgba(255,255,255,0.5);
+    --line:rgba(23,22,27,0.08);
+    --accent:#6C5CE7; --accent-2:#9B8CFA; --accent-bg:#EEEAFD;
+    --pos:#12A150; --pos-bg:#E3F8EA; --neg:#E23F3F; --neg-bg:#FCE9E8; --amber:#B9791A; --amber-bg:#FCF1DC;
+    --radius-lg:28px; --radius-md:20px; --radius-sm:14px;
+    --shadow:0 24px 60px -24px rgba(70,50,110,0.28);
+    --shadow-sm:0 8px 24px -12px rgba(70,50,110,0.22);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;color:var(--ink);
+    background:#EFEAE3;
+    min-height:100vh;position:relative;overflow-x:hidden;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(199,178,240,0.55), transparent 40%),
+      radial-gradient(circle at 88% 6%, rgba(245,200,180,0.5), transparent 38%),
+      radial-gradient(circle at 92% 78%, rgba(240,190,205,0.55), transparent 42%),
+      radial-gradient(circle at 6% 85%, rgba(180,190,240,0.45), transparent 40%),
+      linear-gradient(160deg, #EFEAE3 0%, #EDE7E8 55%, #E9E4EE 100%);
+    filter:blur(2px);
+  }
+  .shell{
+    position:relative;z-index:1;max-width:1360px;margin:32px auto 60px;
+    background:var(--shell);backdrop-filter:blur(28px) saturate(160%);-webkit-backdrop-filter:blur(28px) saturate(160%);
+    border-radius:36px;border:1px solid rgba(255,255,255,0.65);box-shadow:var(--shadow);
+    padding:26px 30px 40px;
+  }
+  .topnav{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:26px;flex-wrap:wrap;}
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;}
+  .brand-name{font-weight:700;font-size:15px;letter-spacing:-0.2px;}
+  .pillnav{display:flex;gap:4px;background:rgba(23,22,27,0.05);padding:5px;border-radius:999px;}
+  .pillnav .pill{padding:9px 18px;border-radius:999px;font-size:13px;font-weight:600;color:var(--ink-soft);cursor:pointer;white-space:nowrap;}
+  .pillnav .pill.active{background:#fff;color:var(--ink);box-shadow:var(--shadow-sm);}
+  .filehint{font-size:12px;color:var(--ink-soft);}
+
+  .dropzone{border:1.5px dashed rgba(23,22,27,0.18);border-radius:var(--radius-md);padding:20px;text-align:center;background:rgba(255,255,255,0.45);cursor:pointer;transition:border-color .15s;margin-bottom:8px;}
+  .dropzone.drag{border-color:var(--accent);background:var(--accent-bg);}
+  .dropzone p{margin:0;font-size:13px;color:var(--ink-soft);}
+  .dropzone strong{color:var(--ink);}
+  input[type=file]{display:none;}
+  .filename{font-family:'Inter',sans-serif;font-size:12px;color:var(--ink-soft);margin-top:8px;}
+  .hidden{display:none !important;}
+  .dl-note{font-size:11.5px;color:var(--ink-faint);margin-bottom:22px;}
+
+  .greet{font-size:26px;font-weight:800;letter-spacing:-0.6px;margin:6px 0 20px;}
+
+  .main-grid{display:grid;grid-template-columns:2fr 1.1fr;gap:18px;align-items:start;}
+  .kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:18px;}
+  .card{background:var(--card);border-radius:var(--radius-md);padding:20px 22px;box-shadow:var(--shadow-sm);border:1px solid rgba(255,255,255,0.6);}
+  .kpi-card .icon{width:38px;height:38px;border-radius:11px;background:var(--accent-bg);display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:16px;}
+  .kpi-card .kval{font-size:23px;font-weight:800;letter-spacing:-0.5px;line-height:1.1;}
+  .kpi-card .klbl{font-size:12.5px;color:var(--ink-soft);margin-top:6px;line-height:1.3;}
+  .badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:700;}
+  .badge.pos{background:var(--pos-bg);color:var(--pos);}
+  .badge.neg{background:var(--neg-bg);color:var(--neg);}
+  .badge.amber{background:var(--amber-bg);color:var(--amber);}
+  .badge.info{background:var(--accent-bg);color:var(--accent);}
+  .badge.market{background:#E9EEF5;color:#3B6EA5;}
+
+  .side-card{margin-bottom:18px;}
+  .side-card h3{font-size:16px;font-weight:800;margin:0 0 4px;letter-spacing:-0.3px;}
+  .side-card .muted{font-size:12.5px;color:var(--ink-soft);margin-bottom:14px;}
+  .progress-track{height:9px;border-radius:999px;background:rgba(23,22,27,0.08);overflow:hidden;margin-bottom:8px;}
+  .progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));}
+  .progress-caption{font-size:11px;color:var(--ink-faint);margin-bottom:16px;}
+  .btn{display:block;width:100%;text-align:center;padding:12px;border-radius:14px;border:none;background:#fff;box-shadow:var(--shadow-sm);font-family:'Inter',sans-serif;font-weight:700;font-size:13px;color:var(--ink);cursor:pointer;}
+  .btn:hover{background:var(--accent-bg);color:var(--accent);}
+
+  .chart-card .chdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+  .chart-card h3{font-size:17px;font-weight:800;margin:0 0 3px;letter-spacing:-0.3px;}
+  .chart-card .muted{font-size:12.5px;color:var(--ink-soft);}
+  .period-pills{display:flex;gap:3px;background:rgba(23,22,27,0.05);padding:4px;border-radius:999px;}
+  .period-pills .p{padding:6px 12px;border-radius:999px;font-size:11.5px;font-weight:600;color:var(--ink-soft);cursor:pointer;}
+  .period-pills .p.active{background:#fff;color:var(--ink);box-shadow:var(--shadow-sm);}
+  .summary-row{display:flex;gap:34px;margin:6px 0 22px;flex-wrap:wrap;}
+  .summary-item .slabel{font-size:12px;color:var(--ink-soft);margin-bottom:6px;}
+  .summary-item .sval{font-size:24px;font-weight:800;letter-spacing:-0.5px;}
+  .summary-item .sval sup{font-size:13px;color:var(--ink-faint);font-weight:600;margin-right:6px;}
+
+  .barchart{display:flex;align-items:flex-end;gap:12px;height:190px;padding-top:26px;position:relative;overflow-x:auto;overflow-y:visible;margin-bottom:38px;}
+  .quadrant-wrap{width:100%;}
+  .quadrant-wrap svg{width:100%;height:auto;display:block;}
+  .quad-info{margin-top:10px;padding:12px 14px;background:var(--accent-bg);border-radius:12px;font-size:12.5px;position:relative;}
+  .quad-info .qi-close{position:absolute;top:8px;right:10px;cursor:pointer;color:var(--ink-soft);font-weight:700;}
+  .quad-info .qi-name{font-weight:800;font-size:13.5px;margin-bottom:6px;padding-right:20px;}
+  .quad-info .qi-row{display:flex;gap:16px;flex-wrap:wrap;color:var(--ink-soft);}
+  .quad-info .qi-row b{color:var(--ink);}
+  .treemap-card{margin-top:18px;}
+  .treemap{position:relative;width:100%;height:420px;border-radius:14px;overflow:hidden;margin-top:14px;}
+  .treemap-tile{position:absolute;box-sizing:border-box;border:2px solid #fff;padding:10px;overflow:hidden;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;}
+  .treemap-tile .tt-label{font-size:12.5px;font-weight:700;line-height:1.25;}
+  .treemap-tile .tt-val{font-size:11px;opacity:0.92;margin-top:2px;}
+  .treemap-tile .tt-pct{font-size:11px;font-weight:700;opacity:0.95;}
+  .legend-card{margin-top:24px;}
+  .legend-card details{border-top:1px solid var(--line);padding:12px 0;}
+  .legend-card details:last-child{border-bottom:1px solid var(--line);}
+  .legend-card summary{font-size:13.5px;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;}
+  .legend-card summary::before{content:'▸';color:var(--accent);font-size:11px;transition:transform .15s;}
+  .legend-card details[open] summary::before{transform:rotate(90deg);}
+  .legend-card summary::-webkit-details-marker{display:none;}
+  .legend-body{padding:10px 4px 2px 20px;font-size:12.5px;color:var(--ink-soft);line-height:1.6;}
+  .legend-body p{margin:0 0 8px;}
+  .legend-body p:last-child{margin-bottom:0;}
+  .legend-body .badge{margin-right:6px;}
+  .barcol{flex:0 0 auto;width:42px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative;}
+  .bar{width:100%;max-width:46px;border-radius:10px 10px 4px 4px;background:rgba(108,92,231,0.18);position:relative;transition:background .15s;}
+  .bar.hi{background:linear-gradient(180deg,var(--accent-2),var(--accent));}
+  .barcol:hover .bar{background:linear-gradient(180deg,var(--accent-2),var(--accent));}
+  .barlbl{font-size:10.5px;color:var(--ink-soft);font-weight:600;margin-top:14px;white-space:nowrap;transform:rotate(-38deg);transform-origin:top right;}
+  .bartip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#fff;border-radius:10px;padding:6px 10px;font-size:11px;font-weight:700;box-shadow:var(--shadow-sm);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .12s;}
+  .barcol:hover .bartip{opacity:1;}
+
+  .donut-wrap{display:flex;flex-direction:column;align-items:center;margin:8px 0 18px;}
+  .donut{width:170px;height:170px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;}
+  .donut .center{position:absolute;text-align:center;}
+  .donut .center .pct{font-size:27px;font-weight:800;letter-spacing:-0.5px;}
+  .donut .center .sub{font-size:11px;color:var(--ink-soft);margin-top:2px;}
+  .donut-caption{font-size:12px;color:var(--ink-soft);text-align:center;margin-top:6px;line-height:1.5;}
+  .stat-cols{display:flex;gap:26px;margin-top:16px;}
+  .stat-cols .sc{flex:1;}
+  .stat-cols .sc .sclbl{font-size:11.5px;color:var(--ink-soft);margin-bottom:4px;}
+  .stat-cols .sc .scval{font-size:19px;font-weight:800;}
+
+  .bottom-card{margin-top:18px;}
+  .bottom-card h3{font-size:16px;font-weight:800;margin:0 0 14px;letter-spacing:-0.3px;}
+  .watchrow{display:grid;grid-template-columns:auto 1.5fr 0.9fr auto auto auto auto;gap:12px;align-items:center;padding:12px 4px;border-bottom:1px solid var(--line);}
+  .wvals{display:contents;}
+  .watchrow:last-child{border-bottom:none;}
+  .avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
+  .wname{font-size:13.5px;font-weight:700;}
+  .wcat{font-size:11.5px;color:var(--ink-soft);}
+  .wtag{font-size:11.5px;color:var(--ink-soft);}
+  .wval{font-family:'Inter',sans-serif;font-size:13px;font-weight:700;text-align:right;}
+
+  .tabbar{display:flex;gap:4px;background:rgba(23,22,27,0.05);padding:5px;border-radius:999px;width:fit-content;margin:30px 0 18px;}
+  .tabbar .t{padding:9px 18px;border-radius:999px;font-size:12.5px;font-weight:600;color:var(--ink-soft);cursor:pointer;}
+  .tabbar .t.active{background:#fff;color:var(--ink);box-shadow:var(--shadow-sm);}
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .controls{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+  select,input[type=text]{font-family:'Inter',sans-serif;font-size:12.5px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  th{font-family:'Inter',sans-serif;font-weight:700;font-size:11px;text-align:left;color:var(--ink-soft);padding:9px 10px;border-bottom:1.5px solid var(--line);cursor:pointer;white-space:nowrap;}
+  th.num,td.num{text-align:right;}
+  td{padding:9px 10px;border-bottom:1px solid var(--line);font-family:'Inter',sans-serif;}
+  td.label{font-weight:500;}
+  tr:hover td{background:rgba(108,92,231,0.05);}
+  .cat-tag{font-size:10.5px;color:var(--ink-soft);}
+  .pos-txt{color:var(--pos);font-weight:700;} .neg-txt{color:var(--neg);font-weight:700;}
+  .bar-cell{display:flex;align-items:center;gap:8px;}
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .table-scroll th:first-child, .table-scroll td:first-child{
+    position:sticky;left:0;z-index:2;background:var(--card-solid);
+    box-shadow:2px 0 6px -2px rgba(23,22,27,0.12);
+  }
+  .table-scroll thead th:first-child{z-index:3;}
+  .bar-track{flex:1;height:7px;background:rgba(23,22,27,0.07);border-radius:4px;overflow:hidden;min-width:40px;}
+  .bar-fill2{height:100%;background:linear-gradient(90deg,var(--accent-2),var(--accent));border-radius:4px;}
+  .rank-list{display:flex;flex-direction:column;}
+  .rank-row{display:grid;grid-template-columns:1fr auto auto;gap:12px;padding:10px 4px;border-bottom:1px solid var(--line);align-items:center;}
+  .rank-row .name{font-size:13px;font-weight:600;}
+  .rank-row .val{font-family:'Inter',sans-serif;font-size:13px;font-weight:700;text-align:right;}
+  .rank-row .pct{font-family:'Inter',sans-serif;font-size:13px;font-weight:700;text-align:right;min-width:66px;}
+  .section-title{font-size:14.5px;font-weight:800;margin:22px 0 6px;letter-spacing:-0.2px;}
+  .section-note{font-size:12px;color:var(--ink-soft);margin-bottom:12px;}
+  .empty-msg{color:var(--ink-soft);font-size:13px;padding:20px 0;}
+  .view{width:100%;}
+  @media(max-width:920px){.main-grid{grid-template-columns:1fr;} .kpi-row{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:1180px) and (min-width:921px){.kpi-row{grid-template-columns:repeat(3,1fr);}}
+
+  @media(max-width:640px){
+    .shell{margin:0;border-radius:0;padding:16px 12px 30px;max-width:100%;}
+    .topnav{gap:10px;}
+    .brand-name{font-size:13px;}
+    .pillnav .pill{padding:8px 12px;font-size:12px;}
+    .topnav-actions{flex-wrap:wrap;gap:8px;width:100%;}
+    .topnav-actions .btn{font-size:12px;padding:8px 12px;}
+    .kpi-row{grid-template-columns:repeat(2,1fr);gap:10px;}
+    .card{padding:16px;}
+    .watchrow{
+      grid-template-columns:auto 1fr auto;
+      grid-template-areas:"avatar name tag" "vals vals vals";
+      row-gap:8px;padding:14px 4px;
+    }
+    .avatar{grid-area:avatar;}
+    .wnamewrap{grid-area:name;}
+    .wtag{grid-area:tag;}
+    .wvals{
+      display:flex;grid-area:vals;justify-content:flex-start;
+      gap:18px;flex-wrap:wrap;padding-left:46px;
+    }
+    .wvals .wval{text-align:left;}
+    .bar-cell{flex-wrap:wrap;row-gap:4px;}
+    .bar-cell > div:first-child{width:100% !important;}
+    .bar-cell > div:last-child{width:auto !important;margin-left:auto;}
+  }
+
+  @media print{
+    body{background:#fff;}
+    body::before{display:none;}
+    .shell{background:#fff;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none;border:none;max-width:100%;padding:6px;margin:0;}
+    .no-print, .dropzone, .dl-note, .pillnav, .tabbar, .panel, select, .period-pills, .legend-card{display:none !important;}
+    .card{background:#fff;box-shadow:none;border:1px solid #ddd;break-inside:avoid;}
+    .chdr select{display:none;}
+    .view.hidden{display:none !important;}
+    .greet{font-size:20px;margin-top:0;}
+    a[href]::after{content:'';}
+  }
+</style>
+</head>
+<body>
+<script id="snapshotData" type="application/json"></script>
+<div class="shell">
+
+  <div class="topnav">
+    <div class="brand">
+      <div class="brand-mark">O</div>
+      <div class="brand-name">OVS · Firenze Panzani</div>
+    </div>
+    <div class="topnav-actions" style="display:flex;align-items:center;gap:10px;">
+      <div class="pillnav">
+        <div class="pill active" data-view="view1">Reparto e brand</div>
+        <div class="pill" data-view="view2">Sub-reparto</div>
+      </div>
+      <button class="btn no-print" id="printBtn" style="width:auto;padding:9px 16px;white-space:nowrap;">🖨️ Stampa riepilogo</button>
+      <button class="btn no-print" id="snapshotBtn" style="width:auto;padding:9px 16px;white-space:nowrap;">📸 Genera snapshot da condividere</button>
+      <button class="btn no-print" id="publishBtn" style="width:auto;padding:9px 16px;white-space:nowrap;">🌐 Pubblica online per il team</button>
+      <button class="btn no-print" id="ghSettingsBtn" style="width:auto;padding:9px 12px;white-space:nowrap;" title="Impostazioni GitHub">⚙️</button>
+    </div>
+  </div>
+
+  <div id="ghSettingsPanel" class="card no-print hidden" style="margin-bottom:20px;">
+    <h3 style="margin-bottom:4px;">⚙️ Impostazioni pubblicazione GitHub</h3>
+    <div class="muted" style="margin-bottom:14px;">Questi dati restano salvati solo in questo browser, non vengono mai inviati a me — solo a GitHub, direttamente dal tuo dispositivo.</div>
+    <div class="controls" style="flex-wrap:wrap;">
+      <input type="text" id="ghUser" placeholder="Nome utente GitHub" style="font-family:'Inter',sans-serif;font-size:12.5px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;">
+      <input type="text" id="ghRepo" placeholder="Nome repository (es. libretto-vendite)" style="font-family:'Inter',sans-serif;font-size:12.5px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;width:240px;">
+      <input type="password" id="ghToken" placeholder="Token GitHub" style="font-family:'Inter',sans-serif;font-size:12.5px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;width:220px;">
+      <button class="btn" id="ghSaveBtn" style="width:auto;padding:9px 16px;">Salva</button>
+    </div>
+    <div id="ghSettingsStatus" style="font-size:12px;margin-top:10px;"></div>
+  </div>
+
+  <div id="ghPublishResult" class="card no-print hidden" style="margin-bottom:20px;">
+    <h3 style="margin-bottom:8px;">🌐 Link per il team</h3>
+    <div class="controls" style="flex-wrap:wrap;">
+      <input type="text" id="ghPublishLink" readonly style="flex:1;min-width:260px;font-family:'Inter',sans-serif;font-size:12.5px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:var(--accent-bg);">
+      <button class="btn" id="ghCopyBtn" style="width:auto;padding:9px 16px;">Copia link</button>
+    </div>
+    <div id="ghPublishStatus" style="font-size:12px;margin-top:10px;"></div>
+  </div>
+
+  <div id="view1" class="view">
+    <div class="dropzone" id="dropzone">
+      <p><strong>Trascina il file .xlsx qui</strong> oppure clicca per selezionarlo</p>
+      <input type="file" id="fileInput" accept=".xlsx,.xls">
+      <div class="filename" id="filename"></div>
+    </div>
+    <div class="dl-note">Come scaricarlo: Power BI → Libretto Analisi Dinamica → Analisi Dinamica → filtri Category e APC → nei filtri, dove si trova il Giornaliero, tutti attivi.</div>
+
+    <div id="content" class="hidden">
+      <div class="greet">Andamento negozio</div>
+
+      <div class="card" style="margin-bottom:18px;">
+        <h3 style="margin-bottom:4px;">🔍 Chiedi alla dashboard</h3>
+        <div class="muted" style="margin-bottom:12px;">Es. "Piombo Donna", "maglieria Piombo", "Utopja Donna" — somma tutti i sub-reparti che trova e ti dà il totale.</div>
+        <div class="controls">
+          <input type="text" id="searchQuery" placeholder="Scrivi qui..." style="flex:1;min-width:220px;font-family:'Inter',sans-serif;font-size:13px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;">
+          <button class="btn" id="searchBtn" style="width:auto;padding:10px 18px;">Cerca</button>
+        </div>
+        <div id="searchResults" style="margin-top:14px;"></div>
+      </div>
+
+      <div class="main-grid">
+        <div>
+          <div class="kpi-row" id="kpis"></div>
+          <div class="card chart-card">
+            <div class="chdr">
+              <div>
+                <h3 id="chartTitle">Vendite per Category</h3>
+                <div class="muted" id="chartSubtitle">Confronto tra categorie, periodo selezionato</div>
+              </div>
+              <div class="period-pills" id="periodSwitch">
+                <div class="p" data-period="giorno">Giorno</div>
+                <div class="p active" data-period="sett">Sett.</div>
+                <div class="p" data-period="mese">Mese</div>
+                <div class="p" data-period="montante">Anno</div>
+              </div>
+            </div>
+            <div class="controls" style="margin-bottom:6px;">
+              <select id="catDrilldown"></select>
+            </div>
+            <div class="summary-row" id="summaryRow"></div>
+            <div class="quadrant-wrap" id="catQuadrant"></div>
+            <div class="quad-info hidden" id="catQuadrantInfo"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card side-card">
+            <h3>Incidenza per Category</h3>
+            <div class="muted">Quota di ogni categoria sul totale negozio, periodo selezionato</div>
+            <div id="incidenzaCatBlock"></div>
+
+            <h3 style="margin-top:22px;">Incidenza nella categoria</h3>
+            <div class="muted">Seleziona una categoria per vedere il peso dei reparti/brand al suo interno</div>
+            <select id="incidenzaCatFilter" style="width:100%;margin-bottom:14px;"></select>
+            <div id="incidenzaSubBlock"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card treemap-card">
+        <h3 id="treemapTitle">Peso e performance per Category</h3>
+        <div class="muted">Dimensione = quota di fatturato · Colore = performance (verde crescita, blu in linea col mercato, rosso sotto la rete), periodo selezionato</div>
+        <div class="treemap" id="catTreemap"></div>
+      </div>
+
+      <div class="card bottom-card">
+        <div class="chdr">
+          <h3 id="watchTitle">Da monitorare</h3>
+          <select id="watchCatFilter"></select>
+          <select id="watchSortMode">
+            <option value="pct">Ordina per variazione %</option>
+            <option value="euro">Ordina per variazione €</option>
+            <option value="rete">Ordina per vs Rete</option>
+          </select>
+        </div>
+        <div class="section-title" id="worstTitle" style="margin-top:2px;">Peggiori 10 della settimana</div>
+        <div id="watchListWorst"></div>
+        <div class="section-title" id="bestTitle">Migliori 10 della settimana</div>
+        <div id="watchListBest"></div>
+      </div>
+
+      <div class="card bottom-card">
+        <div class="chdr">
+          <h3>Confronto con la rete</h3>
+          <select id="reteCatFilter"></select>
+        </div>
+        <div class="section-note">Scostamento = tua % vs anno scorso meno la crescita della rete dei negozi diretti sullo stesso reparto/brand. Negativo = stai perdendo più della rete (problema reale), positivo = stai andando meglio della rete, a prescindere dal segno vs anno scorso.</div>
+        <div class="section-title" id="reteWorstTitle" style="margin-top:2px;">Sotto la rete — peggiori 10</div>
+        <div id="reteListWorst"></div>
+        <div class="section-title" id="reteBestTitle">Sopra la rete — migliori 10</div>
+        <div id="reteListBest"></div>
+      </div>
+
+      <div class="tabbar" id="tabbar1">
+        <div class="t active" data-tab="dettaglio">Dettaglio</div>
+        <div class="t" data-tab="incidenza">Incidenza su categoria</div>
+        <div class="t" data-tab="annoscorso">Anno scorso</div>
+      </div>
+
+      <div class="panel active" id="panel-dettaglio">
+        <div class="controls">
+          <select id="filterCat"></select>
+          <input type="text" id="searchBox" placeholder="Cerca reparto o brand...">
+        </div>
+        <div class="table-scroll">
+        <table id="detailTable">
+          <thead><tr>
+            <th data-sort="apc">Reparto / brand</th>
+            <th data-sort="giornoValore" class="num">Giorno €</th>
+            <th data-sort="giornoPct" class="num">Giorno vs LY</th>
+            <th data-sort="settValore" class="num">Sett. €</th>
+            <th data-sort="settPct" class="num">Sett. vs LY</th>
+            <th data-sort="meseValore" class="num">Mese €</th>
+            <th data-sort="mesePct" class="num">Mese vs LY</th>
+            <th data-sort="meseAvanzPrev" class="num">Mese vs Budget</th>
+            <th data-sort="montanteValore" class="num">Montante €</th>
+            <th data-sort="montantePct" class="num">Montante vs LY</th>
+            <th data-sort="montanteAvanzPrev" class="num">Montante vs Budget</th>
+            <th data-sort="stockValore" class="num">Stock €</th>
+            <th data-sort="stockPct" class="num">Stock vs LY</th>
+          </tr></thead>
+          <tbody id="detailBody"></tbody>
+        </table>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-incidenza">
+        <div class="section-note" id="incidenzaTitle"></div>
+        <div id="incidenzaBlocks"></div>
+      </div>
+
+      <div class="panel" id="panel-annoscorso">
+        <div class="section-title" id="annoScorsoTitle"></div>
+        <div class="section-note" id="annoScorsoNote"></div>
+        <div class="rank-list" id="annoScorsoList"></div>
+      </div>
+    </div>
+    <div id="emptyMsg" class="empty-msg"></div>
+  </div>
+
+  <div id="view2" class="view hidden">
+    <div class="dropzone" id="dropzone2">
+      <p><strong>Trascina qui l'export per sub-reparto</strong> oppure clicca per selezionarlo</p>
+      <input type="file" id="fileInput2" accept=".xlsx,.xls">
+      <div class="filename" id="filename2"></div>
+    </div>
+    <div class="dl-note">Come scaricarlo: Power BI → Libretto Analisi Dinamica → Analisi Dinamica → filtri Category e SubReparto → nei filtri, dove si trova il Giornaliero, tutti attivi.</div>
+
+    <div id="content2" class="hidden">
+      <div class="greet">Andamento sub-reparti</div>
+
+      <div class="card" style="margin-bottom:18px;">
+        <h3 style="margin-bottom:4px;">🔍 Chiedi alla dashboard</h3>
+        <div class="muted" style="margin-bottom:12px;">Es. "Piombo Donna", "maglieria Piombo", "Utopja Donna" — somma tutti i sub-reparti che trova e ti dà il totale.</div>
+        <div class="controls">
+          <input type="text" id="searchQuery2" placeholder="Scrivi qui..." style="flex:1;min-width:220px;font-family:'Inter',sans-serif;font-size:13px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;">
+          <button class="btn" id="searchBtn2" style="width:auto;padding:10px 18px;">Cerca</button>
+        </div>
+        <div id="searchResults2" style="margin-top:14px;"></div>
+      </div>
+
+      <div class="main-grid">
+        <div>
+          <div class="kpi-row" id="kpis2"></div>
+          <div class="card chart-card">
+            <div class="chdr">
+              <div>
+                <h3 id="chartTitle2">Vendite per Category</h3>
+                <div class="muted" id="chartSubtitle2">Confronto tra categorie, periodo selezionato</div>
+              </div>
+              <div class="period-pills" id="periodSwitch2">
+                <div class="p" data-period2="giorno">Giorno</div>
+                <div class="p active" data-period2="sett">Sett.</div>
+                <div class="p" data-period2="mese">Mese</div>
+                <div class="p" data-period2="montante">Anno</div>
+              </div>
+            </div>
+            <div class="controls" style="margin-bottom:6px;">
+              <select id="catDrilldown2"></select>
+            </div>
+            <div class="summary-row" id="summaryRow2"></div>
+            <div class="quadrant-wrap" id="catQuadrant2"></div>
+            <div class="quad-info hidden" id="catQuadrantInfo2"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card side-card">
+            <h3>Incidenza per Category</h3>
+            <div class="muted">Quota di ogni categoria sul totale negozio, periodo selezionato</div>
+            <div id="incidenzaCatBlock2"></div>
+
+            <h3 style="margin-top:22px;">Incidenza nella categoria</h3>
+            <div class="muted">Seleziona una categoria per vedere il peso dei sub-reparti al suo interno</div>
+            <select id="incidenzaCatFilter2" style="width:100%;margin-bottom:14px;"></select>
+            <div id="incidenzaSubBlock2"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card treemap-card">
+        <h3 id="treemapTitle2">Peso e performance per Category</h3>
+        <div class="muted">Dimensione = quota di fatturato · Colore = performance (verde crescita, blu in linea col mercato, rosso sotto la rete), periodo selezionato</div>
+        <div class="treemap" id="catTreemap2"></div>
+      </div>
+
+      <div class="card bottom-card">
+        <div class="chdr">
+          <h3 id="watchTitle2">Da monitorare</h3>
+          <select id="watchCatFilter2"></select>
+          <select id="watchSortMode2">
+            <option value="pct">Ordina per variazione %</option>
+            <option value="euro">Ordina per variazione €</option>
+            <option value="rete">Ordina per vs Rete</option>
+          </select>
+        </div>
+        <div class="section-title" id="worstTitle2" style="margin-top:2px;">Peggiori 10 della settimana</div>
+        <div id="watchListWorst2"></div>
+        <div class="section-title" id="bestTitle2">Migliori 10 della settimana</div>
+        <div id="watchListBest2"></div>
+      </div>
+
+      <div class="card bottom-card">
+        <div class="chdr">
+          <h3>Confronto con la rete</h3>
+          <select id="reteCatFilter2"></select>
+        </div>
+        <div class="section-note">Scostamento = tua % vs anno scorso meno la crescita della rete dei negozi diretti sullo stesso reparto/brand. Negativo = stai perdendo più della rete (problema reale), positivo = stai andando meglio della rete, a prescindere dal segno vs anno scorso.</div>
+        <div class="section-title" id="reteWorstTitle2" style="margin-top:2px;">Sotto la rete — peggiori 10</div>
+        <div id="reteListWorst2"></div>
+        <div class="section-title" id="reteBestTitle2">Sopra la rete — migliori 10</div>
+        <div id="reteListBest2"></div>
+      </div>
+
+      <div class="tabbar" id="tabbar2">
+        <div class="t active" data-tab2="dettaglio2">Dettaglio</div>
+        <div class="t" data-tab2="incidenza2">Incidenza</div>
+        <div class="t" data-tab2="annoscorso2">Anno scorso</div>
+      </div>
+
+      <div class="panel active" id="panel-dettaglio2">
+        <div class="controls">
+          <select id="filterCat2"></select>
+          <select id="filterPeso2"></select>
+          <input type="text" id="searchBox2" placeholder="Cerca sub-reparto...">
+        </div>
+        <div class="table-scroll">
+        <table id="detailTable2">
+          <thead><tr>
+            <th data-sort2="apc">Sub-reparto</th>
+            <th data-sort2="pesoLabel">Peso / stagione</th>
+            <th data-sort2="giornoValore" class="num">Giorno €</th>
+            <th data-sort2="giornoPct" class="num">Giorno vs LY</th>
+            <th data-sort2="settValore" class="num">Sett. €</th>
+            <th data-sort2="settPct" class="num">Sett. vs LY</th>
+            <th data-sort2="meseValore" class="num">Mese €</th>
+            <th data-sort2="mesePct" class="num">Mese vs LY</th>
+            <th data-sort2="meseAvanzPrev" class="num">Mese vs Budget</th>
+            <th data-sort2="montanteValore" class="num">Montante €</th>
+            <th data-sort2="montantePct" class="num">Montante vs LY</th>
+            <th data-sort2="montanteAvanzPrev" class="num">Montante vs Budget</th>
+            <th data-sort2="stockValore" class="num">Stock €</th>
+            <th data-sort2="stockPct" class="num">Stock vs LY</th>
+          </tr></thead>
+          <tbody id="detailBody2"></tbody>
+        </table>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-incidenza2">
+        <div class="section-title" id="incidenzaPesoTitle">Incidenza per peso / stagione</div>
+        <div class="section-note">Quota del venduto per fascia peso/stagione, cross season incluso.</div>
+        <div id="incidenzaPesoBlock"></div>
+        <div class="section-title">Sub-reparti principali per categoria</div>
+        <div id="incidenzaBlocks2"></div>
+      </div>
+
+      <div class="panel" id="panel-annoscorso2">
+        <div class="section-title" id="annoScorsoTitle2"></div>
+        <div class="section-note" id="annoScorsoNote2"></div>
+        <div class="rank-list" id="annoScorsoList2"></div>
+      </div>
+    </div>
+    <div id="emptyMsg2" class="empty-msg"></div>
+  </div>
+
+  <div class="card legend-card">
+    <h3>📖 Legenda e note</h3>
+    <div class="muted">Un riepilogo di come leggere i numeri e cosa significano i vari indicatori della dashboard.</div>
+
+    <details open>
+      <summary>Periodi: Giorno, Settimana, Mese, Montante anno</summary>
+      <div class="legend-body">
+        <p><strong>Giorno</strong> e <strong>Settimana</strong>: venduto del giorno corrente e della settimana in corso (da domenica).</p>
+        <p><strong>Mese</strong>: venduto da inizio mese a oggi (mese in corso).</p>
+        <p><strong>Montante anno</strong>: venduto cumulato da inizio esercizio (anno) a oggi.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>vs LY (anno scorso)</summary>
+      <div class="legend-body">
+        <p>Confronto tra il venduto di oggi e il venduto dello stesso periodo dell'anno precedente. È il dato "% Incr. su AP" del tuo export Power BI.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>vs Budget</summary>
+      <div class="legend-body">
+        <p>Disponibile solo per <strong>Mese</strong> e <strong>Montante anno</strong> (il file non ha un budget giornaliero/settimanale). Mostra quanto del budget/obiettivo (colonna "Previsioni" di Power BI) è già stato raggiunto, come percentuale.</p>
+        <p>Esempio: budget del mese €456.501, venduto finora €29.003 → 6,4% del budget raggiunto.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>vs Rete — come si calcola</summary>
+      <div class="legend-body">
+        <p>Il campo originale del tuo export ("% Incr. Diretti a Parità") <strong>non</strong> è già una differenza: è la crescita della <strong>rete dei negozi diretti</strong> (esclusi i franchising) su quello specifico reparto/brand/categoria — lo stesso identico numero compare in tutti i negozi diretti per quel reparto/brand.</p>
+        <p>Per sapere come stai messo TU rispetto alla rete, la dashboard calcola:</p>
+        <p style="font-family:'IBM Plex Mono',monospace;background:var(--paper-2);padding:8px 12px;border-radius:8px;display:inline-block;">scostamento = (tua % vs anno scorso) − (% crescita rete)</p>
+        <p><strong>Esempio reale</strong> (Les Copains Woman): tu -43,7% vs anno scorso, rete +0,6% → scostamento = -43,7% − 0,6% = <strong>-44,3%</strong>. Nonostante il -43,7% sembri "solo" un problema di mercato, in realtà stai andando peggio della rete: è un problema reale del negozio.</p>
+        <p>Negativo = stai perdendo più della rete (problema reale). Positivo = stai andando meglio della rete, anche se il tuo dato assoluto vs anno scorso è negativo (probabile fenomeno di mercato generale, non colpa tua).</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Etichette Critico / Mercato / In crescita / Da monitorare</summary>
+      <div class="legend-body">
+        <p><span class="badge pos">In crescita</span> vendite in aumento vs anno scorso.</p>
+        <p><span class="badge market">Mercato</span> vendite in calo vs anno scorso, ma in linea o meglio della rete — il calo è un fenomeno di mercato generale, non un problema specifico del negozio.</p>
+        <p><span class="badge neg">Critico</span> vendite in calo vs anno scorso E peggio della rete (o, quando il dato rete non è disponibile, calo superiore al 25%) — qui il problema è reale e specifico.</p>
+        <p><span class="badge amber">Da monitorare</span> calo moderato senza dato rete disponibile per confermare la causa.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Grafico a quadranti e Treemap</summary>
+      <div class="legend-body">
+        <p><strong>Quadranti</strong>: ogni pallino è una categoria (o un reparto/brand/sub-reparto, se hai selezionato una categoria col filtro). Posizione orizzontale = % vs anno scorso, posizione verticale = scostamento vs rete, dimensione = quanto pesa sul fatturato. Con molti elementi, solo i 14 col fatturato maggiore hanno l'etichetta scritta; gli altri sono identificabili passandoci sopra col mouse.</p>
+        <p><strong>Treemap</strong>: ogni riquadro è una categoria (o reparto/sub-reparto in drill-down). La dimensione del riquadro = quota di fatturato, il colore segue la stessa logica Critico (rosso) / Mercato (blu) / In crescita (verde).</p>
+        <p>In entrambi i grafici, il menu a tendina sopra permette di passare dalla vista per categoria al dettaglio dei reparti/brand (o sub-reparti) dentro una categoria specifica.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Peso e stagione (solo vista Sub-reparto)</summary>
+      <div class="legend-body">
+        <p>Il codice alla fine del nome sub-reparto indica stagione e peso del capo: <strong>1</strong> = Primavera Estate, <strong>2</strong> = Autunno Inverno, seguito da <strong>M</strong> (medio), <strong>L</strong> (leggero) o <strong>H</strong> (pesante). <strong>N</strong> = no peso (soprattutto intimo). <strong>Cross season</strong> = articoli continuativi, non legati a una stagione specifica.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Snapshot da condividere e Stampa riepilogo</summary>
+      <div class="legend-body">
+        <p><strong>📸 Genera snapshot</strong>: crea un nuovo file .html con i dati che stai guardando in questo momento già incorporati — utile per condividerlo (es. su WhatsApp) con qualcuno che non ha l'export di Power BI: lo apre e vede subito tutto, senza dover caricare nulla.</p>
+        <p><strong>🖨️ Stampa riepilogo</strong>: apre la stampa del browser con un layout pulito (senza filtri e menu), pronta per essere salvata come PDF o stampata su carta.</p>
+      </div>
+    </details>
+  </div>
+
+</div>
+
+<script>
+/* ===== helpers condivisi ===== */
+function fmtEur(v){ return v === null || v === undefined ? '—' : new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v); }
+function fmtPct(v){ return v === null || v === undefined ? '—' : (v>=0?'+':'') + v.toFixed(1) + '%'; }
+function pctClass(v){ if(v===null||v===undefined) return ''; return v>=0?'pos-txt':'neg-txt'; }
+function badgeClass(v){ if(v===null||v===undefined) return 'amber'; return v>=0?'pos':'neg'; }
+const CATEGORY_LABELS = {
+  '0031':'Donna', '0032':'Uomo', '0033':'Kids', '0040':'Concessions', '0046':'Profumeria',
+  '0049':'Altro OVS', '0053':'Donna Gap', '0054':'Uomo Gap', '0056':'Donna CN2.0', '0057':'Uomo CN2.0',
+  '0058':'Kids CN2.0', '0059':'Kids Gap', '0064':'Upim Casa', '0069':'Upim Love Therapy'
+};
+function shortCat(c){
+  if(!c) return '';
+  const m = c.match(/^(\d+)-(.+)/);
+  if(m && CATEGORY_LABELS[m[1]]) return CATEGORY_LABELS[m[1]];
+  return m ? m[2] : c;
+}
+function shortApc(a){ if(!a) return ''; const m = a.match(/^\d+-(.+)/); return m ? m[1] : a; }
+function calcLyValue(valore, pct){
+  if(valore === null || pct === null || pct === undefined) return null;
+  if(pct <= -100) return null;
+  return valore / (1 + pct/100);
+}
+function initials(name){
+  const s = shortApc(name).trim();
+  const parts = s.split(/\s+/).filter(Boolean);
+  if(parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+  return (parts[0] || '').slice(0,2).toUpperCase();
+}
+const AVATAR_COLORS = ['#6C5CE7','#E17055','#00A884','#D6529B','#3B82C4','#B9791A'];
+function avatarColor(name){
+  let h=0; for(let i=0;i<name.length;i++) h = (h*31 + name.charCodeAt(i))>>>0;
+  return AVATAR_COLORS[h % AVATAR_COLORS.length];
+}
+
+/* ===== Assistente di ricerca: sinonimi, alias, parsing ===== */
+const SYNONYM_GROUPS = {
+  'MAGLIERIA': ['TRICOT', 'CUT&SEWN', 'CUT &SEWN', 'C&S', 'KNITWEAR'],
+  'MAGLIE': ['TRICOT', 'CUT&SEWN', 'CUT &SEWN', 'C&S', 'KNITWEAR'],
+  'COLLEZIONE': ['COLLECTION'],
+  'CONTEMPORARY': ['CONT'],
+  'INTIMO': ['UNDERWEAR', 'BEACHWEAR', 'NIGHTWEAR'],
+  'CAPISPALLA': ['OUTERWEAR', 'BLAZER', 'JACKETS'],
+  'GIACCHE': ['OUTERWEAR', 'BLAZER', 'JACKETS'],
+  'CAMICIE': ['SHIRTS'],
+  'PANTALONI': ['TROUSERS', 'SHORTS', 'BOTTOM'],
+  'SCARPE': ['SHOES', 'FOOTWEAR', 'SLIPPERS'],
+  'CALZATURE': ['SHOES', 'FOOTWEAR', 'SLIPPERS'],
+  'ACCESSORI': ['ACC', 'ORNAMENTS', 'TIES'],
+  'CALZINI': ['SOCKS'],
+  'CALZE': ['SOCKS'],
+  'JEANS': ['DENIM'],
+  'MARE': ['BEACH', 'BEACHWEAR'],
+  'TOP': ['TOPS']
+};
+const CATEGORY_WORDS = {
+  'DONNA':'Donna', 'WOMAN':'Donna', 'WOMEN':'Donna',
+  'UOMO':'Uomo', 'MAN':'Uomo', 'MEN':'Uomo',
+  'KIDS':'Kids', 'BAMBINI':'Kids', 'BAMBINO':'Kids', 'BAMBINA':'Kids', 'RAGAZZI':'Kids', 'RAGAZZO':'Kids', 'RAGAZZA':'Kids', 'GIRL':'Kids', 'BOY':'Kids'
+};
+
+function applyBrandAliases(qUpper){
+  let q = qUpper;
+  if(/\bALTAVIA\b/.test(q)) q = q.replace(/\bALTAVIA\b/g, 'SPORT WOMAN');
+  return q;
+}
+
+function parseSearchQuery(rawQuery){
+  const qUpper = applyBrandAliases(rawQuery.toUpperCase().trim());
+  const words = qUpper.split(/\s+/).filter(Boolean);
+  let categoryWord = null;
+  const clauses = [];
+  words.forEach(w => {
+    if(CATEGORY_WORDS[w]){ categoryWord = CATEGORY_WORDS[w]; return; }
+    if(SYNONYM_GROUPS[w]){ clauses.push(SYNONYM_GROUPS[w]); return; }
+    clauses.push([w]);
+  });
+  return { categoryWord, clauses };
+}
+
+function matchesClauses(apcUpper, clauses){
+  return clauses.every(alts => alts.some(alt => apcUpper.includes(alt)));
+}
+
+function aggregateSearchResults(rows, pf){
+  const total = rows.reduce((s,r) => s + (r[pf.valore] || 0), 0);
+  const withLy = rows.filter(r => r[pf.pct] !== null && r[pf.ly] !== null && r[pf.ly] !== undefined);
+  const lySum = withLy.reduce((s,r) => s + r[pf.ly], 0);
+  const curSumForLy = withLy.reduce((s,r) => s + (r[pf.valore]||0), 0);
+  const aggPct = (withLy.length && lySum) ? (curSumForLy - lySum) / lySum * 100 : null;
+  const lyEuroCovered = withLy.reduce((s,r) => s + (r[pf.valore]||0), 0);
+
+  let aggScarto = null, reteItemsCount = 0, reteEuroCovered = 0;
+  if(pf.scarto){
+    const withScarto = rows.filter(r => r[pf.scarto] !== null && r[pf.scarto] !== undefined && r[pf.valore] > 0);
+    reteItemsCount = withScarto.length;
+    reteEuroCovered = withScarto.reduce((s,r) => s + r[pf.valore], 0);
+    if(reteEuroCovered > 0){
+      aggScarto = withScarto.reduce((s,r) => s + r[pf.scarto]*r[pf.valore], 0) / reteEuroCovered;
+    }
+  }
+
+  return {
+    total, count: rows.length,
+    aggPct, lyCoverageCount: withLy.length, lyCoverageEuro: lyEuroCovered,
+    aggScarto, reteCoverageCount: reteItemsCount, reteCoverageEuro: reteEuroCovered
+  };
+}
+
+function searchResultRowHtml(r, pf){
+  return `
+    <tr>
+      <td class="label">${shortApc(r.apc)}</td>
+      <td class="num">${fmtEur(r[pf.valore])}</td>
+      <td class="num ${pctClass(r[pf.pct])}">${fmtPct(r[pf.pct])}</td>
+      <td class="num ${pctClass(pf.scarto ? r[pf.scarto] : null)}">${pf.scarto ? fmtPct(r[pf.scarto]) : '—'}</td>
+    </tr>`;
+}
+
+function renderSearchAnswer(containerId, st, pf, rows, title){
+  const el = document.getElementById(containerId);
+  if(!rows.length){
+    el.innerHTML = '<div class="empty-msg">Nessun sub-reparto trovato per questa ricerca.</div>';
+    return;
+  }
+  const agg = aggregateSearchResults(rows, pf);
+  const sorted = [...rows].sort((a,b) => (b[pf.valore]||0) - (a[pf.valore]||0));
+  const topN = 6;
+  const shown = sorted.slice(0, topN);
+  const rest = sorted.slice(topN);
+  const restTotal = rest.reduce((s,r) => s + (r[pf.valore]||0), 0);
+
+  let html = `<div class="section-title" style="margin-top:0;">${title} — ${pf.label}</div>`;
+  html += `<div style="font-size:22px;font-weight:800;margin:4px 0 10px;">${fmtEur(agg.total)} <span style="font-size:12.5px;font-weight:600;color:var(--ink-soft);">su ${agg.count} sub-reparti</span></div>`;
+
+  if(agg.aggPct !== null){
+    html += `<div style="font-size:12.5px;margin-bottom:4px;">📊 vs anno scorso: <span class="${pctClass(agg.aggPct)}" style="font-weight:700;">${fmtPct(agg.aggPct)}</span> <span style="color:var(--ink-faint);">(dato su ${agg.lyCoverageCount}/${agg.count} sub-reparti, ${fmtEur(agg.lyCoverageEuro)} coperti)</span></div>`;
+  } else {
+    html += `<div style="font-size:12.5px;margin-bottom:4px;color:var(--ink-faint);">📊 vs anno scorso: dato non disponibile per questi sub-reparti</div>`;
+  }
+  if(pf.scarto){
+    if(agg.aggScarto !== null){
+      html += `<div style="font-size:12.5px;margin-bottom:10px;">📊 vs Rete (media pesata sul fatturato): <span class="${pctClass(agg.aggScarto)}" style="font-weight:700;">${fmtPct(agg.aggScarto)}</span> ⚠️ <span style="color:var(--ink-faint);">solo ${agg.reteCoverageCount}/${agg.count} sub-reparti hanno il dato (${fmtEur(agg.reteCoverageEuro)} coperti)</span></div>`;
+    } else {
+      html += `<div style="font-size:12.5px;margin-bottom:10px;color:var(--ink-faint);">📊 vs Rete: dato non disponibile per questi sub-reparti</div>`;
+    }
+  }
+
+  html += `<table style="margin-top:8px;"><thead><tr><th>Sub-reparto</th><th class="num">Valore</th><th class="num">vs LY</th><th class="num">vs Rete</th></tr></thead><tbody>`;
+  html += shown.map(r => searchResultRowHtml(r, pf)).join('');
+  html += `</tbody></table>`;
+  if(rest.length){
+    html += `<div class="section-note" style="margin-top:8px;">+${rest.length} altri sub-reparti minori, totale ${fmtEur(restTotal)}.</div>`;
+  }
+  el.innerHTML = html;
+}
+
+function runSearch(containerId, st, pf, query, categoryOverride){
+  const parsed = parseSearchQuery(query);
+  const category = categoryOverride || parsed.categoryWord;
+
+  if(!category){
+    const byCategory = {};
+    st.rows.forEach(r => {
+      const apcUpper = r.apc.toUpperCase();
+      if(matchesClauses(apcUpper, parsed.clauses)){
+        const catLabel = shortCat(r.category);
+        byCategory[catLabel] = (byCategory[catLabel] || 0) + 1;
+      }
+    });
+    const cats = Object.keys(byCategory);
+    if(cats.length === 0){
+      document.getElementById(containerId).innerHTML = '<div class="empty-msg">Nessun sub-reparto trovato per questa ricerca.</div>';
+      return;
+    }
+    if(cats.length === 1){
+      const onlyCat = st.categories.find(c => shortCat(c) === cats[0]);
+      const rows = st.rows.filter(r => r.category === onlyCat && matchesClauses(r.apc.toUpperCase(), parsed.clauses));
+      renderSearchAnswer(containerId, st, pf, rows, query);
+      return;
+    }
+    let html = '<div class="muted" style="margin-bottom:10px;">Presente in più categorie — per quale vuoi il totale?</div><div style="display:flex;gap:8px;flex-wrap:wrap;">';
+    cats.forEach(c => {
+      html += `<button class="btn searchCatPick" data-cat="${c}" style="width:auto;padding:8px 14px;">${c} (${byCategory[c]})</button>`;
+    });
+    html += `<button class="btn searchCatPick" data-cat="__ALL__" style="width:auto;padding:8px 14px;">Tutti insieme</button></div>`;
+    document.getElementById(containerId).innerHTML = html;
+    document.querySelectorAll(`#${containerId} .searchCatPick`).forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cat = btn.dataset.cat;
+        if(cat === '__ALL__'){
+          const rows = st.rows.filter(r => matchesClauses(r.apc.toUpperCase(), parsed.clauses));
+          renderSearchAnswer(containerId, st, pf, rows, query);
+        } else {
+          const catCode = st.categories.find(c => shortCat(c) === cat);
+          const rows = st.rows.filter(r => r.category === catCode && matchesClauses(r.apc.toUpperCase(), parsed.clauses));
+          renderSearchAnswer(containerId, st, pf, rows, query + ' — ' + cat);
+        }
+      });
+    });
+    return;
+  }
+
+  const catCode = st.categories.find(c => shortCat(c) === category);
+  const rows = catCode
+    ? st.rows.filter(r => r.category === catCode && matchesClauses(r.apc.toUpperCase(), parsed.clauses))
+    : [];
+  renderSearchAnswer(containerId, st, pf, rows, query + ' — ' + category);
+}
+
+const PERIOD_FIELDS = {
+  giorno: {valore:'giornoValore', pct:'giornoPct', incidenza:'incidenzaGiorno', ly:'lyGiornoValore', label:'Giorno', budget:null, avanz:null, rete:'giornoRete', scarto:'scartoGiorno'},
+  sett:   {valore:'settValore',   pct:'settPct',   incidenza:'incidenzaSett',   ly:'lySettValore',   label:'Settimana', budget:null, avanz:null, rete:'settRete', scarto:'scartoSett'},
+  mese:   {valore:'meseValore',   pct:'mesePct',   incidenza:'incidenzaMese',   ly:'lyMeseValore',   label:'Mese', budget:'meseBudgetValore', avanz:'meseAvanzPrev', rete:'meseRete', scarto:'scartoMese'},
+  montante: {valore:'montanteValore', pct:'montantePct', incidenza:'incidenzaMontante', ly:'lyMontanteValore', label:'Montante anno', budget:'montanteBudgetValore', avanz:'montanteAvanzPrev', rete:'montanteRete', scarto:'scartoMontante'}
+};
+
+/* ===== VISTA 1: REPARTO E BRAND ===== */
+let state = { rows: [], grandTotal: null, categories: [], catTotals:{}, period: 'sett' };
+const SOGLIA_RILEVANZA = 150;
+
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+dropzone.addEventListener('click', () => fileInput.click());
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
+dropzone.addEventListener('drop', e => { e.preventDefault(); dropzone.classList.remove('drag'); if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]); });
+fileInput.addEventListener('change', e => { if (e.target.files.length) handleFile(e.target.files[0]); });
+
+function handleFile(file){
+  document.getElementById('filename').textContent = file.name;
+  document.getElementById('emptyMsg').textContent = '';
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try{
+      const wb = XLSX.read(new Uint8Array(ev.target.result), {type:'array'});
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:null, raw:true});
+      parseWorkbook(rows);
+      render();
+    }catch(err){
+      document.getElementById('emptyMsg').textContent = 'Non sono riuscito a leggere il file. Verifica che sia l\'export standard del Libretto Vendite. (' + err.message + ')';
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function parseWorkbook(rows){
+  const periodRow = rows[0], metricRow = rows[1];
+  let lastPeriod = null; const colMap = {};
+  for(let i=0;i<periodRow.length;i++){
+    if(periodRow[i] !== null && periodRow[i] !== undefined) lastPeriod = periodRow[i];
+    const metric = metricRow[i];
+    if(metric) colMap[lastPeriod + '||' + metric] = i;
+  }
+  const idx = {
+    giornoValore: colMap['Giornaliero||Valore AC'], giornoPct: colMap['Giornaliero||% Incr. su AP'],
+    settValore: colMap['Settimanale||Valore AC'], settPct: colMap['Settimanale||% Incr. su AP'],
+    meseValore: colMap['Mensile||Valore AC'], mesePct: colMap['Mensile||% Incr. su AP'],
+    montanteValore: colMap['Montante Esercizio||Valore AC'], montantePct: colMap['Montante Esercizio||% Incr. su AP'],
+    meseBudgetValore: colMap['Previsioni Mensili||Valore AC'], meseAvanzPrev: colMap['Mensile||% Avanz. su Prev.'],
+    montanteBudgetValore: colMap['Previsioni a Montante||Valore AC'], montanteAvanzPrev: colMap['Montante Esercizio||% Avanz. su Prev.'],
+    giornoRete: colMap['Giornaliero||% Incr Diretti a Parità'], settRete: colMap['Settimanale||% Incr Diretti a Parità'],
+    meseRete: colMap['Mensile||% Incr Diretti a Parità'], montanteRete: colMap['Montante Esercizio||% Incr Diretti a Parità'],
+    stockValore: colMap['Stock||Corrente a PMPA'], stockPrec: colMap['Stock||Inizio Settimana a PMPA'], stockPct: colMap['Stock||% Incr. su AP'],
+  };
+  const dataRows = rows.slice(3);
+  let currentCategory = null; const catTotals = {}; const details = []; let grandTotal = null;
+  const num = v => (v === null || v === undefined || v === '') ? null : Number(v);
+
+  dataRows.forEach(r => {
+    if(!r) return;
+    const cat = r[1], apc = r[2];
+    if(cat !== null && cat !== undefined) currentCategory = cat;
+    const rec = {
+      giornoValore: num(r[idx.giornoValore]), giornoPct: num(r[idx.giornoPct]),
+      settValore: num(r[idx.settValore]), settPct: num(r[idx.settPct]),
+      meseValore: num(r[idx.meseValore]), mesePct: num(r[idx.mesePct]),
+      montanteValore: num(r[idx.montanteValore]), montantePct: num(r[idx.montantePct]),
+      meseBudgetValore: num(r[idx.meseBudgetValore]), meseAvanzPrev: num(r[idx.meseAvanzPrev]),
+      montanteBudgetValore: num(r[idx.montanteBudgetValore]), montanteAvanzPrev: num(r[idx.montanteAvanzPrev]),
+      giornoRete: num(r[idx.giornoRete]), settRete: num(r[idx.settRete]),
+      meseRete: num(r[idx.meseRete]), montanteRete: num(r[idx.montanteRete]),
+      stockValore: num(r[idx.stockValore]), stockPrec: num(r[idx.stockPrec]), stockPct: num(r[idx.stockPct]),
+    };
+    if(cat === 'Total' && !apc){ grandTotal = rec; }
+    else if(apc === 'Total'){ catTotals[currentCategory] = rec; }
+    else if(apc && apc !== 'Total'){ details.push(Object.assign({category: currentCategory, apc: apc}, rec)); }
+  });
+
+  details.forEach(d => {
+    const ct = catTotals[d.category];
+    d.incidenzaGiorno = (ct && ct.giornoValore) ? (d.giornoValore || 0) / ct.giornoValore * 100 : null;
+    d.incidenzaSett = (ct && ct.settValore) ? (d.settValore || 0) / ct.settValore * 100 : null;
+    d.incidenzaMese = (ct && ct.meseValore) ? (d.meseValore || 0) / ct.meseValore * 100 : null;
+    d.incidenzaMontante = (ct && ct.montanteValore) ? (d.montanteValore || 0) / ct.montanteValore * 100 : null;
+    d.lyGiornoValore = calcLyValue(d.giornoValore, d.giornoPct);
+    d.lySettValore = calcLyValue(d.settValore, d.settPct);
+    d.lyMeseValore = calcLyValue(d.meseValore, d.mesePct);
+    d.lyMontanteValore = calcLyValue(d.montanteValore, d.montantePct);
+    const scarto = (storePct, retePct) => (storePct !== null && retePct !== null && retePct !== undefined) ? storePct - retePct : null;
+    d.scartoGiorno = scarto(d.giornoPct, d.giornoRete);
+    d.scartoSett = scarto(d.settPct, d.settRete);
+    d.scartoMese = scarto(d.mesePct, d.meseRete);
+    d.scartoMontante = scarto(d.montantePct, d.montanteRete);
+  });
+
+  state.rows = details; state.catTotals = catTotals; state.grandTotal = grandTotal; state.categories = Object.keys(catTotals);
+}
+
+function render(){
+  document.getElementById('content').classList.remove('hidden');
+  renderKpis(); renderWatchControls(); renderHero(); renderDetailControls(); renderDetailTable(); renderIncidenza(); renderAnnoScorso();
+}
+
+function fmtPctPlain(v){ return v === null || v === undefined ? '—' : v.toFixed(1) + '%'; }
+function scartoOf(storePct, retePct){ return (storePct !== null && storePct !== undefined && retePct !== null && retePct !== undefined) ? storePct - retePct : null; }
+function renderKpis(){
+  const g = state.grandTotal || {};
+  const el = document.getElementById('kpis');
+  const items = [
+    {icon:'☀️', lbl:'Venduto oggi', val: fmtEur(g.giornoValore), pct: g.giornoPct},
+    {icon:'📅', lbl:'Venduto settimana', val: fmtEur(g.settValore), pct: g.settPct},
+    {icon:'🗓️', lbl:'Venduto mese', val: fmtEur(g.meseValore), pct: g.mesePct, avanz: g.meseAvanzPrev, rete: scartoOf(g.mesePct, g.meseRete)},
+    {icon:'📈', lbl:'Montante anno', val: fmtEur(g.montanteValore), pct: g.montantePct, avanz: g.montanteAvanzPrev, rete: scartoOf(g.montantePct, g.montanteRete)},
+    {icon:'🎯', lbl:'Budget mese', val: fmtEur(g.meseBudgetValore), badgeOnly: fmtPctPlain(g.meseAvanzPrev) + ' raggiunto'},
+    {icon:'📦', lbl:'Stock corrente', val: fmtEur(g.stockValore), pct: g.stockPct},
+  ];
+  el.innerHTML = items.map(i => `
+    <div class="card kpi-card">
+      <div class="icon">${i.icon}</div>
+      <div class="kval">${i.val}</div>
+      <div class="klbl">${i.lbl}</div>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+        ${i.badgeOnly ? `<span class="badge info">${i.badgeOnly}</span>` : `
+          <span class="badge ${badgeClass(i.pct)}">${fmtPct(i.pct)} LY</span>
+          ${i.avanz !== undefined ? `<span class="badge info">${fmtPctPlain(i.avanz)} budget</span>` : ''}
+          ${i.rete !== undefined ? `<span class="badge ${badgeClass(i.rete)}">${fmtPct(i.rete)} rete</span>` : ''}
+        `}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderHero(){
+  const pf = PERIOD_FIELDS[state.period];
+
+  const catList = state.categories.map(c => {
+    const ct = state.catTotals[c];
+    const scarto = (pf.rete && ct[pf.pct] !== null && ct[pf.rete] !== null && ct[pf.rete] !== undefined) ? ct[pf.pct] - ct[pf.rete] : null;
+    return {cat:c, val: ct[pf.valore], pct: ct[pf.pct], scarto: scarto};
+  }).filter(c => c.val !== null);
+  const withPct = catList.filter(c => c.pct !== null);
+  const best = withPct.length ? withPct.reduce((a,b)=> b.pct>a.pct?b:a) : null;
+  const worst = withPct.length ? withPct.reduce((a,b)=> b.pct<a.pct?b:a) : null;
+
+  document.getElementById('summaryRow').innerHTML = [
+    best ? {lbl:'Categoria migliore: ' + shortCat(best.cat), val: best.val, pct: best.pct} : null,
+    worst ? {lbl:'Categoria da monitorare: ' + shortCat(worst.cat), val: worst.val, pct: worst.pct} : null
+  ].filter(Boolean).map(s => `
+    <div class="summary-item">
+      <div class="slabel">${s.lbl}</div>
+      <div class="sval">${fmtEur(s.val)} <span class="badge ${badgeClass(s.pct)}">${fmtPct(s.pct)}</span></div>
+    </div>
+  `).join('');
+
+  const selDrill = document.getElementById('catDrilldown');
+  const prevDrill = selDrill.value;
+  selDrill.innerHTML = '<option value="">Tutte le categorie (vista per Category)</option>' + state.categories.map(c => `<option value="${c}">${shortCat(c)}</option>`).join('');
+  if(state.categories.includes(prevDrill)) selDrill.value = prevDrill;
+  selDrill.onchange = renderHero;
+  const drillCat = selDrill.value;
+
+  const chartData = buildChartData(state, pf, drillCat);
+  if(drillCat){
+    document.getElementById('chartTitle').textContent = 'Reparti / brand in ' + shortCat(drillCat);
+    document.getElementById('chartSubtitle').textContent = 'Confronto tra reparti/brand della categoria, periodo selezionato';
+    document.getElementById('treemapTitle').textContent = 'Peso e performance in ' + shortCat(drillCat);
+  } else {
+    document.getElementById('chartTitle').textContent = 'Vendite per Category';
+    document.getElementById('chartSubtitle').textContent = 'Confronto tra categorie, periodo selezionato';
+    document.getElementById('treemapTitle').textContent = 'Peso e performance per Category';
+  }
+  renderQuadrant('catQuadrant', chartData);
+  renderTreemap('catTreemap', chartData);
+
+  renderIncidenzaHero(state, pf, 'incidenzaCatBlock', 'incidenzaCatFilter', 'incidenzaSubBlock');
+
+  renderWatchLists(state, pf, 'watchCatFilter', 'worstTitle', 'bestTitle', 'watchListWorst', 'watchListBest', SOGLIA_RILEVANZA, 'watchSortMode');
+  renderReteLists(state, pf, 'reteCatFilter', 'reteWorstTitle', 'reteBestTitle', 'reteListWorst', 'reteListBest', SOGLIA_RILEVANZA);
+}
+
+const PERIOD_SUFFIX = {giorno:'del giorno', sett:'della settimana', mese:'del mese', montante:'da inizio anno'};
+
+function watchRowHtml(r, pf){
+  const p = r[pf.pct];
+  const scarto = pf.scarto ? r[pf.scarto] : null;
+  let tagCls = 'amber', tagLbl = 'Da monitorare';
+  if(p !== null && p >= 0){
+    tagCls = 'pos'; tagLbl = 'In crescita';
+  } else if(p !== null){
+    if(scarto !== null && scarto !== undefined){
+      if(scarto >= 0){ tagCls = 'market'; tagLbl = 'Mercato'; }
+      else { tagCls = 'neg'; tagLbl = 'Critico'; }
+    } else {
+      if(p < -25){ tagCls = 'neg'; tagLbl = 'Critico'; }
+      else { tagCls = 'amber'; tagLbl = 'Da monitorare'; }
+    }
+  }
+  const budgetCell = pf.avanz
+    ? `<div>${fmtPctPlain(r[pf.avanz])}</div><div style="font-size:9.5px;color:var(--ink-faint);font-weight:600;">Budget</div>`
+    : `<div style="color:var(--ink-faint);">—</div>`;
+  const reteCell = (pf.scarto && scarto !== null && scarto !== undefined)
+    ? `<div>${fmtPct(scarto)}</div><div style="font-size:9.5px;color:var(--ink-faint);font-weight:600;">vs Rete</div>`
+    : `<div style="color:var(--ink-faint);">—</div>`;
+  return `
+    <div class="watchrow">
+      <div class="avatar" style="background:${avatarColor(r.apc)};">${initials(r.apc)}</div>
+      <div class="wnamewrap"><div class="wname">${shortApc(r.apc)}</div><div class="wcat">${shortCat(r.category)}${r.pesoLabel ? ' · ' + r.pesoLabel : ''}</div></div>
+      <div class="wtag"><span class="badge ${tagCls}">${tagLbl}</span></div>
+      <div class="wvals">
+        <div class="wval">${fmtEur(r[pf.valore])}</div>
+        <div class="wval ${pctClass(p)}"><div>${fmtPct(p)}</div><div style="font-size:9.5px;color:var(--ink-faint);font-weight:600;">vs LY</div></div>
+        <div class="wval">${budgetCell}</div>
+        <div class="wval">${reteCell}</div>
+      </div>
+    </div>`;
+}
+
+function renderWatchLists(st, pf, filterId, worstTitleId, bestTitleId, worstListId, bestListId, soglia, sortModeId){
+  const catFilter = document.getElementById(filterId).value;
+  const sortMode = document.getElementById(sortModeId) ? document.getElementById(sortModeId).value : 'pct';
+  let pool = st.rows.filter(r => (!catFilter || r.category === catFilter) && r[pf.valore] !== null && r[pf.valore] >= soglia && r[pf.pct] !== null);
+
+  let worst, best;
+  if(sortMode === 'euro'){
+    pool = pool.filter(r => r[pf.ly] !== null);
+    pool.forEach(r => { r._delta = r[pf.valore] - r[pf.ly]; });
+    worst = [...pool].sort((a,b) => a._delta - b._delta).slice(0,10);
+    best = [...pool].sort((a,b) => b._delta - a._delta).slice(0,10);
+  } else if(sortMode === 'rete'){
+    pool = pf.scarto ? pool.filter(r => r[pf.scarto] !== null && r[pf.scarto] !== undefined) : [];
+    worst = [...pool].sort((a,b) => a[pf.scarto] - b[pf.scarto]).slice(0,10);
+    best = [...pool].sort((a,b) => b[pf.scarto] - a[pf.scarto]).slice(0,10);
+  } else {
+    worst = [...pool].sort((a,b) => a[pf.pct] - b[pf.pct]).slice(0,10);
+    best = [...pool].sort((a,b) => b[pf.pct] - a[pf.pct]).slice(0,10);
+  }
+  const suffix = PERIOD_SUFFIX[st.period];
+  document.getElementById(worstTitleId).textContent = 'Peggiori 10 ' + suffix;
+  document.getElementById(bestTitleId).textContent = 'Migliori 10 ' + suffix;
+  document.getElementById(worstListId).innerHTML = worst.map(r => watchRowHtml(r, pf)).join('') || '<div class="empty-msg">Nessun dato sopra soglia' + (sortMode==='rete' && !pf.scarto ? ' (dato rete non disponibile per questo periodo)' : '') + '.</div>';
+  document.getElementById(bestListId).innerHTML = best.map(r => watchRowHtml(r, pf)).join('') || '<div class="empty-msg">Nessun dato sopra soglia' + (sortMode==='rete' && !pf.scarto ? ' (dato rete non disponibile per questo periodo)' : '') + '.</div>';
+}
+
+/* ===== Treemap (algoritmo squarified) ===== */
+function squarifiedTreemap(data, x, y, w, h){
+  const items = data.filter(d => d.value > 0).map(d => Object.assign({}, d)).sort((a,b) => b.value - a.value);
+  const totalValue = items.reduce((s,d) => s + d.value, 0);
+  const totalArea = w * h;
+  items.forEach(d => { d.area = totalValue ? (d.value / totalValue) * totalArea : 0; });
+  const result = [];
+
+  function worstRatio(row, length){
+    const sum = row.reduce((s,r) => s + r.area, 0);
+    if(sum === 0 || length === 0) return Infinity;
+    const rmax = Math.max(...row.map(r => r.area));
+    const rmin = Math.min(...row.map(r => r.area));
+    const s2 = sum * sum, l2 = length * length;
+    return Math.max((l2 * rmax) / s2, s2 / (l2 * rmin));
+  }
+
+  function layoutRow(row, x, y, w, h){
+    const sum = row.reduce((s,r) => s + r.area, 0);
+    if(w >= h){
+      const rowW = h > 0 ? sum / h : 0;
+      let oy = y;
+      row.forEach(r => {
+        const rh = sum > 0 ? (r.area / sum) * h : 0;
+        result.push(Object.assign({}, r, {x, y: oy, w: rowW, h: rh}));
+        oy += rh;
+      });
+      return [x + rowW, y, Math.max(0, w - rowW), h];
+    } else {
+      const rowH = w > 0 ? sum / w : 0;
+      let ox = x;
+      row.forEach(r => {
+        const rw = sum > 0 ? (r.area / sum) * w : 0;
+        result.push(Object.assign({}, r, {x: ox, y, w: rw, h: rowH}));
+        ox += rw;
+      });
+      return [x, y + rowH, w, Math.max(0, h - rowH)];
+    }
+  }
+
+  function recurse(items, x, y, w, h){
+    if(items.length === 0 || w <= 0 || h <= 0) return;
+    if(items.length === 1){
+      result.push(Object.assign({}, items[0], {x, y, w, h}));
+      return;
+    }
+    const side = Math.min(w, h);
+    let row = [items[0]];
+    let i = 1;
+    while(i < items.length){
+      const testRow = row.concat([items[i]]);
+      if(worstRatio(testRow, side) <= worstRatio(row, side)){ row = testRow; i++; }
+      else break;
+    }
+    const remaining = items.slice(i);
+    const [nx, ny, nw, nh] = layoutRow(row, x, y, w, h);
+    recurse(remaining, nx, ny, nw, nh);
+  }
+
+  recurse(items, x, y, w, h);
+  return result;
+}
+
+function perfClass(pct, scarto){
+  if(pct === null || pct === undefined) return 'neutral';
+  if(pct >= 0) return 'pos';
+  if(scarto !== null && scarto !== undefined && scarto >= 0) return 'market';
+  return 'neg';
+}
+const TREEMAP_COLORS = {pos:'#1E8F63', market:'#3B6EA5', neg:'#C1402E', neutral:'#9C9C9C'};
+
+function renderTreemap(containerId, data){
+  const el = document.getElementById(containerId);
+  if(!data.length){ el.innerHTML = '<div class="empty-msg">Nessun dato disponibile.</div>'; return; }
+  const rects = squarifiedTreemap(data, 0, 0, 1000, 560);
+  el.innerHTML = rects.map(r => {
+    const cls = perfClass(r.pct, r.scarto);
+    const color = TREEMAP_COLORS[cls];
+    const wPct = (r.w/1000*100), hPct = (r.h/560*100);
+    const small = (r.w < 90 || r.h < 55);
+    const title = r.label + ' — ' + fmtEur(r.value) + (r.pct !== null ? ' · ' + fmtPct(r.pct) + ' vs LY' : '') + (r.scarto !== null && r.scarto !== undefined ? ' · ' + fmtPct(r.scarto) + ' vs Rete' : '');
+    return `<div class="treemap-tile" style="left:${r.x/1000*100}%;top:${r.y/560*100}%;width:${wPct}%;height:${hPct}%;background:${color};" title="${title}">
+      <div class="tt-label">${r.label}</div>
+      ${!small ? `<div class="tt-val">${fmtEur(r.value)}</div><div class="tt-pct">${fmtPct(r.pct)} LY</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+/* ===== Grafico a quadranti (SVG) ===== */
+function attachQuadrantTapHandler(containerId, infoId){
+  const container = document.getElementById(containerId);
+  const infoEl = document.getElementById(infoId);
+  container.addEventListener('click', e => {
+    const circle = e.target.closest('circle');
+    if(!circle){ return; }
+    const label = circle.getAttribute('data-label');
+    const value = parseFloat(circle.getAttribute('data-value'));
+    const pctAttr = circle.getAttribute('data-pct');
+    const scartoAttr = circle.getAttribute('data-scarto');
+    const pctVal = (pctAttr === 'null' || pctAttr === '') ? null : parseFloat(pctAttr);
+    const scartoVal = (scartoAttr === 'null' || scartoAttr === '' || scartoAttr === 'undefined') ? null : parseFloat(scartoAttr);
+    const clamped = circle.getAttribute('data-clamped') === 'true';
+    infoEl.innerHTML = `
+      <span class="qi-close">✕</span>
+      <div class="qi-name">${label}${clamped ? ' (fuori scala nel grafico)' : ''}</div>
+      <div class="qi-row">
+        <div>Valore: <b>${fmtEur(value)}</b></div>
+        <div>vs LY: <b class="${pctClass(pctVal)}">${fmtPct(pctVal)}</b></div>
+        <div>vs Rete: <b class="${pctClass(scartoVal)}">${fmtPct(scartoVal)}</b></div>
+      </div>`;
+    infoEl.classList.remove('hidden');
+    infoEl.querySelector('.qi-close').addEventListener('click', () => infoEl.classList.add('hidden'));
+  });
+}
+attachQuadrantTapHandler('catQuadrant', 'catQuadrantInfo');
+attachQuadrantTapHandler('catQuadrant2', 'catQuadrantInfo2');
+
+function renderQuadrant(containerId, data){
+  const el = document.getElementById(containerId);
+  data = data.filter(d => d.pct !== null && d.scarto !== null && d.scarto !== undefined);
+  if(!data.length){
+    el.innerHTML = '<div class="empty-msg">Dato "vs Rete" non disponibile per questo periodo: il grafico a quadranti richiede sia la % vs anno scorso sia il confronto con la rete.</div>';
+    return;
+  }
+  const dense = data.length > 15;
+  const W = 640, H = dense ? 560 : 420, PAD = 56;
+  const xs = data.map(d => d.pct), ys = data.map(d => d.scarto);
+
+  function percentileAxisMax(values, minMax){
+    const abs = values.map(Math.abs).filter(v => Number.isFinite(v));
+    if(!abs.length) return minMax;
+    const sorted = [...abs].sort((a,b) => a - b);
+    const idx = Math.min(sorted.length - 1, Math.floor(sorted.length * 0.75));
+    return Math.max(minMax, sorted[idx] * 1.2);
+  }
+  const xMax = percentileAxisMax(xs, 15);
+  const yMax = percentileAxisMax(ys, 15);
+  const anyClamped = xs.some(v => Math.abs(v) > xMax) || ys.some(v => Math.abs(v) > yMax);
+
+  const vals = data.map(d => d.value);
+  const maxVal = Math.max(...vals), minVal = Math.min(...vals);
+  const rScale = v => {
+    if(maxVal === minVal) return dense ? 8 : 14;
+    const base = dense ? [5, 20] : [8, 22];
+    return base[0] + ((v - minVal) / (maxVal - minVal)) * (base[1]-base[0]);
+  };
+  const px = x => PAD + ((x + xMax) / (2*xMax)) * (W - 2*PAD);
+  const py = y => H - PAD - ((y + yMax) / (2*yMax)) * (H - 2*PAD);
+  const cx0 = px(0), cy0 = py(0);
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  svg += `<rect x="${PAD}" y="${PAD}" width="${cx0-PAD}" height="${cy0-PAD}" fill="#E9EEF5" opacity="0.6"/>`;
+  svg += `<rect x="${cx0}" y="${PAD}" width="${W-PAD-cx0}" height="${cy0-PAD}" fill="#E3F2EA" opacity="0.6"/>`;
+  svg += `<rect x="${PAD}" y="${cy0}" width="${cx0-PAD}" height="${H-PAD-cy0}" fill="#FBE9E7" opacity="0.6"/>`;
+  svg += `<rect x="${cx0}" y="${cy0}" width="${W-PAD-cx0}" height="${H-PAD-cy0}" fill="#EEF7EF" opacity="0.6"/>`;
+  svg += `<line x1="${PAD}" y1="${cy0}" x2="${W-PAD}" y2="${cy0}" stroke="#C7C4BC" stroke-width="1" stroke-dasharray="4 3"/>`;
+  svg += `<line x1="${cx0}" y1="${PAD}" x2="${cx0}" y2="${H-PAD}" stroke="#C7C4BC" stroke-width="1" stroke-dasharray="4 3"/>`;
+  svg += `<text x="${W-PAD}" y="${H-PAD+22}" text-anchor="end" font-size="11" fill="#8B8894" font-family="Inter,sans-serif">% vs anno scorso →</text>`;
+  svg += `<text x="${PAD}" y="${PAD-14}" text-anchor="start" font-size="11" fill="#8B8894" font-family="Inter,sans-serif">↑ vs rete diretti</text>`;
+  let noteY = H-PAD+38;
+  if(anyClamped){
+    svg += `<text x="${PAD}" y="${noteY}" text-anchor="start" font-size="10.5" fill="#B4B0BC" font-family="Inter,sans-serif">Assi limitati per leggibilità: i pallini con bordo tratteggiato hanno un valore reale oltre il bordo — passa il mouse o toccalo per vederlo esatto.</text>`;
+    noteY += 16;
+  }
+
+  const withPos = data.map(d => {
+    const clampedX = Math.max(-xMax, Math.min(xMax, d.pct));
+    const clampedY = Math.max(-yMax, Math.min(yMax, d.scarto));
+    const cx = px(clampedX), cy = py(clampedY);
+    const dist = Math.hypot(cx - cx0, cy - cy0);
+    return Object.assign({}, d, {clampedX, clampedY, cx, cy, dist, isClamped: (clampedX !== d.pct) || (clampedY !== d.scarto)});
+  });
+
+  const maxLabels = Math.min(dense ? 7 : 9, withPos.length);
+  const labelSet = new Set([...withPos].sort((a,b) => b.dist - a.dist).slice(0, maxLabels).map(d => d.label));
+  if(withPos.length > maxLabels){
+    svg += `<text x="${PAD}" y="${noteY}" text-anchor="start" font-size="10.5" fill="#B4B0BC" font-family="Inter,sans-serif">Nome scritto solo per i ${maxLabels} casi più fuori dalla norma — passa il mouse o tocca i pallini per gli altri nomi.</text>`;
+  }
+
+  const sortedForDraw = [...withPos].sort((a,b) => b.value - a.value);
+
+  sortedForDraw.forEach((d, idx) => {
+    const cx = d.cx, cy = d.cy;
+    const r = rScale(d.value);
+    const cls = perfClass(d.pct, d.scarto);
+    const color = TREEMAP_COLORS[cls];
+    const title = d.label + ' — ' + fmtEur(d.value) + ' · ' + fmtPct(d.pct) + ' vs LY · ' + fmtPct(d.scarto) + ' vs rete' + (d.isClamped ? ' (fuori scala nel grafico)' : '');
+    const strokeAttrs = d.isClamped ? `stroke="#17161B" stroke-width="1.5" stroke-dasharray="2 2"` : `stroke="#fff" stroke-width="1.5"`;
+    const escLabel = String(d.label).replace(/"/g, '&quot;');
+    svg += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${color}" fill-opacity="0.82" ${strokeAttrs} style="cursor:pointer;" data-label="${escLabel}" data-value="${d.value}" data-pct="${d.pct}" data-scarto="${d.scarto}" data-clamped="${d.isClamped}"><title>${title}</title></circle>`;
+    if(labelSet.has(d.label)){
+      const above = idx % 2 === 0;
+      const ty = above ? cy - r - 6 : cy + r + 12;
+      svg += `<text x="${cx}" y="${ty}" text-anchor="middle" font-size="${dense?'10':'11'}" font-weight="700" fill="#17161B" font-family="Inter,sans-serif" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">${d.label}</text>`;
+    }
+  });
+  svg += `</svg>`;
+  el.innerHTML = svg;
+}
+
+const NOISE_SHARE_THRESHOLD = 0.005;
+
+function filterNoise(list){
+  const total = list.reduce((s,d) => s + d.value, 0);
+  if(!total) return list;
+  const min = total * NOISE_SHARE_THRESHOLD;
+  return list.filter(d => d.value >= min);
+}
+
+function buildChartData(st, pf, drilldownCat){
+  let list;
+  if(!drilldownCat){
+    list = st.categories.map(c => {
+      const ct = st.catTotals[c];
+      const scarto = (pf.rete && ct[pf.pct] !== null && ct[pf.rete] !== null && ct[pf.rete] !== undefined) ? ct[pf.pct] - ct[pf.rete] : null;
+      return {label: shortCat(c), value: ct[pf.valore], pct: ct[pf.pct], scarto: scarto};
+    }).filter(c => c.value !== null && c.value > 0);
+  } else {
+    list = st.rows.filter(r => r.category === drilldownCat && r[pf.valore] !== null && r[pf.valore] > 0).map(r => ({
+      label: shortApc(r.apc), value: r[pf.valore], pct: r[pf.pct],
+      scarto: pf.scarto ? r[pf.scarto] : null
+    }));
+  }
+  return filterNoise(list);
+}
+
+function renderIncidenzaHero(st, pf, catBlockId, filterId, subBlockId){
+  const totalG = st.grandTotal ? st.grandTotal[pf.valore] : null;
+  const catRows = st.categories.map(c => ({cat:c, val: st.catTotals[c][pf.valore]})).filter(c => c.val !== null && c.val > 0);
+  const totalForPct = totalG || catRows.reduce((s,c)=>s+c.val,0);
+  const sorted = [...catRows].sort((a,b) => b.val - a.val);
+  document.getElementById(catBlockId).innerHTML = sorted.map(c => {
+    const pct = totalForPct ? (c.val/totalForPct*100) : 0;
+    return `
+      <div class="bar-cell" style="margin-bottom:8px;">
+        <div style="width:118px;font-size:12px;">${shortCat(c.cat)}</div>
+        <div class="bar-track"><div class="bar-fill2" style="width:${Math.min(pct,100)}%;"></div></div>
+        <div style="width:44px;text-align:right;font-family:'Inter',sans-serif;font-size:11.5px;font-weight:700;">${pct.toFixed(1)}%</div>
+      </div>`;
+  }).join('') || '<div class="empty-msg">Nessun dato disponibile.</div>';
+
+  const sel = document.getElementById(filterId);
+  const prevVal = sel.value;
+  sel.innerHTML = st.categories.map(c => `<option value="${c}">${shortCat(c)}</option>`).join('');
+  if(st.categories.includes(prevVal)) sel.value = prevVal;
+  sel.onchange = () => renderIncidenzaSub(st, pf, filterId, subBlockId);
+  renderIncidenzaSub(st, pf, filterId, subBlockId);
+}
+
+function renderIncidenzaSub(st, pf, filterId, subBlockId){
+  const cat = document.getElementById(filterId).value;
+  const items = st.rows.filter(r => r.category === cat && r[pf.incidenza] !== null && r[pf.valore] > 0)
+    .sort((a,b) => b[pf.incidenza] - a[pf.incidenza]).slice(0,8);
+  document.getElementById(subBlockId).innerHTML = items.map(r => `
+    <div class="bar-cell" style="margin-bottom:8px;">
+      <div style="width:118px;font-size:12px;">${shortApc(r.apc)}</div>
+      <div class="bar-track"><div class="bar-fill2" style="width:${Math.min(r[pf.incidenza],100)}%;"></div></div>
+      <div style="width:44px;text-align:right;font-family:'Inter',sans-serif;font-size:11.5px;font-weight:700;">${r[pf.incidenza].toFixed(1)}%</div>
+    </div>
+  `).join('') || '<div class="empty-msg">Nessun dato disponibile.</div>';
+}
+
+function renderReteLists(st, pf, filterId, worstTitleId, bestTitleId, worstListId, bestListId, soglia){
+  const worstTitleEl = document.getElementById(worstTitleId);
+  const bestTitleEl = document.getElementById(bestTitleId);
+  if(!pf.scarto){
+    worstTitleEl.textContent = 'Sotto la rete — dato non disponibile per questo periodo';
+    bestTitleEl.textContent = '';
+    document.getElementById(worstListId).innerHTML = '<div class="empty-msg">Il dato "diretti a parità" non è presente per questo periodo nel tuo export.</div>';
+    document.getElementById(bestListId).innerHTML = '';
+    return;
+  }
+  const catFilter = document.getElementById(filterId).value;
+  const pool = st.rows.filter(r => (!catFilter || r.category === catFilter) && r[pf.valore] !== null && r[pf.valore] >= soglia && r[pf.scarto] !== null && r[pf.scarto] !== undefined);
+  const worst = [...pool].sort((a,b) => a[pf.scarto] - b[pf.scarto]).slice(0,10);
+  const best = [...pool].sort((a,b) => b[pf.scarto] - a[pf.scarto]).slice(0,10);
+  const suffix = PERIOD_SUFFIX[st.period];
+  worstTitleEl.textContent = 'Sotto la rete — peggiori 10 ' + suffix;
+  bestTitleEl.textContent = 'Sopra la rete — migliori 10 ' + suffix;
+  document.getElementById(worstListId).innerHTML = worst.map(r => watchRowHtml(r, pf)).join('') || '<div class="empty-msg">Nessun dato sopra soglia.</div>';
+  document.getElementById(bestListId).innerHTML = best.map(r => watchRowHtml(r, pf)).join('') || '<div class="empty-msg">Nessun dato sopra soglia.</div>';
+}
+
+function renderWatchControls(){
+  const sel = document.getElementById('watchCatFilter');
+  const prev = sel.value;
+  sel.innerHTML = '<option value="">Tutte le categorie</option>' + state.categories.map(c => `<option value="${c}">${shortCat(c)}</option>`).join('');
+  if(state.categories.includes(prev)) sel.value = prev;
+  sel.onchange = renderHero;
+  document.getElementById('watchSortMode').onchange = renderHero;
+
+  const selRete = document.getElementById('reteCatFilter');
+  const prevRete = selRete.value;
+  selRete.innerHTML = '<option value="">Tutte le categorie</option>' + state.categories.map(c => `<option value="${c}">${shortCat(c)}</option>`).join('');
+  if(state.categories.includes(prevRete)) selRete.value = prevRete;
+  selRete.onchange = renderHero;
+}
+
+document.querySelectorAll('#periodSwitch [data-period]').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#periodSwitch [data-period]').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); state.period = b.dataset.period;
+    renderHero();
+  });
+});
+
+function renderDetailControls(){
+  const sel = document.getElementById('filterCat');
+  sel.innerHTML = '<option value="">Tutte le categorie</option>' + state.categories.map(c => `<option value="${c}">${shortCat(c)}</option>`).join('');
+  sel.onchange = renderDetailTable;
+  document.getElementById('searchBox').oninput = renderDetailTable;
+}
+
+let sortState = {key:'settPct', dir:1};
+document.querySelectorAll('#detailTable th').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.sort;
+    sortState.dir = (sortState.key === key) ? -sortState.dir : 1;
+    sortState.key = key; renderDetailTable();
+  });
+});
+
+function renderDetailTable(){
+  const catFilter = document.getElementById('filterCat').value;
+  const search = document.getElementById('searchBox').value.trim().toLowerCase();
+  let rows = state.rows.filter(r => {
+    if(catFilter && r.category !== catFilter) return false;
+    if(search && !r.apc.toLowerCase().includes(search)) return false;
+    return true;
+  });
+  rows.sort((a,b) => {
+    let va = a[sortState.key], vb = b[sortState.key];
+    if(sortState.key === 'apc'){ va = va||''; vb = vb||''; return va.localeCompare(vb) * sortState.dir; }
+    va = va === null ? -Infinity : va; vb = vb === null ? -Infinity : vb;
+    return (va - vb) * sortState.dir;
+  });
+  document.getElementById('detailBody').innerHTML = rows.map(r => `
+    <tr>
+      <td class="label">${shortApc(r.apc)}<div class="cat-tag">${shortCat(r.category)}</div></td>
+      <td class="num">${fmtEur(r.giornoValore)}</td>
+      <td class="num ${pctClass(r.giornoPct)}">${fmtPct(r.giornoPct)}</td>
+      <td class="num">${fmtEur(r.settValore)}</td>
+      <td class="num ${pctClass(r.settPct)}">${fmtPct(r.settPct)}</td>
+      <td class="num">${fmtEur(r.meseValore)}</td>
+      <td class="num ${pctClass(r.mesePct)}">${fmtPct(r.mesePct)}</td>
+      <td class="num" style="color:var(--ink-soft);">${fmtPctPlain(r.meseAvanzPrev)}</td>
+      <td class="num">${fmtEur(r.montanteValore)}</td>
+      <td class="num ${pctClass(r.montantePct)}">${fmtPct(r.montantePct)}</td>
+      <td class="num" style="color:var(--ink-soft);">${fmtPctPlain(r.montanteAvanzPrev)}</td>
+      <td class="num">${fmtEur(r.stockValore)}</td>
+      <td class="num ${pctClass(r.stockPct)}">${fmtPct(r.stockPct)}</td>
+    </tr>
+  `).join('');
+}
+
+function renderIncidenza(){
+  const pf = PERIOD_FIELDS[state.period];
+  document.getElementById('incidenzaTitle').textContent = 'Peso di ogni reparto/brand sul totale della sua categoria, periodo: ' + pf.label.toLowerCase() + '.';
+  const el = document.getElementById('incidenzaBlocks'); let html = '';
+  state.categories.forEach(cat => {
+    const items = state.rows.filter(r => r.category === cat && r[pf.incidenza] !== null && r[pf.valore] > 0)
+      .sort((a,b) => b[pf.incidenza] - a[pf.incidenza]).slice(0,8);
+    if(!items.length) return;
+    html += `<div class="section-title">${shortCat(cat)}</div>`;
+    html += items.map(r => `
+      <div class="bar-cell" style="margin-bottom:8px;">
+        <div style="width:180px;font-size:12.5px;">${shortApc(r.apc)}</div>
+        <div class="bar-track"><div class="bar-fill2" style="width:${Math.min(r[pf.incidenza],100)}%;"></div></div>
+        <div style="width:52px;text-align:right;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;">${r[pf.incidenza].toFixed(1)}%</div>
+      </div>
+    `).join('');
+  });
+  el.innerHTML = html || '<div class="empty-msg">Nessun dato disponibile.</div>';
+}
+
+function renderAnnoScorso(){
+  const pf = PERIOD_FIELDS[state.period];
+  const calcolabili = state.rows.filter(r => r[pf.ly] !== null);
+  const nonCalcolabili = state.rows.length - calcolabili.length;
+  const top = [...calcolabili].sort((a,b) => b[pf.ly] - a[pf.ly]).slice(0,15);
+  document.getElementById('annoScorsoTitle').textContent = 'I 15 reparti/brand più venduti nello stesso periodo (' + pf.label.toLowerCase() + ') dello scorso anno';
+  document.getElementById('annoScorsoNote').textContent = 'Valore stimato da venduto attuale e % vs anno scorso. ' + nonCalcolabili + ' voci non calcolabili non compaiono qui.';
+  document.getElementById('annoScorsoList').innerHTML = top.map(r => `
+    <div class="rank-row">
+      <div><div class="name">${shortApc(r.apc)}</div><div class="cat-tag">${shortCat(r.category)}</div></div>
+      <div class="val">${fmtEur(r[pf.ly])}<div class="cat-tag">quest'anno: ${fmtEur(r[pf.valore])}</div></div>
+      <div class="pct ${pctClass(r[pf.pct])}">${fmtPct(r[pf.pct])}</div>
+    </div>
+  `).join('') || '<div class="empty-msg">Nessun dato calcolabile.</div>';
+}
+
+document.querySelectorAll('#tabbar1 .t').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('#tabbar1 .t').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('#view1 .panel').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('panel-' + t.dataset.tab).classList.add('active');
+  });
+});
+
+document.querySelectorAll('.pillnav .pill').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.pillnav .pill').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(x => x.classList.add('hidden'));
+    b.classList.add('active');
+    document.getElementById(b.dataset.view).classList.remove('hidden');
+  });
+});
+
+/* ===== VISTA 2: SUB-REPARTO ===== */
+let state2 = { rows: [], grandTotal: null, categories: [], catTotals:{}, period: 'sett' };
+const SOGLIA_RILEVANZA_2 = 80;
+const PESO_LABELS = {
+  'M1':'Primavera Estate — Medio', 'M2':'Autunno Inverno — Medio',
+  'L1':'Primavera Estate — Leggero', 'L2':'Autunno Inverno — Leggero',
+  'H1':'Primavera Estate — Pesante', 'H2':'Autunno Inverno — Pesante',
+  'N1':'No peso — Primavera Estate', 'N2':'No peso — Autunno Inverno',
+  'CROSS':'Cross season', 'ALTRO':'Non classificato'
+};
+function classifyPeso(subrep){
+  const u = subrep.trim().toUpperCase();
+  if(u.includes('CROSS')) return {key:'CROSS', label: PESO_LABELS['CROSS']};
+  let m = u.match(/([12])([MLH])$/);
+  if(m) return {key: m[2]+m[1], label: PESO_LABELS[m[2]+m[1]]};
+  m = u.match(/([12])N$/);
+  if(m) return {key: 'N'+m[1], label: PESO_LABELS['N'+m[1]]};
+  m = u.match(/([12])$/);
+  if(m) return {key: 'N'+m[1], label: PESO_LABELS['N'+m[1]]};
+  return {key:'ALTRO', label: PESO_LABELS['ALTRO']};
+}
+
+const dropzone2 = document.getElementById('dropzone2');
+const fileInput2 = document.getElementById('fileInput2');
+dropzone2.addEventListener('click', () => fileInput2.click());
+dropzone2.addEventListener('dragover', e => { e.preventDefault(); dropzone2.classList.add('drag'); });
+dropzone2.addEventListener('dragleave', () => dropzone2.classList.remove('drag'));
+dropzone2.addEventListener('drop', e => { e.preventDefault(); dropzone2.classList.remove('drag'); if (e.dataTransfer.files.length) handleFile2(e.dataTransfer.files[0]); });
+fileInput2.addEventListener('change', e => { if (e.target.files.length) handleFile2(e.target.files[0]); });
+
+function handleFile2(file){
+  document.getElementById('filename2').textContent = file.name;
+  document.getElementById('emptyMsg2').textContent = '';
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try{
+      const wb = XLSX.read(new Uint8Array(ev.target.result), {type:'array'});
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:null, raw:true});
+      parseWorkbook2(rows);
+      render2();
+    }catch(err){
+      document.getElementById('emptyMsg2').textContent = 'Non sono riuscito a leggere il file. Verifica che sia l\'export per sub-reparto. (' + err.message + ')';
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function parseWorkbook2(rows){
+  const periodRow = rows[0], metricRow = rows[1];
+  let lastPeriod = null; const colMap = {};
+  for(let i=0;i<periodRow.length;i++){
+    if(periodRow[i] !== null && periodRow[i] !== undefined) lastPeriod = periodRow[i];
+    const metric = metricRow[i];
+    if(metric) colMap[lastPeriod + '||' + metric] = i;
+  }
+  const idx = {
+    giornoValore: colMap['Giornaliero||Valore AC'], giornoPct: colMap['Giornaliero||% Incr. su AP'],
+    settValore: colMap['Settimanale||Valore AC'], settPct: colMap['Settimanale||% Incr. su AP'],
+    meseValore: colMap['Mensile||Valore AC'], mesePct: colMap['Mensile||% Incr. su AP'],
+    montanteValore: colMap['Montante Esercizio||Valore AC'], montantePct: colMap['Montante Esercizio||% Incr. su AP'],
+    meseBudgetValore: colMap['Previsioni Mensili||Valore AC'], meseAvanzPrev: colMap['Mensile||% Avanz. su Prev.'],
+    montanteBudgetValore: colMap['Previsioni a Montante||Valore AC'], montanteAvanzPrev: colMap['Montante Esercizio||% Avanz. su Prev.'],
+    giornoRete: colMap['Giornaliero||% Incr Diretti a Parità'], settRete: colMap['Settimanale||% Incr Diretti a Parità'],
+    meseRete: colMap['Mensile||% Incr Diretti a Parità'], montanteRete: colMap['Montante Esercizio||% Incr Diretti a Parità'],
+    stockValore: colMap['Stock||Corrente a PMPA'], stockPrec: colMap['Stock||Inizio Settimana a PMPA'], stockPct: colMap['Stock||% Incr. su AP'],
+  };
+  const dataRows = rows.slice(3);
+  let currentCategory = null; const catTotals = {}; const details = []; let grandTotal = null;
+  const num = v => (v === null || v === undefined || v === '') ? null : Number(v);
+
+  dataRows.forEach(r => {
+    if(!r) return;
+    const cat = r[1], sub = r[2];
+    if(cat !== null && cat !== undefined) currentCategory = cat;
+    const rec = {
+      giornoValore: num(r[idx.giornoValore]), giornoPct: num(r[idx.giornoPct]),
+      settValore: num(r[idx.settValore]), settPct: num(r[idx.settPct]),
+      meseValore: num(r[idx.meseValore]), mesePct: num(r[idx.mesePct]),
+      montanteValore: num(r[idx.montanteValore]), montantePct: num(r[idx.montantePct]),
+      meseBudgetValore: num(r[idx.meseBudgetValore]), meseAvanzPrev: num(r[idx.meseAvanzPrev]),
+      montanteBudgetValore: num(r[idx.montanteBudgetValore]), montanteAvanzPrev: num(r[idx.montanteAvanzPrev]),
+      giornoRete: num(r[idx.giornoRete]), settRete: num(r[idx.settRete]),
+      meseRete: num(r[idx.meseRete]), montanteRete: num(r[idx.montanteRete]),
+      stockValore: num(r[idx.stockValore]), stockPrec: num(r[idx.stockPrec]), stockPct: num(r[idx.stockPct]),
+    };
+    if(cat === 'Total' && !sub){ grandTotal = rec; }
+    else if(sub === 'Total'){ catTotals[currentCategory] = rec; }
+    else if(sub && sub !== 'Total'){
+      const peso = classifyPeso(sub);
+      details.push(Object.assign({category: currentCategory, apc: sub, pesoKey: peso.key, pesoLabel: peso.label}, rec));
+    }
+  });
+
+  details.forEach(d => {
+    const ct = catTotals[d.category];
+    d.incidenzaGiorno = (ct && ct.giornoValore) ? (d.giornoValore || 0) / ct.giornoValore * 100 : null;
+    d.incidenzaSett = (ct && ct.settValore) ? (d.settValore || 0) / ct.settValore * 100 : null;
+    d.incidenzaMese = (ct && ct.meseValore) ? (d.meseValore || 0) / ct.meseValore * 100 : null;
+    d.incidenzaMontante = (ct && ct.montanteValore) ? (d.montanteValore || 0) / ct.montanteValore * 100 : null;
+    d.lyGiornoValore = calcLyValue(d.giornoValore, d.giornoPct);
+    d.lySettValore = calcLyValue(d.settValore, d.settPct);
+    d.lyMeseValore = calcLyValue(d.meseValore, d.mesePct);
+    d.lyMontanteValore = calcLyValue(d.montanteValore, d.montantePct);
+    const scarto = (storePct, retePct) => (storePct !== null && retePct !== null && retePct !== undefined) ? storePct - retePct : null;
+    d.scartoGiorno = scarto(d.giornoPct, d.giornoRete);
+    d.scartoSett = scarto(d.settPct, d.settRete);
+    d.scartoMese = scarto(d.mesePct, d.meseRete);
+    d.scartoMontante = scarto(d.montantePct, d.montanteRete);
+  });
+
+  state2.rows = details; state2.catTotals = catTotals; state2.grandTotal = grandTotal; state2.categories = Object.keys(catTotals);
+}
+
+function render2(){
+  document.getElementById('content2').classList.remove('hidden');
+  renderKpis2(); renderWatchControls2(); renderHero2(); renderDetailControls2(); renderDetailTable2(); renderIncidenza2(); renderAnnoScorso2();
+}
+
+function renderKpis2(){
+  const g = state2.grandTotal || {};
+  const el = document.getElementById('kpis2');
+  const items = [
+    {icon:'☀️', lbl:'Venduto oggi', val: fmtEur(g.giornoValore), pct: g.giornoPct},
+    {icon:'📅', lbl:'Venduto settimana', val: fmtEur(g.settValore), pct: g.settPct},
+    {icon:'🗓️', lbl:'Venduto mese', val: fmtEur(g.meseValore), pct: g.mesePct, avanz: g.meseAvanzPrev, rete: scartoOf(g.mesePct, g.meseRete)},
+    {icon:'📈', lbl:'Montante anno', val: fmtEur(g.montanteValore), pct: g.montantePct, avanz: g.montanteAvanzPrev, rete: scartoOf(g.montantePct, g.montanteRete)},
+    {icon:'🎯', lbl:'Budget mese', val: fmtEur(g.meseBudgetValore), badgeOnly: fmtPctPlain(g.meseAvanzPrev) + ' raggiunto'},
+    {icon:'📦', lbl:'Stock corrente', val: fmtEur(g.stockValore), pct: g.stockPct},
+  ];
+  el.innerHTML = items.map(i => `
+    <div class="card kpi-card">
+      <div class="icon">${i.icon}</div>
+      <div class="kval">${i.val}</div>
+      <div class="klbl">${i.lbl}</div>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+        ${i.badgeOnly ? `<span class="badge info">${i.badgeOnly}</span>` : `
+          <span class="badge ${badgeClass(i.pct)}">${fmtPct(i.pct)} LY</span>
+          ${i.avanz !== undefined ? `<span class="badge info">${fmtPctPlain(i.avanz)} budget</span>` : ''}
+          ${i.rete !== undefined ? `<span class="badge ${badgeClass(i.rete)}">${fmtPct(i.rete)} rete</span>` : ''}
+        `}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderHero2(){
+  const pf = PERIOD_FIELDS[state2.period];
+  const catList = state2.categories.map(c => {
+    const ct = state2.catTotals[c];
+    const scarto = (pf.rete && ct[pf.pct] !== null && ct[pf.rete] !== null && ct[pf.rete] !== undefined) ? ct[pf.pct] - ct[pf.rete] : null;
+    return {cat:c, val: ct[pf.valore], pct: ct[pf.pct], scarto: scarto};
+  }).filter(c => c.val !== null);
+  const withPct = catList.filter(c => c.pct !== null);
+  const best = withPct.length ? withPct.reduce((a,b)=> b.pct>a.pct?b:a) : null;
+  const worst = withPct.length ? withPct.reduce((a,b)=> b.pct<a.pct?b:a) : null;
+
+  document.getElementById('summaryRow2').innerHTML = [
+    best ? {lbl:'Categoria migliore: ' + shortCat(best.cat), val: best.val, pct: best.pct} : null,
+    worst ? {lbl:'Categoria da monitorare: ' + shortCat(worst.cat), val: worst.val, pct: worst.pct} : null
+  ].filter(Boolean).map(s => `
+    <div class="summary-item">
+      <div class="slabel">${s.lbl}</div>
+      <div class="sval">${fmtEur(s.val)} <span class="badge ${badgeClass(s.pct)}">${fmtPct(s.pct)}</span></div>
+    </div>
+  `).join('');
+
+  const selDrill2 = document.getElementById('catDrilldown2');
+  const prevDrill2 = selDrill2.value;
+  selDrill2.innerHTML = '<option value="">Tutte le categorie (vista per Category)</option>' + state2.categories.map(c => `<option value="${c}">${shortCat(c)}</option>`).join('');
+  if(state2.categories.includes(prevDrill2)) selDrill2.value = prevDrill2;
+  selDrill2.onchange = renderHero2;
+  const drillCat2 = selDrill2.value;
+
+  const chartData2 = buildChartData(state2, pf, drillCat2);
+  if(drillCat2){
+    document.getElementById('chartTitle2').textContent = 'Sub-reparti in ' + shortCat(drillCat2);
+    document.getElementById('chartSubtitle2').textContent = 'Confronto tra sub-reparti della categoria, periodo selezionato';
+    document.getElementById('treemapTitle2').textContent = 'Peso e performance in ' + shortCat(drillCat2);
+  } else {
+    document.getElementById('chartTitle2').textContent = 'Vendite per Category';
+    document.getElementById('chartSubtitle2').textContent = 'Confronto tra categorie, periodo selezionato';
+    document.getElementById('treemapTitle2').textContent = 'Peso e performance per Category';
+  }
+  renderQuadrant('catQuadrant2', chartData2);
+  renderTreemap('catTreemap2', chartData2);
+
+  renderIncidenzaHero(state2, pf, 'incidenzaCatBlock2', 'incidenzaCatFilter2', 'incidenzaSubBlock2');
+
+  renderWatchLists(state2, pf, 'watchCatFilter2', 'worstTitle2', 'bestTitle2', 'watchListWorst2', 'watchListBest2', SOGLIA_RILEVANZA_2, 'watchSortMode2');
+  renderReteLists(state2, pf, 'reteCatFilter2', 'reteWorstTitle2', 'reteBestTitle2', 'reteListWorst2', 'reteListBest2', SOGLIA_RILEVANZA_2);
+}
+
+function renderWatchControls2(){
+  const sel = document.getElementById('watchCatFilter2');
+  const prev = sel.value;
+  sel.innerHTML = '<option value="">Tutte le categorie</option>' + state2.categories.map(c => `<option value="${c}">${shortCat(c)}</option>`).join('');
+  if(state2.categories.includes(prev)) sel.value = prev;
+  sel.onchange = renderHero2;
+  document.getElementById('watchSortMode2').onchange = renderHero2;
+
+  const selRete = document.getElementById('reteCatFilter2');
+  const prevRete = selRete.value;
+  selRete.innerHTML = '<option value="">Tutte le categorie</option>' + state2.categories.map(c => `<option value="${c}">${shortCat(c)}</option>`).join('');
+  if(state2.categories.includes(prevRete)) selRete.value = prevRete;
+  selRete.onchange = renderHero2;
+}
+
+document.querySelectorAll('#periodSwitch2 [data-period2]').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#periodSwitch2 [data-period2]').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); state2.period = b.dataset.period2;
+    renderHero2(); renderIncidenza2(); renderAnnoScorso2();
+  });
+});
+
+function renderDetailControls2(){
+  const selCat = document.getElementById('filterCat2');
+  selCat.innerHTML = '<option value="">Tutte le categorie</option>' + state2.categories.map(c => `<option value="${c}">${shortCat(c)}</option>`).join('');
+  selCat.onchange = renderDetailTable2;
+
+  const pesoKeysPresent = Array.from(new Set(state2.rows.map(r => r.pesoKey)));
+  const order = ['L1','M1','H1','L2','M2','H2','N1','N2','CROSS','ALTRO'];
+  pesoKeysPresent.sort((a,b) => order.indexOf(a) - order.indexOf(b));
+  const selPeso = document.getElementById('filterPeso2');
+  selPeso.innerHTML = '<option value="">Tutti i pesi / stagioni</option>' + pesoKeysPresent.map(k => `<option value="${k}">${PESO_LABELS[k]}</option>`).join('');
+  selPeso.onchange = renderDetailTable2;
+
+  document.getElementById('searchBox2').oninput = renderDetailTable2;
+}
+
+let sortState2 = {key:'settPct', dir:1};
+document.querySelectorAll('#detailTable2 th').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.sort2;
+    sortState2.dir = (sortState2.key === key) ? -sortState2.dir : 1;
+    sortState2.key = key; renderDetailTable2();
+  });
+});
+
+function renderDetailTable2(){
+  const catFilter = document.getElementById('filterCat2').value;
+  const pesoFilter = document.getElementById('filterPeso2').value;
+  const search = document.getElementById('searchBox2').value.trim().toLowerCase();
+  let rows = state2.rows.filter(r => {
+    if(catFilter && r.category !== catFilter) return false;
+    if(pesoFilter && r.pesoKey !== pesoFilter) return false;
+    if(search && !r.apc.toLowerCase().includes(search)) return false;
+    return true;
+  });
+  rows.sort((a,b) => {
+    let va = a[sortState2.key], vb = b[sortState2.key];
+    if(typeof va === 'string' || typeof vb === 'string'){ va = va||''; vb = vb||''; return va.localeCompare(vb) * sortState2.dir; }
+    va = va === null ? -Infinity : va; vb = vb === null ? -Infinity : vb;
+    return (va - vb) * sortState2.dir;
+  });
+  document.getElementById('detailBody2').innerHTML = rows.map(r => `
+    <tr>
+      <td class="label">${shortApc(r.apc)}<div class="cat-tag">${shortCat(r.category)}</div></td>
+      <td class="label">${r.pesoLabel}</td>
+      <td class="num">${fmtEur(r.giornoValore)}</td>
+      <td class="num ${pctClass(r.giornoPct)}">${fmtPct(r.giornoPct)}</td>
+      <td class="num">${fmtEur(r.settValore)}</td>
+      <td class="num ${pctClass(r.settPct)}">${fmtPct(r.settPct)}</td>
+      <td class="num">${fmtEur(r.meseValore)}</td>
+      <td class="num ${pctClass(r.mesePct)}">${fmtPct(r.mesePct)}</td>
+      <td class="num" style="color:var(--ink-soft);">${fmtPctPlain(r.meseAvanzPrev)}</td>
+      <td class="num">${fmtEur(r.montanteValore)}</td>
+      <td class="num ${pctClass(r.montantePct)}">${fmtPct(r.montantePct)}</td>
+      <td class="num" style="color:var(--ink-soft);">${fmtPctPlain(r.montanteAvanzPrev)}</td>
+      <td class="num">${fmtEur(r.stockValore)}</td>
+      <td class="num ${pctClass(r.stockPct)}">${fmtPct(r.stockPct)}</td>
+    </tr>
+  `).join('');
+}
+
+function renderIncidenza2(){
+  const pf = PERIOD_FIELDS[state2.period];
+  document.getElementById('incidenzaPesoTitle').textContent = 'Incidenza per peso / stagione (totale negozio, ' + pf.label.toLowerCase() + ')';
+  const totalPeriodo = state2.rows.reduce((s,r) => s + (r[pf.valore] || 0), 0);
+  const byPeso = {};
+  state2.rows.forEach(r => { if(!r[pf.valore]) return; byPeso[r.pesoKey] = (byPeso[r.pesoKey] || 0) + r[pf.valore]; });
+  const order = ['L1','M1','H1','L2','M2','H2','N1','N2','CROSS','ALTRO'];
+  const keys = Object.keys(byPeso).sort((a,b) => order.indexOf(a) - order.indexOf(b));
+  document.getElementById('incidenzaPesoBlock').innerHTML = keys.map(k => {
+    const pct = totalPeriodo ? (byPeso[k] / totalPeriodo * 100) : 0;
+    return `
+      <div class="bar-cell" style="margin-bottom:8px;">
+        <div style="width:220px;font-size:12.5px;">${PESO_LABELS[k]}</div>
+        <div class="bar-track"><div class="bar-fill2" style="width:${Math.min(pct,100)}%;"></div></div>
+        <div style="width:100px;text-align:right;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;">${pct.toFixed(1)}% · ${fmtEur(byPeso[k])}</div>
+      </div>`;
+  }).join('') || '<div class="empty-msg">Nessun dato disponibile.</div>';
+
+  const el = document.getElementById('incidenzaBlocks2'); let html = '';
+  state2.categories.forEach(cat => {
+    const items = state2.rows.filter(r => r.category === cat && r[pf.incidenza] !== null && r[pf.valore] > 0)
+      .sort((a,b) => b[pf.incidenza] - a[pf.incidenza]).slice(0,8);
+    if(!items.length) return;
+    html += `<div class="section-title">${shortCat(cat)}</div>`;
+    html += items.map(r => `
+      <div class="bar-cell" style="margin-bottom:8px;">
+        <div style="width:220px;font-size:12.5px;">${shortApc(r.apc)}</div>
+        <div class="bar-track"><div class="bar-fill2" style="width:${Math.min(r[pf.incidenza],100)}%;"></div></div>
+        <div style="width:52px;text-align:right;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;">${r[pf.incidenza].toFixed(1)}%</div>
+      </div>
+    `).join('');
+  });
+  el.innerHTML = html || '<div class="empty-msg">Nessun dato disponibile.</div>';
+}
+
+function renderAnnoScorso2(){
+  const pf = PERIOD_FIELDS[state2.period];
+  const calcolabili = state2.rows.filter(r => r[pf.ly] !== null);
+  const nonCalcolabili = state2.rows.length - calcolabili.length;
+  const top = [...calcolabili].sort((a,b) => b[pf.ly] - a[pf.ly]).slice(0,15);
+  document.getElementById('annoScorsoTitle2').textContent = 'I 15 sub-reparti più venduti nello stesso periodo (' + pf.label.toLowerCase() + ') dello scorso anno';
+  document.getElementById('annoScorsoNote2').textContent = 'Valore stimato da venduto attuale e % vs anno scorso. ' + nonCalcolabili + ' voci non calcolabili non compaiono qui.';
+  document.getElementById('annoScorsoList2').innerHTML = top.map(r => `
+    <div class="rank-row">
+      <div><div class="name">${shortApc(r.apc)}</div><div class="cat-tag">${shortCat(r.category)} · ${r.pesoLabel}</div></div>
+      <div class="val">${fmtEur(r[pf.ly])}<div class="cat-tag">quest'anno: ${fmtEur(r[pf.valore])}</div></div>
+      <div class="pct ${pctClass(r[pf.pct])}">${fmtPct(r[pf.pct])}</div>
+    </div>
+  `).join('') || '<div class="empty-msg">Nessun dato calcolabile.</div>';
+}
+
+document.querySelectorAll('#tabbar2 .t').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('#tabbar2 .t').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('#view2 .panel').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('panel-' + t.dataset.tab2).classList.add('active');
+  });
+});
+
+document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+document.getElementById('searchBtn').addEventListener('click', () => {
+  const q = document.getElementById('searchQuery').value.trim();
+  if(!q) return;
+  const pf = PERIOD_FIELDS[state.period];
+  runSearch('searchResults', state, pf, q);
+});
+document.getElementById('searchQuery').addEventListener('keydown', e => {
+  if(e.key === 'Enter') document.getElementById('searchBtn').click();
+});
+document.getElementById('searchBtn2').addEventListener('click', () => {
+  const q = document.getElementById('searchQuery2').value.trim();
+  if(!q) return;
+  const pf = PERIOD_FIELDS[state2.period];
+  runSearch('searchResults2', state2, pf, q);
+});
+document.getElementById('searchQuery2').addEventListener('keydown', e => {
+  if(e.key === 'Enter') document.getElementById('searchBtn2').click();
+});
+
+function buildSnapshotHtml(){
+  const hasData1 = state.rows && state.rows.length;
+  const hasData2 = state2.rows && state2.rows.length;
+  if(!hasData1 && !hasData2) return null;
+  const activeView = document.querySelector('.pillnav .pill.active').dataset.view;
+  const snapshotObj = {
+    generatedAt: new Date().toISOString(),
+    activeView: activeView,
+    view1: hasData1 ? state : null,
+    view2: hasData2 ? state2 : null
+  };
+  const jsonStr = JSON.stringify(snapshotObj).replace(/</g, '\\u003c');
+  let html = document.documentElement.outerHTML;
+  const closeTag = '<' + '/script>';
+  html = html.replace(
+    '<script id="snapshotData" type="application/json">' + closeTag,
+    '<script id="snapshotData" type="application/json">' + jsonStr + closeTag
+  );
+  return '<!DOCTYPE html>\n' + html;
+}
+
+function generateSnapshot(){
+  const html = buildSnapshotHtml();
+  if(!html){
+    alert('Carica prima un file in almeno una delle due viste, poi genera lo snapshot.');
+    return;
+  }
+  const blob = new Blob([html], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const dateStr = new Date().toISOString().slice(0,10);
+  a.href = url;
+  a.download = 'libretto-vendite-snapshot-' + dateStr + '.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+document.getElementById('snapshotBtn').addEventListener('click', generateSnapshot);
+
+/* ===== Pubblicazione online su GitHub Pages ===== */
+const GH_SETTINGS_KEY = 'libretto_gh_settings';
+
+function loadGhSettings(){
+  try{ return JSON.parse(localStorage.getItem(GH_SETTINGS_KEY)) || {}; }
+  catch(e){ return {}; }
+}
+function saveGhSettings(s){
+  try{ localStorage.setItem(GH_SETTINGS_KEY, JSON.stringify(s)); return true; }
+  catch(e){ return false; }
+}
+
+function utf8ToBase64(str){
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (m, p1) => String.fromCharCode('0x' + p1)));
+}
+
+document.getElementById('ghSettingsBtn').addEventListener('click', () => {
+  const panel = document.getElementById('ghSettingsPanel');
+  panel.classList.toggle('hidden');
+  if(!panel.classList.contains('hidden')){
+    const s = loadGhSettings();
+    document.getElementById('ghUser').value = s.user || '';
+    document.getElementById('ghRepo').value = s.repo || '';
+    document.getElementById('ghToken').value = s.token || '';
+  }
+});
+
+document.getElementById('ghSaveBtn').addEventListener('click', () => {
+  const user = document.getElementById('ghUser').value.trim();
+  const repo = document.getElementById('ghRepo').value.trim();
+  const token = document.getElementById('ghToken').value.trim();
+  const statusEl = document.getElementById('ghSettingsStatus');
+  if(!user || !repo || !token){
+    statusEl.textContent = 'Compila tutti e tre i campi.';
+    statusEl.style.color = 'var(--neg)';
+    return;
+  }
+  const ok = saveGhSettings({user, repo, token});
+  statusEl.textContent = ok ? 'Salvato in questo browser.' : 'Impossibile salvare (spazio browser pieno).';
+  statusEl.style.color = ok ? 'var(--pos)' : 'var(--neg)';
+});
+
+async function publishSnapshotOnline(){
+  const html = buildSnapshotHtml();
+  const resultCard = document.getElementById('ghPublishResult');
+  const statusEl = document.getElementById('ghPublishStatus');
+  const linkEl = document.getElementById('ghPublishLink');
+  if(!html){
+    alert('Carica prima un file in almeno una delle due viste, poi pubblica lo snapshot.');
+    return;
+  }
+  const s = loadGhSettings();
+  if(!s.user || !s.repo || !s.token){
+    document.getElementById('ghSettingsPanel').classList.remove('hidden');
+    alert('Prima collega il tuo account GitHub qui sopra (username, repository, token), poi riprova.');
+    return;
+  }
+  resultCard.classList.remove('hidden');
+  linkEl.value = '';
+  statusEl.style.color = 'var(--ink-soft)';
+  statusEl.textContent = 'Pubblicazione in corso...';
+
+  const apiUrl = `https://api.github.com/repos/${s.user}/${s.repo}/contents/snapshot.html`;
+  const headers = {
+    'Authorization': 'Bearer ' + s.token,
+    'Accept': 'application/vnd.github+json'
+  };
+
+  try{
+    let sha = null;
+    const getResp = await fetch(apiUrl, {headers});
+    if(getResp.status === 200){
+      const getData = await getResp.json();
+      sha = getData.sha;
+    } else if(getResp.status !== 404){
+      throw new Error('Impossibile leggere il file esistente (status ' + getResp.status + ').');
+    }
+
+    const body = {
+      message: 'Aggiorna snapshot del ' + new Date().toLocaleDateString('it-IT'),
+      content: utf8ToBase64(html),
+      branch: 'main'
+    };
+    if(sha) body.sha = sha;
+
+    const putResp = await fetch(apiUrl, {
+      method: 'PUT', headers: Object.assign({}, headers, {'Content-Type':'application/json'}),
+      body: JSON.stringify(body)
+    });
+
+    if(!putResp.ok){
+      const errData = await putResp.json().catch(() => ({}));
+      throw new Error(errData.message || ('Errore GitHub (status ' + putResp.status + ')'));
+    }
+
+    const pageUrl = `https://${s.user}.github.io/${s.repo}/snapshot.html`;
+    linkEl.value = pageUrl;
+    statusEl.style.color = 'var(--pos)';
+    statusEl.textContent = 'Pubblicato! Il link sopra è pronto da copiare e mandare al team.';
+  }catch(err){
+    statusEl.style.color = 'var(--neg)';
+    statusEl.textContent = 'Errore: ' + err.message + ' — controlla username, nome repository e token nelle impostazioni (⚙️).';
+  }
+}
+document.getElementById('publishBtn').addEventListener('click', publishSnapshotOnline);
+
+document.getElementById('ghCopyBtn').addEventListener('click', () => {
+  const linkEl = document.getElementById('ghPublishLink');
+  if(!linkEl.value) return;
+  linkEl.select();
+  navigator.clipboard && navigator.clipboard.writeText(linkEl.value).catch(() => {});
+  const statusEl = document.getElementById('ghPublishStatus');
+  statusEl.style.color = 'var(--pos)';
+  statusEl.textContent = 'Link copiato negli appunti.';
+});
+
+/* Se il file è stato aperto da uno snapshot generato in precedenza, carica i dati incorporati */
+(function loadSnapshotIfPresent(){
+  const el = document.getElementById('snapshotData');
+  const raw = el ? el.textContent.trim() : '';
+  if(!raw) return;
+  let snap;
+  try{ snap = JSON.parse(raw); }catch(e){ return; }
+
+  if(snap.view1){
+    state = snap.view1;
+    document.getElementById('content').classList.remove('hidden');
+    document.getElementById('filename').textContent = 'Dati da snapshot';
+    renderKpis(); renderWatchControls(); renderHero(); renderDetailControls(); renderDetailTable(); renderIncidenza(); renderAnnoScorso();
+  }
+  if(snap.view2){
+    state2 = snap.view2;
+    document.getElementById('content2').classList.remove('hidden');
+    document.getElementById('filename2').textContent = 'Dati da snapshot';
+    renderKpis2(); renderWatchControls2(); renderHero2(); renderDetailControls2(); renderDetailTable2(); renderIncidenza2(); renderAnnoScorso2();
+  }
+  document.querySelectorAll('.pillnav .pill').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(x => x.classList.add('hidden'));
+  const activePill = document.querySelector('.pillnav .pill[data-view="' + snap.activeView + '"]');
+  if(activePill) activePill.classList.add('active');
+  const activeViewEl = document.getElementById(snap.activeView);
+  if(activeViewEl) activeViewEl.classList.remove('hidden');
+
+  const genDate = new Date(snap.generatedAt);
+  const dateLabel = genDate.toLocaleDateString('it-IT', {day:'2-digit', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit'});
+  const banner = document.createElement('div');
+  banner.style.cssText = 'background:var(--accent-bg);color:var(--accent);font-size:12.5px;font-weight:600;padding:10px 16px;border-radius:12px;margin-bottom:18px;';
+  banner.textContent = '📸 Snapshot generato il ' + dateLabel + ' — dati fissi, non aggiornati in automatico. Trascina un nuovo file per aggiornarli.';
+  document.querySelector('.topnav').insertAdjacentElement('afterend', banner);
+})();
+</script>
+</body>
+</html>
