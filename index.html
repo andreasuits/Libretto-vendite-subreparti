@@ -198,6 +198,57 @@
   .section-note{font-size:12px;color:var(--ink-soft);margin-bottom:12px;}
   .empty-msg{color:var(--ink-soft);font-size:13px;padding:20px 0;}
   .view{width:100%;}
+
+  /* ===== Menu Condividi ===== */
+  .share-menu{position:relative;}
+  .share-menu summary{list-style:none;width:auto;padding:9px 16px;white-space:nowrap;}
+  .share-menu summary::-webkit-details-marker{display:none;}
+  .share-list{position:absolute;right:0;top:calc(100% + 8px);z-index:20;background:var(--card-solid);border-radius:16px;padding:6px;box-shadow:var(--shadow);border:1px solid var(--line);display:flex;flex-direction:column;gap:4px;min-width:270px;}
+  .share-list .btn{box-shadow:none;text-align:left;padding:11px 14px;white-space:nowrap;}
+
+  /* ===== Vista 1 — Direzione B ===== */
+  .period-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:6px 0 18px;}
+  .period-bar .greet{margin:0;}
+  .alerts-head{font-size:16px;font-weight:800;letter-spacing:-0.3px;margin:4px 0 2px;}
+  .alerts-note{font-size:12px;color:var(--ink-soft);margin-bottom:10px;}
+  .b-alerts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px;}
+  .b-alert{background:var(--card-solid);border-radius:var(--radius-sm);padding:14px 16px;border-left:4px solid var(--neg);box-shadow:var(--shadow-sm);}
+  .b-alert .ba-name{font-weight:800;font-size:14px;line-height:1.25;}
+  .b-alert .ba-cat{font-size:11.5px;color:var(--ink-soft);margin:2px 0 8px;}
+  .b-alert .ba-line{font-size:12px;color:var(--ink-soft);margin-bottom:10px;line-height:1.45;}
+  .b-alert .ba-line b{color:var(--ink);}
+  .kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));background:var(--card);border-radius:var(--radius-md);box-shadow:var(--shadow-sm);border:1px solid rgba(255,255,255,0.6);overflow:hidden;margin-bottom:18px;}
+  .kpi-strip .ks{padding:16px 18px;border-right:1px solid var(--line);}
+  .kpi-strip .ks:last-child{border-right:none;}
+  .kpi-strip .ks-lbl{font-size:12px;color:var(--ink-soft);}
+  .kpi-strip .ks-val{font-size:21px;font-weight:800;letter-spacing:-0.5px;margin:4px 0 8px;white-space:nowrap;}
+  .kpi-strip .ks-badges{display:flex;gap:5px;flex-wrap:wrap;}
+  .rb-row{display:grid;grid-template-columns:150px 1fr 64px;gap:12px;align-items:center;padding:5px 4px;border-radius:8px;cursor:pointer;}
+  .rb-row:hover, .rb-row.sel{background:rgba(108,92,231,0.07);}
+  .rb-name{font-size:12.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .rb-track{position:relative;height:18px;}
+  .rb-track::before{content:'';position:absolute;left:50%;top:-5px;bottom:-5px;width:1px;background:rgba(23,22,27,0.25);}
+  .rb-bar{position:absolute;top:3px;height:12px;border-radius:4px;opacity:0.88;}
+  .rb-bar.clamped.right{border-right:2px dashed var(--ink);}
+  .rb-bar.clamped.left{border-left:2px dashed var(--ink);}
+  .rb-val{text-align:right;font-size:12.5px;font-weight:700;}
+  .bars-legend{font-size:11.5px;color:var(--ink-soft);margin-top:12px;line-height:2;}
+  .b-two{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+  .b-col{min-width:0;}
+  .seg-toggle{display:none;}
+  .list-hdr{flex-wrap:wrap;gap:10px;}
+  .list-controls{display:flex;gap:8px;flex-wrap:wrap;}
+  .brow{display:grid;grid-template-columns:4px minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);}
+  .brow.has-budget{grid-template-columns:4px minmax(0,1fr) auto auto auto;}
+  .brow:last-child{border-bottom:none;}
+  .brow .bs{width:4px;align-self:stretch;border-radius:2px;min-height:32px;}
+  .brow .bs.pos{background:var(--pos);} .brow .bs.neg{background:var(--neg);} .brow .bs.market{background:#3B6EA5;} .brow .bs.amber{background:var(--amber);}
+  .brow .bn{font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .brow .bc{font-size:11.5px;color:var(--ink-soft);margin-top:2px;display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+  .brow .bc .badge{font-size:10.5px;padding:1px 7px;}
+  .brow .bv{text-align:right;font-size:13px;font-weight:700;min-width:58px;}
+  .brow .bv small{display:block;font-size:9.5px;color:var(--ink-faint);font-weight:600;}
+
   @media(max-width:920px){.main-grid{grid-template-columns:1fr;} .kpi-row{grid-template-columns:repeat(2,1fr);}}
   @media(max-width:1180px) and (min-width:921px){.kpi-row{grid-template-columns:repeat(3,1fr);}}
 
@@ -226,9 +277,441 @@
     .bar-cell{flex-wrap:wrap;row-gap:4px;}
     .bar-cell > div:first-child{width:100% !important;}
     .bar-cell > div:last-child{width:auto !important;margin-left:auto;}
+
+    .topnav-actions{justify-content:space-between;}
+    .share-list{left:0;right:auto;min-width:0;width:calc(100vw - 24px);}
+    
+    .period-bar .greet{font-size:17px;}
+    .period-bar .period-pills{width:100%;}
+    .period-bar .period-pills .p{flex:1;text-align:center;padding:8px 6px;font-size:12.5px;}
+    .b-alerts{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;margin:0 -12px 16px;padding:2px 12px 8px;}
+    .b-alert{flex:0 0 78%;scroll-snap-align:start;}
+    .kpi-strip{grid-template-columns:1fr 1fr;}
+    .kpi-strip .ks{border-bottom:1px solid var(--line);padding:14px;}
+    .kpi-strip .ks:nth-child(2n){border-right:none;}
+    .kpi-strip .ks-val{font-size:19px;}
+    .rb-row{grid-template-columns:96px 1fr 50px;gap:8px;}
+    .rb-name{font-size:11.5px;}
+    .rb-val{font-size:11.5px;}
+    .chart-card .chdr{flex-wrap:wrap;gap:10px;}
+    .chart-card .chdr select{width:100%;}
+    .seg-toggle{display:flex;background:rgba(23,22,27,0.05);border-radius:12px;padding:3px;margin-bottom:6px;}
+    .seg-toggle span{flex:1;text-align:center;padding:8px;border-radius:10px;font-size:12.5px;font-weight:700;color:var(--ink-soft);cursor:pointer;}
+    .seg-toggle span.on{background:#fff;color:var(--ink);box-shadow:var(--shadow-sm);}
+    .b-two{grid-template-columns:1fr;gap:0;}
+    .b-two[data-show="0"] .b-col:nth-child(2), .b-two[data-show="1"] .b-col:nth-child(1){display:none;}
+    .b-two:not([data-show]) .b-col:nth-child(2){display:none;}
+    .brow, .brow.has-budget{gap:8px;}
+    .brow .bv{min-width:50px;font-size:12.5px;}
+    .list-controls{width:100%;}
+    .list-controls select{flex:1;min-width:0;}
   }
 
+  /* =====================================================================
+     TEMA SCURO (ispirato alla demo) — font Inter invariato
+     ===================================================================== */
+  :root{
+    --bg:#0E1730; --bg-2:#121D3A;
+    --ink:#EEF2FB; --ink-2:#BAC4DC; --ink-soft:#8692B2; --ink-faint:#5F6C8F;
+    --card:#16213E; --card-solid:#16213E; --surface-2:#1C2949; --surface-3:#243258; --shell:transparent;
+    --line:rgba(214,224,255,0.08); --line-2:rgba(214,224,255,0.16);
+    --accent:#F2B880; --accent-2:#F6C796; --accent-bg:rgba(242,184,128,0.14);
+    --pos:#3DD9A0; --pos-bg:rgba(61,217,160,0.14); --neg:#FF6F7D; --neg-bg:rgba(255,111,125,0.14);
+    --amber:#FFC15E; --amber-bg:rgba(255,193,94,0.15); --market:#6AA8FF; --market-bg:rgba(106,168,255,0.15);
+    --shadow:0 24px 60px -24px rgba(0,0,0,0.6); --shadow-sm:0 8px 24px -14px rgba(0,0,0,0.55);
+    --ease:cubic-bezier(.2,.8,.2,1); --spring:cubic-bezier(.34,1.5,.64,1);
+  }
+  body{background:var(--bg);color:var(--ink);font-variant-numeric:tabular-nums;}
+  body::before{filter:none;background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(106,168,255,0.13), transparent 60%),
+    radial-gradient(900px 500px at -10% 30%, rgba(242,184,128,0.07), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);}
+  .shell{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border:none;box-shadow:none;margin-top:12px;}
+  .brand-mark{background:var(--ink);color:var(--bg);}
+  .card{background:var(--card);border:1px solid var(--line);box-shadow:none;}
+  .pillnav, .period-pills, .tabbar{background:rgba(214,224,255,0.06);border:1px solid var(--line);}
+  .pillnav .pill.active, .period-pills .p.active, .tabbar .t.active{background:var(--surface-3);color:var(--ink);box-shadow:0 6px 18px -8px rgba(0,0,0,0.6);}
+  .btn{background:var(--surface-3);color:var(--ink);box-shadow:none;border:1px solid var(--line-2);}
+  .btn:hover{background:var(--surface-2);color:var(--ink);border-color:var(--accent);}
+  .share-list{background:var(--surface-2);border-color:var(--line-2);}
+  .share-list .btn{background:transparent;border-color:transparent;}
+  .share-list .btn:hover{background:var(--surface-3);}
+  .dropzone{background:rgba(22,33,62,0.55);border-color:var(--line-2);}
+  .dropzone.drag, .dropzone:hover{border-color:var(--accent);background:rgba(242,184,128,0.06);}
+  select, input[type=text], input[type=password]{background:var(--surface-2) !important;color:var(--ink);border:1px solid var(--line-2) !important;}
+  input::placeholder{color:var(--ink-faint);}
+  .badge.market{background:var(--market-bg);color:var(--market);}
+  .badge.info{background:var(--accent-bg);color:var(--accent);}
+  th{color:var(--ink-soft);border-bottom-color:var(--line-2);}
+  .table-scroll th:first-child, .table-scroll td:first-child{background:var(--card);box-shadow:2px 0 6px -2px rgba(0,0,0,0.5);}
+  tr:hover td{background:rgba(214,224,255,0.04);}
+  .bar-track, .progress-track, .st-dept-row .std-track{background:rgba(214,224,255,0.07);}
+  .bar-fill2, .progress-fill{background:linear-gradient(90deg,rgba(242,184,128,0.55),var(--accent));}
+  .quad-info{background:var(--surface-2);border:1px solid var(--line-2);}
+  .product-card{background:var(--surface-2);border-color:var(--line);}
+  .side-card .muted, .chart-card .muted, .card .muted{color:var(--ink-soft);font-size:12.5px;line-height:1.45;}
+  .legend-card summary::before{color:var(--accent);}
+  .legend-body code{background:var(--surface-2);padding:6px 10px;border-radius:8px;display:inline-block;font-family:inherit;font-weight:700;color:var(--ink);}
+  .legend-body{color:var(--ink-2);}
+  .greet{font-size:30px;letter-spacing:-0.8px;}
+
+  /* --- barra periodo fissa (tutte le larghezze) --- */
+  .period-bar{position:sticky;top:0;z-index:15;padding:10px 0;margin:4px 0 14px;background:linear-gradient(180deg,var(--bg) 72%,rgba(14,23,48,0));}
+  .pb-title{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;}
+  .view-date{font-size:12.5px;color:var(--ink-soft);font-weight:600;}
+  .pb-ctrls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .period-pills{position:relative;isolation:isolate;}
+  .period-pills .p{position:relative;z-index:1;transition:color .3s;}
+  .period-pills.has-ind .p.active{background:transparent;box-shadow:none;}
+  .period-pills .ind{position:absolute;z-index:0;top:4px;bottom:4px;left:0;width:0;border-radius:999px;background:var(--surface-3);box-shadow:0 6px 18px -8px rgba(0,0,0,0.6);transition:transform .5s var(--ease),width .5s var(--ease);}
+
+  /* --- riquadro grande --- */
+  .hero{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.85fr) minmax(0,1.15fr);gap:28px;padding:28px 30px;border-radius:28px;background:linear-gradient(155deg,#1B2A50 0%,#16213E 55%,#141E3A 100%);border:1px solid var(--line-2);isolation:isolate;margin-bottom:14px;}
+  .hero::before{content:'';position:absolute;z-index:-1;width:420px;height:420px;left:-120px;top:-180px;border-radius:50%;filter:blur(60px);opacity:.5;background:radial-gradient(circle,rgba(242,184,128,.5),transparent 65%);pointer-events:none;}
+  .hero::after{content:'';position:absolute;z-index:-1;width:520px;height:520px;right:-160px;bottom:-260px;border-radius:50%;filter:blur(60px);opacity:.5;background:radial-gradient(circle,rgba(106,168,255,.45),transparent 65%);pointer-events:none;}
+  .hero-k{font-size:13px;font-weight:700;color:var(--ink-2);}
+  .hero-num{font-size:clamp(44px,6vw,74px);font-weight:800;letter-spacing:-2.5px;line-height:1;margin:10px 0 14px;white-space:nowrap;}
+  .hero-chips{display:flex;gap:8px;flex-wrap:wrap;}
+  .hero-chips .badge{font-size:12px;padding:5px 11px;}
+  .hero-chips .badge small{font-weight:600;opacity:.8;margin-left:3px;}
+  .hero-insight{margin:18px 0 0;font-size:13.5px;color:var(--ink-2);max-width:46ch;line-height:1.5;}
+  .hero-insight b{color:var(--ink);}
+  .rings{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;}
+  .rings svg{width:min(180px,100%);height:auto;overflow:visible;}
+  .ring-track{fill:none;stroke:rgba(214,224,255,0.08);}
+  .ring-val{fill:none;stroke-linecap:round;transition:stroke-dashoffset 1.2s var(--ease);}
+  .ring-center{font-size:28px;font-weight:800;fill:var(--ink);letter-spacing:-1px;}
+  .ring-center-sub{font-size:10.5px;fill:var(--ink-soft);font-weight:600;}
+  .ring-legend{display:grid;gap:6px;font-size:12px;color:var(--ink-2);width:100%;max-width:240px;}
+  .ring-legend div{display:flex;align-items:center;gap:8px;}
+  .ring-legend i{width:9px;height:9px;border-radius:3px;flex-shrink:0;}
+  .ring-legend b{margin-left:auto;color:var(--ink);}
+  .pace-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+  .pace-head h4{margin:0;font-size:13px;font-weight:800;}
+  .lg{display:flex;gap:12px;font-size:11.5px;color:var(--ink-soft);font-weight:600;flex-wrap:wrap;}
+  .lg span{display:inline-flex;align-items:center;gap:6px;}
+  .lg i{display:inline-block;width:10px;height:10px;border-radius:3px;}
+  .lg i.tick{width:3px;height:12px;border-radius:2px;background:var(--ink);}
+  .pace-row{display:grid;grid-template-columns:52px 1fr 70px;gap:12px;align-items:center;width:100%;padding:9px 8px;margin:0 -8px;border:0;background:none;border-radius:12px;text-align:left;color:var(--ink);font-family:inherit;cursor:pointer;transition:background .25s;}
+  .pace-row:hover{background:rgba(214,224,255,0.05);}
+  .pace-row.active{background:rgba(214,224,255,0.09);}
+  .pace-row .pl{font-size:12.5px;font-weight:700;color:var(--ink-2);}
+  .pace-row.active .pl{color:var(--ink);}
+  .ptrack{position:relative;height:22px;}
+  .ptrack .zero{position:absolute;left:50%;top:-4px;bottom:-4px;width:1px;background:var(--line-2);}
+  .ptrack .pbar{position:absolute;top:4px;height:14px;border-radius:5px;transform-origin:var(--o,left);}
+  .ptrack .pnet{position:absolute;top:0;width:3px;height:22px;border-radius:2px;background:var(--ink);margin-left:-1.5px;box-shadow:0 0 0 2px var(--card);}
+  .pace-row .pv{text-align:right;font-weight:800;font-size:13px;}
+  .pace-row .pv small{display:block;font-size:10.5px;color:var(--ink-soft);font-weight:600;}
+
+  /* --- schede periodo --- */
+  .kpi-row2{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-bottom:18px;}
+  .kpi2{display:flex;flex-direction:column;text-align:left;padding:16px 16px 14px;border-radius:var(--radius-sm);background:var(--card);border:1px solid var(--line);color:var(--ink);font-family:inherit;transition:border-color .25s,background .25s,transform .25s var(--ease);}
+  button.kpi2{cursor:pointer;}
+  button.kpi2:hover{border-color:var(--line-2);transform:translateY(-2px);}
+  .kpi2.active{border-color:rgba(242,184,128,0.55);background:linear-gradient(180deg,rgba(242,184,128,0.08),var(--card) 70%);}
+  .kpi2 .kl{font-size:12px;color:var(--ink-soft);font-weight:700;}
+  .kpi2 .kv{font-size:21px;font-weight:800;letter-spacing:-.5px;margin:6px 0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .kpi2 .kb{display:flex;gap:5px;flex-wrap:wrap;}
+  .kpi2 .meter{height:4px;border-radius:3px;background:rgba(214,224,255,0.08);margin-top:12px;overflow:hidden;}
+  .kpi2 .meter i{display:block;height:100%;border-radius:3px;transform-origin:left;}
+  @media(max-width:1180px){.kpi-row2{grid-template-columns:repeat(3,minmax(0,1fr));}}
+
+  /* --- griglie --- */
+  .grid-1-1{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;margin-bottom:18px;}
+  .grid-1-1 > .card{margin:0 !important;}
+  @media(max-width:1020px){.grid-1-1{grid-template-columns:minmax(0,1fr);}}
+
+  /* --- avvisi e barre vs Rete (tema scuro) --- */
+  .b-alert{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--neg);box-shadow:none;}
+  .rb-row:hover, .rb-row.sel{background:rgba(214,224,255,0.06);}
+  .rb-track::before{background:var(--line-2);}
+  .rb-bar.clamped.right{border-right:2px dashed var(--ink);}
+  .rb-bar.clamped.left{border-left:2px dashed var(--ink);}
+
+  /* --- quadrante (versione demo) --- */
+  .quadrant{position:relative;width:100%;min-height:320px;}
+  .quadrant svg{display:block;width:100%;height:auto;overflow:visible;}
+  .q-zlabel{font-size:11px;font-weight:700;fill:var(--ink-soft);transition:opacity .3s;}
+  .q-grid line{stroke:var(--line);}
+  .q-grid line.axis{stroke:var(--line-2);stroke-dasharray:3 4;}
+  .q-grid text{font-size:10.5px;fill:var(--ink-faint);font-weight:600;}
+  .q-axis-t{font-size:11px;font-weight:700;fill:var(--ink-2) !important;}
+  .dot{transition:transform .9s var(--ease),opacity .4s;cursor:pointer;}
+  .dot circle{transition:r .9s var(--ease),fill .6s;stroke:var(--card);stroke-width:1.5;}
+  .dot.enter circle{animation:pop .7s var(--spring) both;animation-delay:calc(var(--i,0)*28ms);transform-box:fill-box;transform-origin:center;}
+  .dot.exit{opacity:0;}
+  .dot:hover circle, .dot.sel circle{fill-opacity:1;stroke:var(--ink);}
+  .dot text{font-size:11px;font-weight:700;fill:var(--ink);paint-order:stroke;stroke:var(--card);stroke-width:4px;stroke-linejoin:round;pointer-events:none;transition:opacity .4s;}
+  .q-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px;}
+  .q-note{font-size:11.5px;color:var(--ink-faint);}
+  .tlegend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-soft);font-weight:600;}
+  .tlegend span{display:inline-flex;align-items:center;gap:6px;}
+  .tlegend i{width:10px;height:10px;border-radius:3px;}
+
+  /* --- treemap (versione demo) --- */
+  .treemap2{position:relative;width:100%;height:440px;border-radius:14px;overflow:hidden;margin-top:14px;}
+  .tm{position:absolute;padding:2px;transition:left .8s var(--ease),top .8s var(--ease),width .8s var(--ease),height .8s var(--ease),opacity .4s;}
+  .tm .tmi{position:relative;width:100%;height:100%;border-radius:9px;padding:10px 11px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;cursor:pointer;transition:background .6s,filter .2s;}
+  .tm .tmi:hover{filter:brightness(1.15);}
+  .tm.enter .tmi{animation:tmIn .7s var(--ease) both;animation-delay:calc(var(--i,0)*30ms);}
+  .tm.exit{opacity:0;}
+  .tm .tp{font-size:24px;font-weight:800;letter-spacing:-.8px;line-height:1;color:#fff;margin-bottom:auto;}
+  .tm .tl{font-size:12.5px;font-weight:800;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;}
+  .tm .tv{font-size:11.5px;font-weight:600;color:rgba(255,255,255,0.82);white-space:nowrap;}
+  .tm.s .tv, .tm.s .tp{display:none;}
+  .tm.xs .tl{display:none;}
+  .tm.m .tp{font-size:18px;}
+
+  /* --- liste (versione demo) --- */
+  .wrow{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:11px 2px;border-bottom:1px solid var(--line);}
+  .wrow:last-child{border-bottom:0;}
+  .wrow .wr{font-size:11.5px;font-weight:800;color:var(--ink-faint);}
+  .wrow .wn{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .wrow .wc{font-size:11.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .wrow .wmeta{grid-column:2/-1;display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--ink-soft);}
+  .wrow .wmeta b{color:var(--ink);font-weight:800;}
+  .wrow .wmeta b.pos-txt{color:var(--pos);} .wrow .wmeta b.neg-txt{color:var(--neg);}
+  .wrow .wbar{grid-column:2/-1;position:relative;height:5px;border-radius:3px;background:rgba(214,224,255,0.06);}
+  .wrow .wbar i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;transform-origin:left;}
+  .wrow .wbar i.p{background:var(--pos);} .wrow .wbar i.n{background:var(--neg);}
+  .wl-title{display:flex;align-items:center;gap:8px;}
+  .wl-title i{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .seg-toggle{background:rgba(214,224,255,0.06) !important;}
+  .seg-toggle span.on{background:var(--surface-3) !important;color:var(--ink) !important;}
+
+  /* --- animazioni A/B --- */
+  .row-enter{animation:rowIn .5s var(--ease) both;}
+  @keyframes rowIn{from{opacity:0;transform:translateX(-10px);}}
+  .wrow .wr{display:flex;flex-direction:column;align-items:flex-start;gap:1px;}
+  .wrow .wr .mv{font-style:normal;font-size:9.5px;font-weight:800;color:var(--accent);transition:opacity .5s;}
+  .wrow .wr .mv.out{opacity:0;}
+
+  /* --- ponte dall'anno scorso --- */
+  .brg-opt{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-soft);font-weight:600;white-space:nowrap;}
+  .brg-opt select{padding:6px 10px;}
+  .brg{display:grid;grid-template-columns:minmax(110px,200px) minmax(0,1fr) 100px;gap:12px;align-items:center;padding:5px 4px;border-radius:8px;cursor:pointer;transition:background .2s;}
+  .brg:hover{background:rgba(214,224,255,0.05);}
+  .brg .bn{font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .brg.grp .bn{color:var(--ink-soft);}
+  .brg .btr{position:relative;height:18px;}
+  .brg .bb{position:absolute;top:2px;height:14px;border-radius:3px;transition:left .7s var(--ease),width .7s var(--ease),background .5s;}
+  .brg .bb.t{background:var(--market);}
+  .brg .bconn{position:absolute;top:-7px;width:1px;height:8px;background:var(--line-2);transition:left .7s var(--ease);}
+  .brg .bv{text-align:right;font-size:12px;font-weight:800;}
+  .brg.tot{border-top:1px solid var(--line);margin-top:4px;padding-top:10px;cursor:default;}
+  .brg.first{border-top:0;margin-top:0;padding-top:5px;}
+  @media(max-width:640px){ .brg{grid-template-columns:minmax(0,104px) minmax(0,1fr) 76px;gap:8px;} .brg-opt{width:100%;} }
+
+  /* --- suggerimento al tocco --- */
+  #tip{position:fixed;z-index:100;left:0;top:0;pointer-events:none;min-width:180px;max-width:280px;padding:12px 14px;border-radius:14px;background:rgba(28,41,73,0.97);border:1px solid var(--line-2);box-shadow:0 20px 40px -12px rgba(0,0,0,0.65);font-size:12px;color:var(--ink-2);opacity:0;transform:translateY(6px) scale(.97);transition:opacity .16s,transform .2s var(--ease);}
+  #tip.on{opacity:1;transform:none;}
+  #tip .tt{font-size:13px;font-weight:800;color:var(--ink);margin-bottom:6px;}
+  #tip .tr{display:flex;justify-content:space-between;gap:14px;padding:2px 0;}
+  #tip .tr b{color:var(--ink);}
+  #tip .tr b.pos-txt{color:var(--pos);} #tip .tr b.neg-txt{color:var(--neg);}
+
+  /* --- animazioni --- */
+  @keyframes grow{from{transform:scaleX(0);}}
+  @keyframes pop{from{transform:scale(0);opacity:0;}}
+  @keyframes rise{from{transform:translateY(12px);opacity:0;}}
+  @keyframes tmIn{from{transform:scale(.6);opacity:0;}}
+  @keyframes fadein{from{opacity:0;}}
+  .anim-grow{animation:grow .9s var(--ease) both;animation-delay:calc(var(--i,0)*45ms + .1s);}
+  .anim-rise{animation:rise .5s var(--ease) both;animation-delay:calc(var(--i,0)*35ms);}
+  .anim-fade{animation:fadein .5s both;animation-delay:calc(var(--i,0)*90ms + .6s);}
+  .card:not(.inview) .anim-grow, .card:not(.inview) .anim-rise, .hero:not(.inview) .anim-grow, .hero:not(.inview) .anim-fade{animation-play-state:paused;}
+  .first-in .hero, .first-in .kpi-row2, .first-in .b-alerts{animation:rise .6s var(--ease) both;}
+  .first-in .kpi-row2{animation-delay:.08s;} .first-in .b-alerts{animation-delay:.16s;}
+
+  @media(max-width:820px){
+    .hero{grid-template-columns:minmax(0,1fr);gap:24px;padding:24px 20px;}
+    .rings{flex-direction:row;justify-content:flex-start;}
+    .rings svg{width:130px;flex-shrink:0;}
+  }
+  @media(max-width:640px){
+    .period-bar{margin:0 -12px 12px;padding:10px 12px;}
+    .pb-title .greet{font-size:20px;}
+    .pb-ctrls{width:100%;}
+    .pb-ctrls .period-pills{width:100%;}
+    .pb-ctrls select{width:100%;}
+    .kpi-row2{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+    .hero-num{letter-spacing:-1.5px;}
+    .treemap2{height:380px;}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none !important;transition:none !important;}
+  }
+
+
+  /* ===== Sell Through (nuova grafica) ===== */
+  body.st-lock{overflow:hidden;}
+  #view3 .ppz{position:absolute;left:8px;bottom:8px;padding:4px 9px;border-radius:999px;background:rgba(14,23,48,.88);color:var(--ink-2);font-size:11px;font-weight:600;white-space:nowrap;}
+  #view3 .ppz b{color:var(--ink);font-weight:800;font-size:12px;}
+  #view3 .st-bar{margin-top:6px;}
+#view3 .st-bar{position:sticky;top:0;z-index:20;display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:12px 0;margin-bottom:12px;background:linear-gradient(180deg,var(--bg) 75%,rgba(14,23,48,0))}
+#view3 select,#view3 input[type=text]{height:38px;padding:0 12px;border-radius:11px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--ink);font:600 12.5px Inter,sans-serif;max-width:100%}
+#view3 input[type=text]::placeholder{color:var(--faint)}
+#view3 .chip-reset{height:38px;padding:0 12px;border-radius:11px;border:1px solid var(--line-2);background:transparent;color:var(--ink-2);font:700 12px Inter,sans-serif;cursor:pointer}
+#view3 .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px 22px;margin-bottom:18px;min-width:0}
+#view3 .card h3{margin:0;font-size:17px;font-weight:800;letter-spacing:-.3px}
+#view3 .muted{color:var(--soft);font-size:12.5px;margin:4px 0 14px;line-height:1.45}
+#view3 .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+@media(max-width:1020px){#view3 .grid2{grid-template-columns:minmax(0,1fr)}
+}
+#view3 .pos{color:var(--pos)}
+#view3 .neg{color:var(--neg)}
+#view3 .amb{color:var(--amber)}
+#view3 .badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:800;white-space:nowrap}
+#view3 .badge.pos{background:rgba(61,217,160,.14)}
+#view3 .badge.neg{background:rgba(255,111,125,.14)}
+#view3 .badge.amb{background:rgba(255,193,94,.15)}
+#view3 .lg{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--soft);font-weight:600;margin-top:10px}
+#view3 .lg span{display:inline-flex;align-items:center;gap:6px}
+#view3 .lg i{display:inline-block;width:10px;height:10px;border-radius:3px}
+#view3 /* hero */
+.st-hero{position:relative;overflow:hidden;display:grid;grid-template-columns:auto minmax(0,1fr);gap:30px;align-items:center;padding:26px 30px;border-radius:28px;background:linear-gradient(155deg,#1B2A50 0%,#16213E 55%,#141E3A 100%);border:1px solid var(--line-2);margin-bottom:18px}
+#view3 .st-hero::before{content:'';position:absolute;z-index:0;width:420px;height:420px;left:-140px;top:-200px;border-radius:50%;filter:blur(60px);opacity:.45;background:radial-gradient(circle,rgba(242,184,128,.5),transparent 65%)}
+#view3 .st-hero > *{position:relative}
+#view3 .ring svg{width:170px;height:170px;display:block}
+#view3 .ring .trk{fill:none;stroke:rgba(214,224,255,.08)}
+#view3 .ring .val{fill:none;stroke-linecap:round;transition:stroke-dashoffset 1.2s var(--ease),stroke .5s}
+#view3 .ring .c{font-size:30px;font-weight:800;fill:var(--ink);letter-spacing:-1px}
+#view3 .ring .s{font-size:10.5px;fill:var(--soft);font-weight:600}
+#view3 .hk{font-size:13px;font-weight:700;color:var(--ink-2)}
+#view3 .figs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 22px;margin:12px 0 0}
+#view3 .figs b{display:block;font-size:22px;font-weight:800;letter-spacing:-.5px;white-space:nowrap}
+#view3 .figs span{font-size:12px;color:var(--soft);font-weight:600}
+#view3 .insight{margin:16px 0 0;font-size:13.5px;color:var(--ink-2);line-height:1.5;max-width:70ch}
+#view3 .insight b{color:var(--ink)}
+#view3 /* reparti (barre con fasce) */
+.dr{display:grid;grid-template-columns:minmax(110px,190px) minmax(0,1fr) 64px;gap:12px;align-items:center;width:100%;padding:5px 6px;margin:0 -6px;border:0;background:none;border-radius:9px;text-align:left;color:var(--ink);font:inherit;cursor:pointer;transition:background .2s}
+#view3 .dr:hover{background:rgba(214,224,255,.05)}
+#view3 .dr.sel{background:rgba(242,184,128,.1)}
+#view3 .dr .n{font-size:12.5px;font-weight:600;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#view3 .dr.sel .n{color:var(--ink);font-weight:800}
+#view3 .dr .t{position:relative;height:14px;border-radius:4px;overflow:hidden}
+#view3 .dr .t i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;transition:width .7s var(--ease),background .5s}
+#view3 .dr .v{text-align:right;font-weight:800;font-size:12.5px}
+#view3 /* dove resta la merce */
+.rm{display:grid;grid-template-columns:minmax(110px,190px) minmax(0,1fr) 92px;gap:12px;align-items:center;width:100%;padding:5px 6px;margin:0 -6px;border:0;background:none;border-radius:9px;text-align:left;color:var(--ink);font:inherit;cursor:pointer}
+#view3 .rm:hover{background:rgba(214,224,255,.05)}
+#view3 .rm.sel{background:rgba(242,184,128,.1)}
+#view3 .rm .n{font-size:12.5px;font-weight:600;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#view3 .rm .t{position:relative;height:12px;border-radius:4px;background:rgba(214,224,255,.06);overflow:hidden}
+#view3 .rm .t i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;transition:width .7s var(--ease)}
+#view3 .rm .v{text-align:right;font-weight:800;font-size:12.5px}
+#view3 .rm .v small{display:block;font-size:10.5px;color:var(--soft);font-weight:600}
+#view3 /* mappa articoli */
+.sc{position:relative;width:100%}
+#view3 .sc svg{display:block;width:100%;height:auto;overflow:visible}
+#view3 .sc .gl{stroke:var(--line)}
+#view3 .sc .ax{stroke:var(--line-2);stroke-dasharray:3 4}
+#view3 .sc text{font-family:Inter,sans-serif}
+#view3 .sc .tk{font-size:10.5px;fill:var(--faint);font-weight:600}
+#view3 .sc .at{font-size:11px;fill:var(--ink-2);font-weight:700}
+#view3 .sc .zl{font-size:11px;fill:var(--soft);font-weight:700}
+#view3 .sc circle{transition:cx .8s var(--ease),cy .8s var(--ease),r .8s var(--ease),opacity .4s;cursor:pointer;stroke:var(--card);stroke-width:1}
+#view3 .sc circle:hover{stroke:var(--ink);stroke-width:1.5}
+#view3 .sc .lbl{font-size:10.5px;font-weight:700;fill:var(--ink);paint-order:stroke;stroke:var(--card);stroke-width:3.5px;stroke-linejoin:round;pointer-events:none}
+#view3 /* settimana di ingresso */
+.co{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:16px;align-items:end;height:220px;padding-top:6px}
+#view3 .cb{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:8px}
+#view3 .cb .cv{font-size:24px;font-weight:800;letter-spacing:-.6px}
+#view3 .cb .bar2{width:100%;max-width:96px;border-radius:12px 12px 4px 4px;transition:height .8s var(--ease),background .5s}
+#view3 .cb .cl{font-size:12px;font-weight:700;color:var(--ink-2);text-align:center;line-height:1.35}
+#view3 .cb .cl small{display:block;color:var(--soft);font-weight:600;font-size:11px}
+#view3 /* articoli */
+.agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(176px,1fr));gap:14px}
+#view3 .pc{position:relative;display:flex;flex-direction:column;border-radius:16px;overflow:hidden;background:var(--surface-2);border:1px solid var(--line);cursor:pointer;transition:transform .3s var(--ease),border-color .3s}
+#view3 .pc:hover{transform:translateY(-3px);border-color:var(--line-2)}
+#view3 .pimg{position:relative;aspect-ratio:1/1;background:#F4F3F0;display:grid;place-items:center;overflow:hidden}
+#view3 .pimg img{width:100%;height:100%;object-fit:contain}
+#view3 .noimg{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:linear-gradient(160deg,#243258,#1C2949);color:var(--ink-2);text-align:center;padding:10px}
+#view3 .noimg b{font-size:18px;font-weight:800;color:var(--ink);letter-spacing:.5px}
+#view3 .noimg span{font-size:10.5px;color:var(--soft);font-weight:600}
+#view3 .pimg.fail img{display:none}
+#view3 .pimg.fail .noimg{display:flex}
+#view3 .pring{position:absolute;top:8px;right:8px;width:46px;height:46px;border-radius:50%;background:rgba(14,23,48,.88);display:grid;place-items:center}
+#view3 .pring svg{position:absolute;inset:3px;width:40px;height:40px;transform:rotate(-90deg)}
+#view3 .pring b{font-size:11px;font-weight:800;position:relative}
+#view3 .pb{padding:10px 12px 12px;display:grid;gap:5px}
+#view3 .pcode{font-size:10.5px;color:var(--faint);font-weight:700}
+#view3 .pname{font-size:12.5px;font-weight:800;line-height:1.3;min-height:2.6em}
+#view3 .pstats{display:grid;grid-template-columns:1fr 1fr;gap:3px 10px;font-size:11px;color:var(--soft)}
+#view3 .pstats b{display:block;color:var(--ink);font-size:12px}
+#view3 .more{display:flex;justify-content:center;margin-top:16px}
+#view3 .bigbtn{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 22px;border-radius:14px;border:0;background:var(--accent);color:#2A1A0C;font:800 14px Inter,sans-serif;cursor:pointer}
+#view3 .bigbtn:hover{background:#F6C796}
+#view3 /* galleria completa */
+.ov{position:fixed;inset:0;z-index:50;background:var(--bg);display:none;flex-direction:column}
+#view3 .ov.on{display:flex;animation:st_ovin .35s var(--ease)}
+@keyframes st_ovin{from{opacity:0;transform:translateY(16px)}}
+#view3 .ovh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:14px 24px;border-bottom:1px solid var(--line);background:var(--bg-2)}
+#view3 .ovh h3{margin:0 auto 0 0;font-size:17px;font-weight:800}
+#view3 .ovh .cnt{font-size:12px;color:var(--soft);font-weight:600}
+#view3 .xbtn{height:38px;width:38px;border-radius:11px;border:1px solid var(--line-2);background:var(--surface-3);color:var(--ink);font:800 16px Inter,sans-serif;cursor:pointer}
+#view3 .ovb{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:18px 24px 40px}
+#view3 .sentinel{height:1px}
+#view3 /* dettaglio articolo */
+.md{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;background:rgba(5,10,25,.7);padding:16px}
+#view3 .md.on{display:flex}
+#view3 .mdc{width:min(560px,100%);max-height:90vh;overflow:auto;background:var(--card);border:1px solid var(--line-2);border-radius:22px;display:grid;grid-template-columns:200px minmax(0,1fr);gap:0}
+#view3 .mdc .pimg{aspect-ratio:auto;height:100%;min-height:200px;border-radius:22px 0 0 22px}
+#view3 .mdb{position:relative;padding:18px 18px 20px}
+#view3 .mdx{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:10px;border:1px solid var(--line-2);background:var(--surface-3);color:var(--ink);font:800 14px Inter,sans-serif;cursor:pointer}
+#view3 .mdb h4{margin:4px 0 10px;font-size:16px;line-height:1.3}
+#view3 .mdb .rows{display:grid;gap:6px;font-size:12.5px;color:var(--ink-2)}
+#view3 .mdb .rows div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-bottom:6px}
+#view3 .mdb .rows b{color:var(--ink)}
+#view3 .copy{margin-top:12px;height:34px;padding:0 12px;border-radius:10px;border:1px solid var(--line-2);background:var(--surface-3);color:var(--ink);font:700 12px Inter,sans-serif;cursor:pointer}
+#view3 /* tabella dettaglio */
+.tscroll{overflow:auto;-webkit-overflow-scrolling:touch;max-height:70vh;border-radius:12px;border:1px solid var(--line)}
+#view3 table.dt{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px}
+#view3 table.dt th{position:sticky;top:0;z-index:2;background:var(--surface-2);font-weight:700;font-size:11.5px;text-align:left;color:var(--soft);padding:10px 12px;border-bottom:1px solid var(--line-2);white-space:nowrap;cursor:pointer;user-select:none}
+#view3 table.dt th.num,#view3 table.dt td.num{text-align:right}
+#view3 table.dt th.on{color:var(--accent)}
+#view3 table.dt th.on::after{content:' ↓'}
+#view3 table.dt th.on.asc::after{content:' ↑'}
+#view3 table.dt td{padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+#view3 table.dt tbody tr{cursor:pointer}
+#view3 table.dt tbody tr:hover td{background:rgba(214,224,255,.04)}
+#view3 table.dt th:first-child,#view3 table.dt td:first-child{position:sticky;left:0;z-index:1;background:var(--card);box-shadow:2px 0 6px -2px rgba(0,0,0,.5);max-width:230px;overflow:hidden;text-overflow:ellipsis}
+#view3 table.dt thead th:first-child{z-index:3;background:var(--surface-2)}
+#view3 table.dt td:first-child b{display:block;font-size:12.5px;overflow:hidden;text-overflow:ellipsis}
+#view3 table.dt td:first-child small{font-size:11px;color:var(--soft);font-weight:700}
+#view3 .tnote{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft);margin-bottom:10px}
+@media(max-width:640px){#view3 table.dt th:first-child,#view3 table.dt td:first-child{max-width:150px}
+ }
+#view3 .note{font-size:11.5px;color:var(--faint);margin-top:8px}
+@media(max-width:820px){#view3 .st-hero{grid-template-columns:minmax(0,1fr);gap:18px;padding:22px 20px}
+#view3 .ring{display:flex;justify-content:center}
+#view3 .figs{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:640px){#view3 .st-bar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px;padding:8px 0}
+#view3 .st-bar select,#view3 .st-bar input{width:100%;min-width:0;height:36px}
+#view3 .st-bar .chip-reset{display:none}
+#view3 .card{padding:16px}
+#view3 .dr,#view3 .rm{grid-template-columns:minmax(0,108px) minmax(0,1fr) 62px;gap:8px}
+#view3 .rm{grid-template-columns:minmax(0,108px) minmax(0,1fr) 78px}
+#view3 .agrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#view3 .ovh{padding:12px 14px}
+#view3 .ovb{padding:14px}
+#view3 .ovh select{flex:1}
+#view3 .mdc{grid-template-columns:minmax(0,1fr)}
+#view3 .mdc .pimg{border-radius:22px 22px 0 0;aspect-ratio:1/1;min-height:0}
+#view3 .co{height:190px}
+#view3 .cb .cv{font-size:20px}
+
+}
+@media(prefers-reduced-motion:reduce){}
+
+
   @media print{
+    :root{--bg:#fff;--bg-2:#fff;--card:#fff;--card-solid:#fff;--surface-2:#f4f5f8;--surface-3:#eceef3;--ink:#111827;--ink-2:#374151;--ink-soft:#6B7280;--ink-faint:#9CA3AF;--line:#E5E7EB;--line-2:#D1D5DB;}
+    .hero{background:#fff;}
+    .hero::before, .hero::after, .period-bar, #tip{display:none !important;}
+    *{animation:none !important;transition:none !important;}
     body{background:#fff;}
     body::before{display:none;}
     .shell{background:#fff;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none;border:none;max-width:100%;padding:6px;margin:0;}
@@ -243,6 +726,7 @@
 </head>
 <body>
 <script id="snapshotData" type="application/json"></script>
+<div id="tip" role="tooltip"></div>
 <div class="shell">
 
   <div class="topnav">
@@ -256,10 +740,15 @@
         <div class="pill" data-view="view2">Sub-reparto</div>
         <div class="pill" data-view="view3">Sell Through</div>
       </div>
-      <button class="btn no-print" id="printBtn" style="width:auto;padding:9px 16px;white-space:nowrap;">🖨️ Stampa riepilogo</button>
-      <button class="btn no-print" id="snapshotBtn" style="width:auto;padding:9px 16px;white-space:nowrap;">📸 Genera snapshot da condividere</button>
-      <button class="btn no-print" id="publishBtn" style="width:auto;padding:9px 16px;white-space:nowrap;">🌐 Pubblica online per il team</button>
-      <button class="btn no-print" id="ghSettingsBtn" style="width:auto;padding:9px 12px;white-space:nowrap;" title="Impostazioni GitHub">⚙️</button>
+      <details class="share-menu no-print" id="shareMenu">
+        <summary class="btn">Condividi ▾</summary>
+        <div class="share-list">
+          <button class="btn" id="printBtn">🖨️ Stampa riepilogo</button>
+          <button class="btn" id="snapshotBtn">📸 Genera snapshot da condividere</button>
+          <button class="btn" id="publishBtn">🌐 Pubblica online per il team</button>
+          <button class="btn" id="ghSettingsBtn" title="Impostazioni GitHub">⚙️ Impostazioni GitHub</button>
+        </div>
+      </details>
     </div>
   </div>
 
@@ -293,7 +782,25 @@
     <div class="dl-note">Come scaricarlo: Power BI → Libretto Analisi Dinamica → Analisi Dinamica → filtri Category e APC → nei filtri, dove si trova il Giornaliero, tutti attivi.</div>
 
     <div id="content" class="hidden">
-      <div class="greet">Andamento negozio</div>
+      <div class="period-bar">
+        <div class="pb-title"><div class="greet">Andamento negozio</div><div class="view-date" id="viewDate"></div></div>
+        <div class="pb-ctrls">
+          <div class="period-pills has-ind" id="periodSwitch"><span class="ind"></span>
+            <div class="p" data-period="giorno">Giorno</div>
+            <div class="p active" data-period="sett">Sett.</div>
+            <div class="p" data-period="mese">Mese</div>
+            <div class="p" data-period="montante">Anno</div>
+          </div>
+          <select id="catDrilldown" aria-label="Category da esplorare"></select>
+        </div>
+      </div>
+
+      <section class="hero" id="hero"></section>
+      <div class="kpi-row2" id="kpis"></div>
+
+      <div class="alerts-head" id="alertsTitle">Da guardare questa settimana</div>
+      <div class="alerts-note">Le 3 voci sotto la rete che hanno perso più euro rispetto all'anno scorso (come "Ordina per variazione €").</div>
+      <div class="b-alerts" id="alertsRow"></div>
 
       <div class="card" style="margin-bottom:18px;">
         <h3 style="margin-bottom:4px;">🔍 Chiedi alla dashboard</h3>
@@ -305,28 +812,41 @@
         <div id="searchResults" style="margin-top:14px;"></div>
       </div>
 
+      <div class="grid-1-1">
+        <div class="card chart-card">
+          <h3 id="reteBarsTitle">Vendite per category vs Rete</h3>
+          <div class="muted" style="margin-bottom:12px;">Punti di scarto dalla rete dei negozi diretti · ← peggio della rete | meglio della rete →</div>
+          <div id="reteBars"></div>
+          <div class="quad-info hidden" id="reteBarsInfo"></div>
+          <div class="tlegend" style="margin-top:12px;"><span><i style="background:var(--pos)"></i>In crescita</span><span><i style="background:var(--market)"></i>Mercato</span><span><i style="background:var(--neg)"></i>Critico</span><span>· Tocca una barra per i dettagli</span></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chdr" style="margin-bottom:4px;">
+            <div><h3 id="bridgeTitle">Ponte dall'anno scorso a oggi</h3>
+            <div class="muted" id="bridgeSub"></div></div>
+            <label class="brg-opt">Voci una per una
+              <select id="bridgeTopN"><option value="6">6</option><option value="8" selected>8</option><option value="12">12</option></select>
+            </label>
+          </div>
+          <div id="bridge"></div>
+          <div class="tlegend" style="margin-top:10px;"><span><i style="background:var(--market)"></i>Totale</span><span><i style="background:var(--neg)"></i>Toglie</span><span><i style="background:var(--pos)"></i>Aggiunge</span><span>· L'asse non parte da zero · "Altri" somma le voci più piccole · "Non stimabili": voci con −100% o senza dato vs anno scorso</span></div>
+        </div>
+      </div>
+
       <div class="main-grid">
         <div>
-          <div class="kpi-row" id="kpis"></div>
           <div class="card chart-card">
             <div class="chdr">
               <div>
-                <h3 id="chartTitle">Vendite per Category</h3>
+                <h3 id="chartTitle">Vendite per category</h3>
                 <div class="muted" id="chartSubtitle">Confronto tra categorie, periodo selezionato</div>
               </div>
-              <div class="period-pills" id="periodSwitch">
-                <div class="p" data-period="giorno">Giorno</div>
-                <div class="p active" data-period="sett">Sett.</div>
-                <div class="p" data-period="mese">Mese</div>
-                <div class="p" data-period="montante">Anno</div>
-              </div>
             </div>
-            <div class="controls" style="margin-bottom:6px;">
-              <select id="catDrilldown"></select>
+            <div class="quadrant" id="catQuadrant"></div>
+            <div class="q-foot">
+              <div class="tlegend"><span><i style="background:var(--pos)"></i>In crescita</span><span><i style="background:var(--market)"></i>Mercato</span><span><i style="background:var(--neg)"></i>Critico</span></div>
+              <div class="q-note">Dimensione = venduto. Tocca un pallino per i dettagli.</div>
             </div>
-            <div class="summary-row" id="summaryRow"></div>
-            <div class="quadrant-wrap" id="catQuadrant"></div>
-            <div class="quad-info hidden" id="catQuadrantInfo"></div>
           </div>
         </div>
 
@@ -344,38 +864,55 @@
         </div>
       </div>
 
-      <div class="card treemap-card">
-        <h3 id="treemapTitle">Peso e performance per Category</h3>
-        <div class="muted">Dimensione = quota di fatturato · Colore = performance (verde crescita, blu in linea col mercato, rosso sotto la rete), periodo selezionato</div>
-        <div class="treemap" id="catTreemap"></div>
-      </div>
-
       <div class="card bottom-card">
-        <div class="chdr">
+        <div class="chdr list-hdr">
           <h3 id="watchTitle">Da monitorare</h3>
-          <select id="watchCatFilter"></select>
-          <select id="watchSortMode">
-            <option value="pct">Ordina per variazione %</option>
-            <option value="euro">Ordina per variazione €</option>
-            <option value="rete">Ordina per vs Rete</option>
-          </select>
+          <div class="list-controls">
+            <select id="watchCatFilter"></select>
+            <select id="watchSortMode">
+              <option value="pct">Ordina per variazione %</option>
+              <option value="euro">Ordina per variazione €</option>
+              <option value="rete">Ordina per vs Rete</option>
+            </select>
+          </div>
         </div>
-        <div class="section-title" id="worstTitle" style="margin-top:2px;">Peggiori 10 della settimana</div>
-        <div id="watchListWorst"></div>
-        <div class="section-title" id="bestTitle">Migliori 10 della settimana</div>
-        <div id="watchListBest"></div>
+        <div class="seg-toggle" data-target="watchTwo"><span class="on" data-col="0">Peggiori</span><span data-col="1">Migliori</span></div>
+        <div class="b-two" id="watchTwo">
+          <div class="b-col">
+            <div class="section-title wl-title" style="margin-top:2px;"><i style="background:var(--neg)"></i><span id="worstTitle">Peggiori 10 della settimana</span></div>
+            <div id="watchListWorst"></div>
+          </div>
+          <div class="b-col">
+            <div class="section-title wl-title" style="margin-top:2px;"><i style="background:var(--pos)"></i><span id="bestTitle">Migliori 10 della settimana</span></div>
+            <div id="watchListBest"></div>
+          </div>
+        </div>
       </div>
 
       <div class="card bottom-card">
-        <div class="chdr">
+        <div class="chdr list-hdr">
           <h3>Confronto con la rete</h3>
-          <select id="reteCatFilter"></select>
+          <div class="list-controls"><select id="reteCatFilter"></select></div>
         </div>
         <div class="section-note">Scostamento = tua % vs anno scorso meno la crescita della rete dei negozi diretti sullo stesso reparto/brand. Negativo = stai perdendo più della rete (problema reale), positivo = stai andando meglio della rete, a prescindere dal segno vs anno scorso.</div>
-        <div class="section-title" id="reteWorstTitle" style="margin-top:2px;">Sotto la rete — peggiori 10</div>
-        <div id="reteListWorst"></div>
-        <div class="section-title" id="reteBestTitle">Sopra la rete — migliori 10</div>
-        <div id="reteListBest"></div>
+        <div class="seg-toggle" data-target="reteTwo"><span class="on" data-col="0">Sotto la rete</span><span data-col="1">Sopra la rete</span></div>
+        <div class="b-two" id="reteTwo">
+          <div class="b-col">
+            <div class="section-title wl-title" style="margin-top:2px;"><i style="background:var(--neg)"></i><span id="reteWorstTitle">Sotto la rete — peggiori 10</span></div>
+            <div id="reteListWorst"></div>
+          </div>
+          <div class="b-col">
+            <div class="section-title wl-title" style="margin-top:2px;"><i style="background:var(--pos)"></i><span id="reteBestTitle">Sopra la rete — migliori 10</span></div>
+            <div id="reteListBest"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card treemap-card">
+        <h3 id="treemapTitle">Peso e performance per Category</h3>
+        <div class="muted">Area = quota di venduto · Colore = andamento · Tocca un riquadro per i dettagli</div>
+        <div class="treemap2" id="catTreemap"></div>
+        <div class="tlegend" style="margin-top:12px;"><span><i style="background:var(--pos)"></i>In crescita</span><span><i style="background:var(--market)"></i>Mercato</span><span><i style="background:var(--neg)"></i>Critico</span><span>· Più il colore è pieno, più forte la variazione</span></div>
       </div>
 
       <div class="tabbar" id="tabbar1">
@@ -434,7 +971,25 @@
     <div class="dl-note">Come scaricarlo: Power BI → Libretto Analisi Dinamica → Analisi Dinamica → filtri Category e SubReparto → nei filtri, dove si trova il Giornaliero, tutti attivi.</div>
 
     <div id="content2" class="hidden">
-      <div class="greet">Andamento sub-reparti</div>
+      <div class="period-bar">
+        <div class="pb-title"><div class="greet">Andamento sub-reparti</div><div class="view-date" id="viewDate2"></div></div>
+        <div class="pb-ctrls">
+          <div class="period-pills has-ind" id="periodSwitch2"><span class="ind"></span>
+            <div class="p" data-period="giorno">Giorno</div>
+            <div class="p active" data-period="sett">Sett.</div>
+            <div class="p" data-period="mese">Mese</div>
+            <div class="p" data-period="montante">Anno</div>
+          </div>
+          <select id="catDrilldown2" aria-label="Category da esplorare"></select>
+        </div>
+      </div>
+
+      <section class="hero" id="hero2"></section>
+      <div class="kpi-row2" id="kpis2"></div>
+
+      <div class="alerts-head" id="alertsTitle2">Da guardare questa settimana</div>
+      <div class="alerts-note">Le 3 voci sotto la rete che hanno perso più euro rispetto all'anno scorso (come "Ordina per variazione €").</div>
+      <div class="b-alerts" id="alertsRow2"></div>
 
       <div class="card" style="margin-bottom:18px;">
         <h3 style="margin-bottom:4px;">🔍 Chiedi alla dashboard</h3>
@@ -446,28 +1001,41 @@
         <div id="searchResults2" style="margin-top:14px;"></div>
       </div>
 
+      <div class="grid-1-1">
+        <div class="card chart-card">
+          <h3 id="reteBarsTitle2">Vendite per category vs Rete</h3>
+          <div class="muted" style="margin-bottom:12px;">Punti di scarto dalla rete dei negozi diretti · ← peggio della rete | meglio della rete →</div>
+          <div id="reteBars2"></div>
+          <div class="quad-info hidden" id="reteBarsInfo2"></div>
+          <div class="tlegend" style="margin-top:12px;"><span><i style="background:var(--pos)"></i>In crescita</span><span><i style="background:var(--market)"></i>Mercato</span><span><i style="background:var(--neg)"></i>Critico</span><span>· Tocca una barra per i dettagli</span></div>
+        </div>
+        <div class="card chart-card">
+          <div class="chdr" style="margin-bottom:4px;">
+            <div><h3 id="bridgeTitle2">Ponte dall'anno scorso a oggi</h3>
+            <div class="muted" id="bridgeSub2"></div></div>
+            <label class="brg-opt">Voci una per una
+              <select id="bridgeTopN2"><option value="6">6</option><option value="8" selected>8</option><option value="12">12</option></select>
+            </label>
+          </div>
+          <div id="bridge2"></div>
+          <div class="tlegend" style="margin-top:10px;"><span><i style="background:var(--market)"></i>Totale</span><span><i style="background:var(--neg)"></i>Toglie</span><span><i style="background:var(--pos)"></i>Aggiunge</span><span>· L'asse non parte da zero · "Altri" somma le voci più piccole · "Non stimabili": voci con −100% o senza dato vs anno scorso</span></div>
+        </div>
+      </div>
+
       <div class="main-grid">
         <div>
-          <div class="kpi-row" id="kpis2"></div>
           <div class="card chart-card">
             <div class="chdr">
               <div>
-                <h3 id="chartTitle2">Vendite per Category</h3>
+                <h3 id="chartTitle2">Vendite per category</h3>
                 <div class="muted" id="chartSubtitle2">Confronto tra categorie, periodo selezionato</div>
               </div>
-              <div class="period-pills" id="periodSwitch2">
-                <div class="p" data-period2="giorno">Giorno</div>
-                <div class="p active" data-period2="sett">Sett.</div>
-                <div class="p" data-period2="mese">Mese</div>
-                <div class="p" data-period2="montante">Anno</div>
-              </div>
             </div>
-            <div class="controls" style="margin-bottom:6px;">
-              <select id="catDrilldown2"></select>
+            <div class="quadrant" id="catQuadrant2"></div>
+            <div class="q-foot">
+              <div class="tlegend"><span><i style="background:var(--pos)"></i>In crescita</span><span><i style="background:var(--market)"></i>Mercato</span><span><i style="background:var(--neg)"></i>Critico</span></div>
+              <div class="q-note">Dimensione = venduto. Tocca un pallino per i dettagli.</div>
             </div>
-            <div class="summary-row" id="summaryRow2"></div>
-            <div class="quadrant-wrap" id="catQuadrant2"></div>
-            <div class="quad-info hidden" id="catQuadrantInfo2"></div>
           </div>
         </div>
 
@@ -485,38 +1053,55 @@
         </div>
       </div>
 
+      <div class="card bottom-card">
+        <div class="chdr list-hdr">
+          <h3 id="watchTitle2">Da monitorare</h3>
+          <div class="list-controls">
+            <select id="watchCatFilter2"></select>
+            <select id="watchSortMode2">
+              <option value="pct">Ordina per variazione %</option>
+              <option value="euro">Ordina per variazione €</option>
+              <option value="rete">Ordina per vs Rete</option>
+            </select>
+          </div>
+        </div>
+        <div class="seg-toggle" data-target="watchTwo2"><span class="on" data-col="0">Peggiori</span><span data-col="1">Migliori</span></div>
+        <div class="b-two" id="watchTwo2">
+          <div class="b-col">
+            <div class="section-title wl-title" style="margin-top:2px;"><i style="background:var(--neg)"></i><span id="worstTitle2">Peggiori 10 della settimana</span></div>
+            <div id="watchListWorst2"></div>
+          </div>
+          <div class="b-col">
+            <div class="section-title wl-title" style="margin-top:2px;"><i style="background:var(--pos)"></i><span id="bestTitle2">Migliori 10 della settimana</span></div>
+            <div id="watchListBest2"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card bottom-card">
+        <div class="chdr list-hdr">
+          <h3>Confronto con la rete</h3>
+          <div class="list-controls"><select id="reteCatFilter2"></select></div>
+        </div>
+        <div class="section-note">Scostamento = tua % vs anno scorso meno la crescita della rete dei negozi diretti sullo stesso sub-reparto. Negativo = stai perdendo più della rete (problema reale), positivo = stai andando meglio della rete, a prescindere dal segno vs anno scorso.</div>
+        <div class="seg-toggle" data-target="reteTwo2"><span class="on" data-col="0">Sotto la rete</span><span data-col="1">Sopra la rete</span></div>
+        <div class="b-two" id="reteTwo2">
+          <div class="b-col">
+            <div class="section-title wl-title" style="margin-top:2px;"><i style="background:var(--neg)"></i><span id="reteWorstTitle2">Sotto la rete — peggiori 10</span></div>
+            <div id="reteListWorst2"></div>
+          </div>
+          <div class="b-col">
+            <div class="section-title wl-title" style="margin-top:2px;"><i style="background:var(--pos)"></i><span id="reteBestTitle2">Sopra la rete — migliori 10</span></div>
+            <div id="reteListBest2"></div>
+          </div>
+        </div>
+      </div>
+
       <div class="card treemap-card">
         <h3 id="treemapTitle2">Peso e performance per Category</h3>
-        <div class="muted">Dimensione = quota di fatturato · Colore = performance (verde crescita, blu in linea col mercato, rosso sotto la rete), periodo selezionato</div>
-        <div class="treemap" id="catTreemap2"></div>
-      </div>
-
-      <div class="card bottom-card">
-        <div class="chdr">
-          <h3 id="watchTitle2">Da monitorare</h3>
-          <select id="watchCatFilter2"></select>
-          <select id="watchSortMode2">
-            <option value="pct">Ordina per variazione %</option>
-            <option value="euro">Ordina per variazione €</option>
-            <option value="rete">Ordina per vs Rete</option>
-          </select>
-        </div>
-        <div class="section-title" id="worstTitle2" style="margin-top:2px;">Peggiori 10 della settimana</div>
-        <div id="watchListWorst2"></div>
-        <div class="section-title" id="bestTitle2">Migliori 10 della settimana</div>
-        <div id="watchListBest2"></div>
-      </div>
-
-      <div class="card bottom-card">
-        <div class="chdr">
-          <h3>Confronto con la rete</h3>
-          <select id="reteCatFilter2"></select>
-        </div>
-        <div class="section-note">Scostamento = tua % vs anno scorso meno la crescita della rete dei negozi diretti sullo stesso reparto/brand. Negativo = stai perdendo più della rete (problema reale), positivo = stai andando meglio della rete, a prescindere dal segno vs anno scorso.</div>
-        <div class="section-title" id="reteWorstTitle2" style="margin-top:2px;">Sotto la rete — peggiori 10</div>
-        <div id="reteListWorst2"></div>
-        <div class="section-title" id="reteBestTitle2">Sopra la rete — migliori 10</div>
-        <div id="reteListBest2"></div>
+        <div class="muted">Area = quota di venduto · Colore = andamento · Tocca un riquadro per i dettagli</div>
+        <div class="treemap2" id="catTreemap2"></div>
+        <div class="tlegend" style="margin-top:12px;"><span><i style="background:var(--pos)"></i>In crescita</span><span><i style="background:var(--market)"></i>Mercato</span><span><i style="background:var(--neg)"></i>Critico</span><span>· Più il colore è pieno, più forte la variazione</span></div>
       </div>
 
       <div class="tabbar" id="tabbar2">
@@ -581,138 +1166,188 @@
 
     <div id="content3" class="hidden">
       <div class="greet">Sell Through</div>
+  <div class="st-bar">
+    <select id="stDept"><option value="">Tutti i reparti</option></select>
+    <select id="stFunc"><option value="">Tutte le funzioni/brand</option></select>
+    <input type="text" id="stSearch" placeholder="Cerca articolo o codice…">
+    <select id="stSort">
+      <option value="stAsc">Sell Through più basso</option>
+      <option value="stDesc">Sell Through più alto</option>
+      <option value="rest">Più merce rimasta (€)</option>
+      <option value="pz">Più pezzi rimasti</option>
+      <option value="new">Entrati più di recente</option>
+    </select>
+    <button class="chip-reset" id="stReset">Azzera filtri</button>
+  </div>
 
-      <div class="kpi-row" id="kpis3"></div>
+  <section class="st-hero" id="stHero"></section>
 
-      <div class="card" style="margin-bottom:18px;">
-        <h3 style="margin-bottom:12px;">Filtri</h3>
-        <div class="controls">
-          <select id="stDeptFilter"></select>
-          <select id="stFuncFilter"></select>
-          <input type="text" id="stSearchBox" placeholder="Cerca articolo...">
-          <select id="stSortMode">
-            <option value="st_asc">Sell Through crescente (peggiori prima)</option>
-            <option value="st_desc">Sell Through decrescente (migliori prima)</option>
-            <option value="sales_desc">Venduto (pezzi) decrescente</option>
-            <option value="unsold_desc">Invenduto decrescente</option>
-          </select>
-        </div>
-      </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Sell Through per reparto</h3>
+      <p class="muted">Venduto ÷ consegnato, in euro. Sfondo: rosso sotto il 15%, giallo 15–25%, verde dal 25%. Tocca un reparto per filtrarlo.</p>
+      <div id="stDepts"></div>
+    </div>
+    <div class="card">
+      <h3>Dove resta la merce</h3>
+      <p class="muted">Consegnato meno venduto, in euro: la merce ancora da vendere. Colore = fascia di Sell Through.</p>
+      <div id="stRest"></div>
+    </div>
+  </div>
 
-      <div class="card" style="margin-bottom:18px;">
-        <h3 style="margin-bottom:4px;">Articoli</h3>
-        <div class="muted" style="margin-bottom:14px;">Foto, Sell Through e invenduto per articolo, secondo i filtri sopra.</div>
-        <div class="product-grid" id="stProductGrid"></div>
-        <div class="section-note" id="stGridMoreNote" style="margin-top:12px;"></div>
-      </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Articoli: merce rimasta × Sell Through</h3>
+      <p class="muted">Ogni pallino è un articolo. A destra più merce rimasta, in basso Sell Through più basso: <b>in basso a destra ci sono le priorità</b>. Tocca un pallino per i dettagli.</p>
+      <div class="sc" id="stSc"></div>
+      <div class="lg"><span><i style="background:var(--neg)"></i>Critico &lt; 15%</span><span><i style="background:var(--amber)"></i>Da monitorare 15–25%</span><span><i style="background:var(--pos)"></i>Buono ≥ 25%</span><span>· Dimensione = consegnato · Bordo tratteggiato = oltre la scala</span></div>
+    </div>
+    <div class="card">
+      <h3>Per settimana di ingresso</h3>
+      <p class="muted">Sell Through degli articoli raggruppati per data di prima vendita. Quelli entrati da poco hanno per forza un Sell Through più basso: qui il confronto è alla pari.</p>
+      <div class="co" id="stCo"></div>
+    </div>
+  </div>
 
-      <div class="card" style="margin-bottom:18px;">
-        <h3 style="margin-bottom:12px;">Reparti — Sell Through</h3>
-        <div id="stDeptRollup"></div>
-      </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+      <div><h3>Articoli</h3><p class="muted" id="stArtSub" style="margin-bottom:12px">Primi 12 secondo filtri e ordinamento.</p></div>
+    </div>
+    <div class="agrid" id="stPreview"></div>
+    <div class="more"><button class="bigbtn" id="stOpenAll">Vedi tutti gli articoli</button></div>
+    <div class="note">Le foto arrivano dai server OVS: se non si caricano (rete esterna al negozio) compare il codice Master Item al loro posto.</div>
+  </div>
+  <div class="card">
+    <h3>Dettaglio completo</h3>
+    <div class="tnote"><span id="stDtSub">Tutti gli articoli secondo i filtri in alto. Tocca un'intestazione per ordinare, una riga per il dettaglio.</span></div>
+    <div class="tscroll"><table class="dt" id="stDt">
+      <thead><tr>
+        <th data-s="name">Articolo</th>
+        <th data-s="deptName">Reparto</th>
+        <th data-s="funcName">Funzione/brand</th>
+        <th data-s="first">Ingresso</th>
+        <th data-s="del" class="num">Consegnato</th>
+        <th data-s="sal" class="num">Venduto</th>
+        <th data-s="rest" class="num">Merce rimasta</th>
+        <th data-s="stp" class="num">Sell Through</th>
+        <th data-s="st2" class="num">ST 2 sett.</th>
+        <th data-s="pzRest" class="num">Pezzi rimasti ≈</th>
+        <th data-s="price" class="num">Prezzo</th>
+      </tr></thead>
+      <tbody id="stDtBody"></tbody>
+    </table></div>
+  </div>
 
-      <div class="card">
-        <h3 style="margin-bottom:12px;">Dettaglio completo</h3>
-        <div class="table-scroll">
-        <table id="stDetailTable">
-          <thead><tr>
-            <th data-sort3="item">Articolo</th>
-            <th data-sort3="department">Reparto</th>
-            <th data-sort3="function">Funzione/brand</th>
-            <th data-sort3="delivered" class="num">Consegnato</th>
-            <th data-sort3="sales" class="num">Venduto</th>
-            <th data-sort3="totalST" class="num">Sell Through</th>
-            <th data-sort3="pctUnsold" class="num">% Invenduto</th>
-            <th data-sort3="avgRetailPrice" class="num">Prezzo medio</th>
-            <th data-sort3="stores" class="num">Negozi</th>
-          </tr></thead>
-          <tbody id="stDetailBody"></tbody>
-        </table>
-        </div>
-      </div>
+<!-- galleria completa -->
+<div class="ov" id="stOv">
+  <div class="ovh">
+    <h3>Tutti gli articoli <span class="cnt" id="stOvCnt"></span></h3>
+    <select id="stOvSort">
+      <option value="stAsc">Sell Through più basso</option>
+      <option value="stDesc">Sell Through più alto</option>
+      <option value="rest">Più merce rimasta (€)</option>
+      <option value="pz">Più pezzi rimasti</option>
+      <option value="new">Entrati più di recente</option>
+    </select>
+    <button class="xbtn" id="stOvClose" aria-label="Chiudi">✕</button>
+  </div>
+  <div class="ovb" id="stOvBody"><div class="agrid" id="stOvGrid"></div><div class="sentinel" id="stSentinel"></div></div>
+</div>
+
+<!-- dettaglio -->
+<div class="md" id="stMd"><div class="mdc" id="stMdc"></div></div>
     </div>
     <div id="emptyMsg3" class="empty-msg"></div>
   </div>
 
   <div class="card legend-card">
-    <h3>📖 Legenda e note</h3>
-    <div class="muted">Un riepilogo di come leggere i numeri e cosa significano i vari indicatori della dashboard.</div>
-
+    <h3>📖 Come leggere la dashboard</h3>
+    <div class="muted">Cosa significano periodi, confronti, colori e grafici. Tocca una voce per aprirla.</div>
     <details open>
-      <summary>Periodi: Giorno, Settimana, Mese, Montante anno</summary>
+      <summary>Periodi: Giorno, Settimana, Mese, Anno</summary>
       <div class="legend-body">
-        <p><strong>Giorno</strong> e <strong>Settimana</strong>: venduto del giorno corrente e della settimana in corso (da domenica).</p>
-        <p><strong>Mese</strong>: venduto da inizio mese a oggi (mese in corso).</p>
-        <p><strong>Montante anno</strong>: venduto cumulato da inizio esercizio (anno) a oggi.</p>
+        <p><strong>Giorno</strong> e <strong>Settimana</strong>: venduto del giorno e della settimana in corso. <strong>Mese</strong>: da inizio mese a oggi. <strong>Anno</strong> (montante): cumulato da inizio esercizio.</p>
+        <p>Il periodo si sceglie nella barra fissa in alto, oppure toccando una delle schede (Oggi, Settimana, Mese, Anno) o una riga del grafico "Ritmo vs anno scorso". Cambia tutti i grafici della vista insieme.</p>
       </div>
     </details>
-
     <details>
-      <summary>vs LY (anno scorso)</summary>
+      <summary>vs anno scorso e vs budget</summary>
       <div class="legend-body">
-        <p>Confronto tra il venduto di oggi e il venduto dello stesso periodo dell'anno precedente. È il dato "% Incr. su AP" del tuo export Power BI.</p>
+        <p><strong>vs anno scorso (LY)</strong> è il "% Incr. su AP" di Power BI: venduto di oggi contro lo stesso periodo dell'anno prima.</p>
+        <p>Il venduto dell'anno scorso in euro non è nel file: è una <strong>stima</strong> = venduto ÷ (1 + % vs anno scorso). Non si può stimare per le voci a −100% (quest'anno a zero).</p>
+        <p><strong>Budget</strong> esiste solo per mese e anno ("% Avanz. su Prev."). Gli anelli nel riquadro in alto mostrano quanto budget del mese (esterno) e dell'anno (interno) è già raggiunto, e quanti euro mancano al budget del mese.</p>
       </div>
     </details>
-
     <details>
-      <summary>vs Budget</summary>
+      <summary>vs Rete: come si calcola</summary>
       <div class="legend-body">
-        <p>Disponibile solo per <strong>Mese</strong> e <strong>Montante anno</strong> (il file non ha un budget giornaliero/settimanale). Mostra quanto del budget/obiettivo (colonna "Previsioni" di Power BI) è già stato raggiunto, come percentuale.</p>
-        <p>Esempio: budget del mese €456.501, venduto finora €29.003 → 6,4% del budget raggiunto.</p>
+        <p>"% Incr. Diretti a Parità" è la crescita della <strong>rete dei negozi diretti</strong> sullo stesso reparto/brand (uguale in tutti i negozi). La dashboard calcola quanto stai meglio o peggio della rete:</p>
+        <p><code>scostamento = tua % vs anno scorso − % crescita rete</code></p>
+        <p>Esempio (Les Copains Woman): tu −43,7%, rete +0,6% → −44,3 punti. Il calo non è di mercato: è del negozio. Negativo = peggio della rete, positivo = meglio della rete, anche se sei sotto l'anno scorso.</p>
       </div>
     </details>
-
     <details>
-      <summary>vs Rete — come si calcola</summary>
+      <summary>Colori ed etichette: In crescita, Mercato, Critico, Da monitorare</summary>
       <div class="legend-body">
-        <p>Il campo originale del tuo export ("% Incr. Diretti a Parità") <strong>non</strong> è già una differenza: è la crescita della <strong>rete dei negozi diretti</strong> (esclusi i franchising) su quello specifico reparto/brand/categoria — lo stesso identico numero compare in tutti i negozi diretti per quel reparto/brand.</p>
-        <p>Per sapere come stai messo TU rispetto alla rete, la dashboard calcola:</p>
-        <p style="font-family:'IBM Plex Mono',monospace;background:var(--paper-2);padding:8px 12px;border-radius:8px;display:inline-block;">scostamento = (tua % vs anno scorso) − (% crescita rete)</p>
-        <p><strong>Esempio reale</strong> (Les Copains Woman): tu -43,7% vs anno scorso, rete +0,6% → scostamento = -43,7% − 0,6% = <strong>-44,3%</strong>. Nonostante il -43,7% sembri "solo" un problema di mercato, in realtà stai andando peggio della rete: è un problema reale del negozio.</p>
-        <p>Negativo = stai perdendo più della rete (problema reale). Positivo = stai andando meglio della rete, anche se il tuo dato assoluto vs anno scorso è negativo (probabile fenomeno di mercato generale, non colpa tua).</p>
+        <p><span class="badge pos">In crescita</span> sopra l'anno scorso.</p>
+        <p><span class="badge market">Mercato</span> sotto l'anno scorso ma in linea o meglio della rete: è un calo generale.</p>
+        <p><span class="badge neg">Critico</span> sotto l'anno scorso e peggio della rete (o, senza dato rete, calo oltre il 25%).</p>
+        <p><span class="badge amber">Da monitorare</span> calo moderato senza dato rete per capirne la causa.</p>
+        <p>Gli stessi colori valgono per barre vs Rete, quadrante, treemap e liste.</p>
       </div>
     </details>
-
     <details>
-      <summary>Etichette Critico / Mercato / In crescita / Da monitorare</summary>
+      <summary>Riquadro in alto, schede e "Da guardare"</summary>
       <div class="legend-body">
-        <p><span class="badge pos">In crescita</span> vendite in aumento vs anno scorso.</p>
-        <p><span class="badge market">Mercato</span> vendite in calo vs anno scorso, ma in linea o meglio della rete — il calo è un fenomeno di mercato generale, non un problema specifico del negozio.</p>
-        <p><span class="badge neg">Critico</span> vendite in calo vs anno scorso E peggio della rete (o, quando il dato rete non è disponibile, calo superiore al 25%) — qui il problema è reale e specifico.</p>
-        <p><span class="badge amber">Da monitorare</span> calo moderato senza dato rete disponibile per confermare la causa.</p>
+        <p><strong>Riquadro in alto</strong>: venduto del periodo, confronto con anno scorso e rete, stato, la category più forte e la più debole, anelli del budget e "Ritmo vs anno scorso" (barra = negozio, tacca bianca = rete) per i quattro periodi.</p>
+        <p><strong>Da guardare</strong>: le 3 voci <strong>sotto la rete</strong> che hanno perso più euro rispetto all'anno scorso, con lo stesso criterio di "Ordina per variazione €".</p>
       </div>
     </details>
-
     <details>
-      <summary>Grafico a quadranti e Treemap</summary>
+      <summary>Barre vs Rete e Ponte dall'anno scorso</summary>
       <div class="legend-body">
-        <p><strong>Quadranti</strong>: ogni pallino è una categoria (o un reparto/brand/sub-reparto, se hai selezionato una categoria col filtro). Posizione orizzontale = % vs anno scorso, posizione verticale = scostamento vs rete, dimensione = quanto pesa sul fatturato. Con molti elementi, solo i 14 col fatturato maggiore hanno l'etichetta scritta; gli altri sono identificabili passandoci sopra col mouse.</p>
-        <p><strong>Treemap</strong>: ogni riquadro è una categoria (o reparto/sub-reparto in drill-down). La dimensione del riquadro = quota di fatturato, il colore segue la stessa logica Critico (rosso) / Mercato (blu) / In crescita (verde).</p>
-        <p>In entrambi i grafici, il menu a tendina sopra permette di passare dalla vista per categoria al dettaglio dei reparti/brand (o sub-reparti) dentro una categoria specifica.</p>
+        <p><strong>Barre vs Rete</strong>: scostamento dalla rete in punti, per category (o reparto/brand, sub-reparto se scegli una category nella barra in alto). A sinistra peggio della rete, a destra meglio. Le voci molto lontane arrivano al bordo con un tratteggio; il valore vero è scritto accanto.</p>
+        <p><strong>Ponte dall'anno scorso</strong>: parte dal venduto stimato dell'anno scorso e arriva a quello di oggi; ogni barra rossa toglie, ogni verde aggiunge. "Voci una per una" sceglie quante mostrarne; le altre finiscono in <strong>Altri</strong>. <strong>Non stimabili</strong> chiude il conto con il totale vero di Power BI (voci a −100% o senza dato, e piccole differenze di arrotondamento). L'asse non parte da zero.</p>
       </div>
     </details>
-
     <details>
-      <summary>Peso e stagione (solo vista Sub-reparto)</summary>
+      <summary>Grafico a quadranti e treemap</summary>
       <div class="legend-body">
-        <p>Il codice alla fine del nome sub-reparto indica stagione e peso del capo: <strong>1</strong> = Primavera Estate, <strong>2</strong> = Autunno Inverno, seguito da <strong>M</strong> (medio), <strong>L</strong> (leggero) o <strong>H</strong> (pesante). <strong>N</strong> = no peso (soprattutto intimo). <strong>Cross season</strong> = articoli continuativi, non legati a una stagione specifica.</p>
+        <p><strong>Quadranti</strong>: ogni pallino è una category (o reparto/brand, sub-reparto se ne scegli una). Orizzontale = % vs anno scorso, verticale = scostamento vs rete, grandezza = venduto. Gli assi sono compressi verso i bordi, così anche i valori estremi restano nel grafico. I nomi non si sovrappongono: quelli che non ci stanno si leggono toccando il pallino.</p>
+        <p><strong>Treemap</strong>: area = quota di venduto, colore = andamento; più il colore è pieno, più forte la variazione. Tocca un riquadro per i dettagli.</p>
       </div>
     </details>
-
     <details>
-      <summary>Sell Through — come scaricare il file e cosa significa</summary>
+      <summary>Liste: Da monitorare e Confronto con la rete</summary>
       <div class="legend-body">
-        <p><strong>Come scaricarlo</strong>: QLIK → Item → filtri: Store, 1st Sale Month, Commercial Month, Category (Uomo e Donna).</p>
-        <p><strong>Sell Through</strong>: quota del venduto sul consegnato (venduto ÷ consegnato) — più è alto, meglio l'articolo/reparto ha venduto rispetto a quanto è arrivato in negozio. Soglie usate per i colori: <span class="badge pos">Buono</span> dal 25% in su, <span class="badge amber">Da monitorare</span> tra 15% e 25%, <span class="badge neg">Critico</span> sotto il 15% — soglie indicative, modificabili se vuoi criteri diversi.</p>
-        <p>Le foto prodotto arrivano da un link diretto ai server OVS: se non si vedono, il problema è quasi certamente che quel server non permette di caricare le immagini da un sito esterno come questo (o richiede la rete aziendale) — non è un problema della dashboard in sé.</p>
+        <p>Solo voci con almeno 150 € (Reparto e brand) o 80 € (Sub-reparto) di venduto nel periodo. La barra sotto il nome mostra quanto è forte la variazione rispetto alle altre della lista.</p>
+        <p>Quando cambi periodo le righe scivolano nella nuova posizione e la freccia accanto al numero (▲ / ▼) dice di quanti posti si sono mosse. Su iPhone un selettore sceglie quale lista vedere.</p>
       </div>
     </details>
-
     <details>
-      <summary>Snapshot da condividere e Stampa riepilogo</summary>
+      <summary>Peso e stagione (vista Sub-reparto)</summary>
       <div class="legend-body">
-        <p><strong>📸 Genera snapshot</strong>: crea un nuovo file .html con i dati che stai guardando in questo momento già incorporati — utile per condividerlo (es. su WhatsApp) con qualcuno che non ha l'export di Power BI: lo apre e vede subito tutto, senza dover caricare nulla.</p>
-        <p><strong>🖨️ Stampa riepilogo</strong>: apre la stampa del browser con un layout pulito (senza filtri e menu), pronta per essere salvata come PDF o stampata su carta.</p>
+        <p>Il codice finale del sub-reparto indica stagione e peso: <strong>1</strong> = Primavera Estate, <strong>2</strong> = Autunno Inverno, seguiti da <strong>L</strong> leggero, <strong>M</strong> medio, <strong>H</strong> pesante. <strong>N</strong> = senza peso (soprattutto intimo). <strong>Cross season</strong> = articoli continuativi.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Sell Through: file, soglie e grafici</summary>
+      <div class="legend-body">
+        <p><strong>Come scaricarlo</strong>: QLIK → Item → filtri Store, 1st Sale Month, Commercial Month, Category (Uomo e Donna).</p>
+        <p><strong>Sell Through</strong> = venduto ÷ consegnato, in euro. Soglie: <span class="badge pos">Buono</span> dal 25%, <span class="badge amber">Da monitorare</span> tra 15% e 25%, <span class="badge neg">Critico</span> sotto il 15%.</p>
+        <p><strong>Merce rimasta</strong> = consegnato − venduto, in euro: la merce ancora da vendere. Nella <strong>mappa articoli</strong> le priorità sono in basso a destra (tanta merce, Sell Through basso).</p>
+        <p><strong>Pezzi</strong>: i consegnati sono consegnato ÷ prezzo di collezione (affidabili); i venduti sono venduto ÷ prezzo di vendita, quindi con sconti in cassa sono una <strong>stima</strong>. Per questo pezzi venduti e rimasti hanno il segno "≈".</p>
+        <p><strong>Per settimana di ingresso</strong>: articoli raggruppati per data di prima vendita; quelli entrati da poco hanno per forza un Sell Through più basso. <strong>ST 2 sett.</strong> è il Sell Through dopo le prime 2 settimane.</p>
+        <p><strong>Vedi tutti gli articoli</strong> apre la galleria completa con i filtri e l'ordinamento scelti; tocca un articolo per il dettaglio e per copiare il codice Master Item.</p>
+        <p>Le foto arrivano dai server OVS e spesso si vedono solo dalla rete del negozio: quando non arrivano compare il codice Master Item.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Snapshot, pubblicazione e stampa</summary>
+      <div class="legend-body">
+        <p><strong>Condividi → Genera snapshot</strong>: scarica un file .html con i dati di adesso già dentro; chi lo apre vede tutto senza caricare nulla.</p>
+        <p><strong>Condividi → Pubblica online per il team</strong>: carica lo snapshot su GitHub Pages; il link resta sempre lo stesso.</p>
+        <p><strong>Condividi → Stampa riepilogo</strong>: layout pulito su sfondo bianco, pronto da salvare come PDF.</p>
       </div>
     </details>
   </div>
@@ -1031,92 +1666,624 @@ function parseWorkbook(rows){
 }
 
 function render(){
-  document.getElementById('content').classList.remove('hidden');
+  const content = document.getElementById('content');
+  content.classList.remove('hidden');
+  if(!REDUCED){ content.classList.add('first-in'); setTimeout(() => content.classList.remove('first-in'), 1200); }
   renderKpis(); renderWatchControls(); renderHero(); renderDetailControls(); renderDetailTable(); renderIncidenza(); renderAnnoScorso();
 }
 
 function fmtPctPlain(v){ return v === null || v === undefined ? '—' : v.toFixed(1) + '%'; }
 function scartoOf(storePct, retePct){ return (storePct !== null && storePct !== undefined && retePct !== null && retePct !== undefined) ? storePct - retePct : null; }
-function renderKpis(){
-  const g = state.grandTotal || {};
-  const el = document.getElementById('kpis');
-  const items = [
-    {icon:'☀️', lbl:'Venduto oggi', val: fmtEur(g.giornoValore), pct: g.giornoPct},
-    {icon:'📅', lbl:'Venduto settimana', val: fmtEur(g.settValore), pct: g.settPct},
-    {icon:'🗓️', lbl:'Venduto mese', val: fmtEur(g.meseValore), pct: g.mesePct, avanz: g.meseAvanzPrev, rete: scartoOf(g.mesePct, g.meseRete)},
-    {icon:'📈', lbl:'Montante anno', val: fmtEur(g.montanteValore), pct: g.montantePct, avanz: g.montanteAvanzPrev, rete: scartoOf(g.montantePct, g.montanteRete)},
-    {icon:'🎯', lbl:'Budget mese', val: fmtEur(g.meseBudgetValore), badgeOnly: fmtPctPlain(g.meseAvanzPrev) + ' raggiunto'},
-    {icon:'📦', lbl:'Stock corrente', val: fmtEur(g.stockValore), pct: g.stockPct},
-  ];
-  el.innerHTML = items.map(i => `
-    <div class="card kpi-card">
-      <div class="icon">${i.icon}</div>
-      <div class="kval">${i.val}</div>
-      <div class="klbl">${i.lbl}</div>
-      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
-        ${i.badgeOnly ? `<span class="badge info">${i.badgeOnly}</span>` : `
-          <span class="badge ${badgeClass(i.pct)}">${fmtPct(i.pct)} LY</span>
-          ${i.avanz !== undefined ? `<span class="badge info">${fmtPctPlain(i.avanz)} budget</span>` : ''}
-          ${i.rete !== undefined ? `<span class="badge ${badgeClass(i.rete)}">${fmtPct(i.rete)} rete</span>` : ''}
-        `}
+/* =====================================================================
+   VISTA 1 — componenti grafici (tema scuro, ispirati alla demo)
+   ===================================================================== */
+const COLORS = {pos:'#3DD9A0', market:'#6AA8FF', neg:'#FF6F7D', amber:'#FFC15E', neutral:'#8692B2', accent:'#F2B880'};
+const REDUCED = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+const isNum = v => typeof v === 'number' && Number.isFinite(v);
+const escHtml = s => String(s === null || s === undefined ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function fmtEurC(v){ if(!isNum(v)) return '—'; return Math.abs(v) < 1e6 ? fmtEur(v) : (v/1e6).toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' Mln €'; }
+function fmtEurS(v){ if(!isNum(v)) return '—'; return (v >= 0 ? '+' : '−') + fmtEur(Math.abs(v)); }
+function statusOf(p, scarto){ const s = rowStatus(isNum(p) ? p : null, isNum(scarto) ? scarto : null); return {cls: s.tagCls, lbl: s.tagLbl}; }
+
+/* --- suggerimento al tocco / al passaggio del mouse --- */
+const TIPS = {};
+function tipReset(chart){ TIPS[chart] = []; }
+function tipReg(chart, html){ (TIPS[chart] = TIPS[chart] || []).push(html); return chart + ':' + (TIPS[chart].length - 1); }
+function tipHtml(title, rows){
+  return `<div class="tt">${escHtml(title)}</div>` + rows.filter(Boolean).map(r => `<div class="tr"><span>${r[0]}</span><b class="${r[2]||''}">${r[1]}</b></div>`).join('');
+}
+const tipEl = document.getElementById('tip');
+let tipTarget = null;
+function tipLookup(key){ if(!key) return null; const i = key.lastIndexOf(':'); const arr = TIPS[key.slice(0,i)]; return arr ? arr[+key.slice(i+1)] : null; }
+function tipShow(target, x, y){
+  const html = tipLookup(target.dataset.tip);
+  if(!html){ tipHide(); return; }
+  if(tipTarget !== target){ tipEl.innerHTML = html; tipTarget = target; }
+  const w = tipEl.offsetWidth, h = tipEl.offsetHeight, vw = window.innerWidth, vh = window.innerHeight;
+  let lx = x + 16, ly = y + 16;
+  if(lx + w > vw - 10) lx = x - w - 16;
+  if(lx < 10) lx = 10;
+  if(ly + h > vh - 10) ly = y - h - 16;
+  if(ly < 10) ly = 10;
+  tipEl.style.left = lx + 'px'; tipEl.style.top = ly + 'px';
+  tipEl.classList.add('on');
+  document.querySelectorAll('.dot.sel').forEach(n => n.classList.remove('sel'));
+  if(target.classList.contains('dot')) target.classList.add('sel');
+}
+function tipHide(){ tipEl.classList.remove('on'); tipTarget = null; document.querySelectorAll('.dot.sel').forEach(n => n.classList.remove('sel')); }
+document.addEventListener('pointermove', e => {
+  if(e.pointerType !== 'mouse') return;
+  const t = e.target.closest && e.target.closest('[data-tip]');
+  if(t) tipShow(t, e.clientX, e.clientY); else if(tipTarget) tipHide();
+});
+document.addEventListener('pointerdown', e => {
+  if(e.pointerType === 'mouse') return;
+  const t = e.target.closest && e.target.closest('[data-tip]');
+  if(t){ const r = t.getBoundingClientRect(); tipShow(t, r.left + r.width/2, r.top); } else tipHide();
+});
+window.addEventListener('scroll', () => { if(tipTarget) tipHide(); }, {passive:true});
+
+/* --- conteggio dei numeri (dal valore precedente al nuovo) --- */
+const COUNT_FMT = {eur: fmtEur, eurc: fmtEurC, eurs: fmtEurS};
+const COUNT_PREV = {};
+function countUp(root){
+  (root || document).querySelectorAll('[data-count]').forEach(el => {
+    const to = parseFloat(el.dataset.count);
+    const fmt = COUNT_FMT[el.dataset.fmt] || fmtEur;
+    const key = el.dataset.key;
+    if(!Number.isFinite(to)){ el.textContent = '—'; return; }
+    const from = key && Number.isFinite(COUNT_PREV[key]) ? COUNT_PREV[key] : (el.dataset.fmt === 'eurs' ? 0 : to * 0.6);
+    if(key) COUNT_PREV[key] = to;
+    if(REDUCED || from === to){ el.textContent = fmt(to); return; }
+    const t0 = performance.now(), d = 700;
+    const step = now => {
+      const k = Math.min(1, (now - t0) / d);
+      const e = 1 - Math.pow(1 - k, 4);
+      el.textContent = fmt(from + (to - from) * e);
+      if(k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  });
+}
+
+/* --- indicatore che scorre sotto il periodo scelto --- */
+function syncSeg(seg){
+  if(!seg) return;
+  const ind = seg.querySelector('.ind'), act = seg.querySelector('.p.active');
+  if(!ind || !act || !seg.offsetWidth) return;
+  ind.style.width = act.offsetWidth + 'px';
+  ind.style.transform = `translateX(${act.offsetLeft}px)`;
+}
+
+/* --- i grafici si animano una sola volta, quando entrano nello schermo --- */
+const cardObserver = ('IntersectionObserver' in window) ? new IntersectionObserver(entries => {
+  entries.forEach(en => { if(en.isIntersecting){ en.target.classList.add('inview'); cardObserver.unobserve(en.target); } });
+}, {threshold:0.12}) : null;
+function observeCards(root){
+  root.querySelectorAll('.card:not(.inview), .hero:not(.inview)').forEach(c => { if(cardObserver) cardObserver.observe(c); else c.classList.add('inview'); });
+}
+
+
+/* Contesto delle due viste con la stessa grafica (Reparto e brand = V1, Sub-reparto = V2) */
+const V1 = { s:'', get st(){ return state; }, get soglia(){ return SOGLIA_RILEVANZA; }, unit:'reparti/brand', onPeriod(){ renderHero(); } };
+const V2 = { s:'2', get st(){ return state2; }, get soglia(){ return SOGLIA_RILEVANZA_2; }, unit:'sub-reparti', onPeriod(){ renderHero2(); renderIncidenza2(); renderAnnoScorso2(); } };
+const E = (V, id) => document.getElementById(id + V.s);
+
+function setPeriod(V, p){
+  if(!PERIOD_FIELDS[p] || !V.st.rows.length) return;
+  V.st.period = p;
+  E(V,'periodSwitch').querySelectorAll('[data-period]').forEach(x => x.classList.toggle('active', x.dataset.period === p));
+  syncSeg(E(V,'periodSwitch'));
+  V.onPeriod();
+}
+
+/* --- Animazioni A e B: le righe scivolano nella nuova posizione e le barre
+       passano dal vecchio al nuovo valore invece di ridisegnarsi da zero --- */
+function morphList(container, html, opts){
+  opts = opts || {};
+  const barSel = opts.barSel;
+  const old = new Map();
+  container.querySelectorAll('[data-k]').forEach(n => {
+    const b = barSel ? n.querySelector(barSel) : null;
+    old.set(n.dataset.k, {top: n.getBoundingClientRect().top, rank: n.dataset.rank, bar: b ? {w: b.style.width, side: b.dataset.side} : null});
+  });
+  container.innerHTML = html;
+  if(REDUCED || !old.size) return;
+  const later = [];
+  container.querySelectorAll('[data-k]').forEach(n => {
+    const o = old.get(n.dataset.k);
+    if(!o){ n.classList.remove('anim-rise'); n.classList.add('row-enter'); return; }
+    n.classList.remove('anim-rise');
+    const b = barSel ? n.querySelector(barSel) : null;
+    if(b){
+      b.classList.remove('anim-grow');
+      if(o.bar && o.bar.side === b.dataset.side && o.bar.w){
+        const target = b.style.width;
+        b.style.transition = 'none'; b.style.width = o.bar.w;
+        later.push(() => { b.style.transition = 'width .7s var(--ease)'; b.style.width = target; });
+      }
+    }
+    const dy = o.top - n.getBoundingClientRect().top;
+    if(dy && Math.abs(dy) < 2000){
+      n.style.transition = 'none'; n.style.transform = `translateY(${dy}px)`; n.style.position = 'relative'; n.style.zIndex = 2;
+      later.push(() => { n.style.transition = 'transform .6s var(--ease)'; n.style.transform = ''; setTimeout(() => { n.style.zIndex = ''; }, 650); });
+    }
+    if(opts.rank && o.rank !== undefined && n.dataset.rank !== undefined){
+      const d = (+o.rank) - (+n.dataset.rank);
+      const wr = n.querySelector('.wr');
+      if(d && wr){ wr.insertAdjacentHTML('beforeend', `<i class="mv">${d > 0 ? '▲' : '▼'}${Math.abs(d)}</i>`); setTimeout(() => { const m = wr.querySelector('.mv'); if(m) m.classList.add('out'); }, 2200); }
+    }
+  });
+  if(later.length){ void container.offsetHeight; later.forEach(f => f()); }
+}
+
+/* --- ponte dall'anno scorso a oggi (cascata) --- */
+function renderBridge(V, drill){
+  const st = V.st, pf = PERIOD_FIELDS[st.period], key = 'bridge' + V.s;
+  tipReset(key);
+  const el = E(V,'bridge'), topN = +(E(V,'bridgeTopN').value || 8);
+  let totV, totPct, items, label;
+  if(!drill){
+    const g = st.grandTotal || {};
+    totV = g[pf.valore]; totPct = g[pf.pct]; label = 'Totale negozio';
+    items = st.categories.map(c => ({n: shortCat(c), v: st.catTotals[c][pf.valore], pct: st.catTotals[c][pf.pct]}));
+  } else {
+    const t = st.catTotals[drill] || {};
+    totV = t[pf.valore]; totPct = t[pf.pct]; label = shortCat(drill);
+    items = st.rows.filter(r => r.category === drill).map(r => ({n: shortApc(r.apc), v: r[pf.valore], pct: r[pf.pct]}));
+  }
+  const lyTot = calcLyValue(totV, totPct);
+  E(V,'bridgeTitle').textContent = drill ? "Ponte dall'anno scorso · " + label : "Ponte dall'anno scorso a oggi";
+  if(!isNum(lyTot) || !isNum(totV)){ el.innerHTML = '<div class="empty-msg">Per questo periodo non si può stimare l\'anno scorso.</div>'; E(V,'bridgeSub').textContent = ''; return; }
+  const est = items.map(i => { const L = calcLyValue(i.v, i.pct); return isNum(L) && isNum(i.v) ? Object.assign({}, i, {ly: L, d: i.v - L}) : null; })
+    .filter(i => i && Math.abs(i.d) >= 1).sort((a,b) => Math.abs(b.d) - Math.abs(a.d));
+  const cut = est.length === topN + 1 ? topN + 1 : topN;
+  const shown = est.slice(0, cut).sort((a,b) => a.d - b.d), others = est.slice(cut);
+  const steps = shown.map(i => ({k: i.n, n: i.n, d: i.d, tip: tipHtml(i.n, [['Quest\'anno', fmtEur(i.v)], ['Anno scorso (stima)', fmtEur(i.ly)], ['Differenza', fmtEurS(i.d), pctClass(i.d)], ['vs anno scorso', fmtPct(i.pct), pctClass(i.pct)]])}));
+  if(others.length){ const d = others.reduce((s,i) => s + i.d, 0); steps.push({k:'__altri', n:`Altri ${others.length} ${V.unit}`, d, grp:true, tip: tipHtml(`Altri ${others.length} ${V.unit}`, [['Differenza totale', fmtEurS(d), pctClass(d)]])}); }
+  const rest = (totV - lyTot) - steps.reduce((s,x) => s + x.d, 0);
+  if(Math.abs(rest) >= 1) steps.push({k:'__ns', n:'Non stimabili', d: rest, grp:true, tip: tipHtml('Non stimabili', [['Differenza', fmtEurS(rest), pctClass(rest)], ['Voci con −100% o senza dato vs anno scorso', '']])});
+  E(V,'bridgeSub').textContent = `${label}, venduto ${PERIOD_SUFFIX[st.period]}: da ${fmtEur(lyTot)} dell'anno scorso a ${fmtEur(totV)} di oggi (${fmtEurS(totV - lyTot)}).`;
+  let cum = lyTot; const pts = [lyTot, totV];
+  steps.forEach(x => { cum += x.d; pts.push(cum); });
+  const lo = Math.min(...pts), hi = Math.max(...pts), pad = (hi - lo) * 0.25 || Math.abs(hi) * 0.05 || 1;
+  const a0 = Math.max(0, lo - pad), a1 = hi + pad * 0.4;
+  const X = v => (v - a0) / (a1 - a0) * 100;
+  const rows = [{k:'__ly', n:'Anno scorso', from:a0, to:lyTot, t:true, v:fmtEur(lyTot), first:true}];
+  cum = lyTot;
+  steps.forEach(x => { rows.push(Object.assign({}, x, {from:cum, to:cum + x.d, v:fmtEurS(x.d)})); cum += x.d; });
+  rows.push({k:'__now', n:'Oggi', from:a0, to:totV, t:true, v:fmtEur(totV)});
+  el.querySelectorAll('.empty-msg').forEach(n => n.remove());
+  const ex = new Map([...el.querySelectorAll('.brg')].map(n => [n.dataset.k, n]));
+  const hadAny = ex.size > 0;
+  rows.forEach((it, i) => {
+    let n = ex.get(it.k); const isNew = !n;
+    if(isNew){ n = document.createElement('div'); n.dataset.k = it.k; n.innerHTML = '<div class="bn"></div><div class="btr"><span class="bconn"></span><div class="bb"></div></div><div class="bv"></div>'; }
+    n.className = 'brg' + (it.t ? ' tot' : '') + (it.first ? ' first' : '') + (it.grp ? ' grp' : '') + (isNew && hadAny && !REDUCED ? ' row-enter' : '');
+    if(it.tip) n.dataset.tip = tipReg(key, it.tip); else delete n.dataset.tip;
+    el.appendChild(n);
+    const l = X(Math.min(it.from, it.to)), w = Math.max(0.6, Math.abs(X(it.to) - X(it.from)));
+    const b = n.querySelector('.bb'); b.className = 'bb' + (it.t ? ' t' : '');
+    const bg = it.t ? '' : (it.d >= 0 ? 'var(--pos)' : 'var(--neg)');
+    if(isNew && !REDUCED){ b.style.transition = 'none'; b.style.left = X(it.from) + '%'; b.style.width = '0%'; void b.offsetWidth; b.style.transition = ''; }
+    Object.assign(b.style, {left: l + '%', width: w + '%', background: bg});
+    const c = n.querySelector('.bconn'); c.style.display = it.t ? 'none' : ''; c.style.left = X(it.from) + '%';
+    n.querySelector('.bn').textContent = it.n;
+    const v = n.querySelector('.bv'); v.textContent = it.v; v.className = 'bv ' + (it.t ? '' : (it.d >= 0 ? 'pos-txt' : 'neg-txt'));
+  });
+  ex.forEach((n,k) => { if(!rows.some(r => r.k === k)) n.remove(); });
+}
+
+/* --- riquadro grande in alto --- */
+function renderSalesHero(V){
+  V = V || V1;
+  const pf = PERIOD_FIELDS[V.st.period], g = V.st.grandTotal || {};
+  const val = g[pf.valore], pct = g[pf.pct], sc = scartoOf(g[pf.pct], g[pf.rete]);
+  const cats = V.st.categories.map(c => ({c, v: V.st.catTotals[c][pf.valore], p: V.st.catTotals[c][pf.pct]}))
+    .filter(x => isNum(x.v) && x.v > 0 && isNum(x.p) && (!isNum(val) || x.v >= val * 0.03));
+  let insight = '';
+  if(cats.length >= 2){
+    const best = cats.reduce((a,b) => b.p > a.p ? b : a), worst = cats.reduce((a,b) => b.p < a.p ? b : a);
+    insight = `<b>${escHtml(shortCat(best.c))}</b> è la category più forte (${fmtPct(best.p)} vs anno scorso), <b>${escHtml(shortCat(worst.c))}</b> la più debole (${fmtPct(worst.p)}).`;
+  }
+  const st = statusOf(pct, sc);
+  const mA = g.meseAvanzPrev, yA = g.montanteAvanzPrev;
+  const ring = (r, p, col, w) => {
+    const v = isNum(p) ? Math.max(0, Math.min(100, p)) : 0;
+    return `<circle class="ring-track" r="${r}" stroke-width="${w}"/><circle class="ring-val" r="${r}" stroke-width="${w}" stroke="${col}" pathLength="100" stroke-dasharray="100" data-off="${100 - v}" style="stroke-dashoffset:100" transform="rotate(-90)"/>`;
+  };
+  const rows = ['giorno','sett','mese','montante'].map(p => ({p, you: g[PERIOD_FIELDS[p].pct], net: g[PERIOD_FIELDS[p].rete]}));
+  const D = Math.max(10, ...rows.flatMap(r => [r.you, r.net]).filter(isNum).map(Math.abs)) * 1.15;
+  const X = v => 50 + v / D * 50;
+  const SHORT = {giorno:'Giorno', sett:'Sett.', mese:'Mese', montante:'Anno'};
+  const missing = isNum(g.meseBudgetValore) && isNum(g.meseValore) ? g.meseBudgetValore - g.meseValore : null;
+  const el = E(V,'hero');
+  el.innerHTML = `
+    <div>
+      <div class="hero-k">Venduto ${PERIOD_SUFFIX[V.st.period]}</div>
+      <div class="hero-num" data-count="${isNum(val) ? val : ''}" data-fmt="eur" data-key="hero${V.s}">${fmtEur(val)}</div>
+      <div class="hero-chips">
+        <span class="badge ${badgeClass(pct)}">${fmtPct(pct)}<small>vs anno scorso</small></span>
+        ${isNum(sc) ? `<span class="badge ${badgeClass(sc)}">${fmtPct(sc)}<small>vs rete</small></span>` : ''}
+        <span class="badge ${st.cls}">${st.lbl}</span>
+      </div>
+      ${insight ? `<p class="hero-insight">${insight}</p>` : ''}
+    </div>
+    <div class="rings">
+      <svg viewBox="-80 -80 160 160" aria-label="Budget raggiunto">
+        ${ring(70, mA, COLORS.accent, 11)}
+        ${ring(52, yA, COLORS.market, 9)}
+        <text class="ring-center" text-anchor="middle" y="6">${fmtPctPlain(mA)}</text>
+        <text class="ring-center-sub" text-anchor="middle" y="24">budget mese</text>
+      </svg>
+      <div class="ring-legend">
+        <div><i style="background:var(--accent)"></i>Budget mese<b>${fmtPctPlain(mA)}</b></div>
+        <div><i style="background:var(--market)"></i>Budget anno<b>${fmtPctPlain(yA)}</b></div>
+        ${isNum(missing) ? `<div style="color:var(--ink-soft)">${missing > 0 ? 'Mancano ' + fmtEur(missing) + ' al budget del mese' : 'Budget del mese superato di ' + fmtEur(-missing)}</div>` : ''}
       </div>
     </div>
-  `).join('');
+    <div class="pace">
+      <div class="pace-head"><h4>Ritmo vs anno scorso</h4><div class="lg"><span><i style="background:var(--pos)"></i>Negozio</span><span><i class="tick"></i>Rete diretti</span></div></div>
+      ${rows.map((r, i) => {
+        const has = isNum(r.you);
+        const left = has ? Math.min(50, X(r.you)) : 50, width = has ? Math.abs(X(r.you) - 50) : 0;
+        const col = has && r.you >= 0 ? COLORS.pos : COLORS.neg;
+        return `<button class="pace-row ${r.p === V.st.period ? 'active' : ''}" data-period="${r.p}">
+          <span class="pl">${SHORT[r.p]}</span>
+          <span class="ptrack"><span class="zero"></span>
+            ${has ? `<span class="pbar anim-grow" style="left:${left}%;width:${Math.max(width,0.6)}%;background:${col};--o:${r.you >= 0 ? 'left' : 'right'};--i:${i}"></span>` : ''}
+            ${isNum(r.net) ? `<span class="pnet anim-fade" style="left:${X(r.net)}%;--i:${i}"></span>` : ''}
+          </span>
+          <span class="pv ${pctClass(r.you)}">${fmtPct(r.you)}<small>rete ${fmtPct(r.net)}</small></span>
+        </button>`;
+      }).join('')}
+    </div>`;
+  el.querySelectorAll('.pace-row').forEach(b => b.addEventListener('click', () => setPeriod(V, b.dataset.period)));
+  // anelli: partono da 0 e si riempiono (una transizione)
+  requestAnimationFrame(() => requestAnimationFrame(() => el.querySelectorAll('.ring-val').forEach(c => { c.style.strokeDashoffset = c.dataset.off; })));
+  countUp(el);
 }
 
-function renderHero(){
-  const pf = PERIOD_FIELDS[state.period];
+/* --- schede periodo (toccandole cambia il periodo) --- */
+function renderKpis(V){
+  V = V || V1;
+  const g = V.st.grandTotal || {};
+  const items = [
+    {p:'giorno', l:'Oggi', v:g.giornoValore, pct:g.giornoPct, rete: scartoOf(g.giornoPct, g.giornoRete)},
+    {p:'sett', l:'Settimana', v:g.settValore, pct:g.settPct, rete: scartoOf(g.settPct, g.settRete)},
+    {p:'mese', l:'Mese', v:g.meseValore, pct:g.mesePct, rete: scartoOf(g.mesePct, g.meseRete), meter:g.meseAvanzPrev, mcol:'var(--accent)'},
+    {p:'montante', l:'Anno', v:g.montanteValore, pct:g.montantePct, rete: scartoOf(g.montantePct, g.montanteRete), meter:g.montanteAvanzPrev, mcol:'var(--market)'},
+    {l:'Budget mese', v:g.meseBudgetValore, extra:`<span class="badge info">${fmtPctPlain(g.meseAvanzPrev)} raggiunto</span>`, meter:g.meseAvanzPrev, mcol:'var(--accent)'},
+    {l:'Stock corrente', v:g.stockValore, pct:g.stockPct, extra: isNum(g.stockPrec) && isNum(g.stockValore) ? `<span class="badge">${fmtEurS(g.stockValore - g.stockPrec)} da inizio sett.</span>` : ''}
+  ];
+  const el = E(V,'kpis');
+  el.innerHTML = items.map((it, i) => {
+    const tag = it.p ? 'button' : 'div';
+    return `<${tag} class="kpi2 ${it.p && it.p === V.st.period ? 'active' : ''}" ${it.p ? `data-period="${it.p}"` : ''}>
+      <div class="kl">${it.l}</div>
+      <div class="kv" data-count="${isNum(it.v) ? it.v : ''}" data-fmt="eurc" data-key="kpi${V.s}${i}">${fmtEurC(it.v)}</div>
+      <div class="kb">
+        ${isNum(it.pct) || it.p ? `<span class="badge ${badgeClass(it.pct)}">${fmtPct(it.pct)} LY</span>` : ''}
+        ${isNum(it.rete) ? `<span class="badge ${badgeClass(it.rete)}">${fmtPct(it.rete)} rete</span>` : ''}
+        ${it.extra || ''}
+      </div>
+      ${isNum(it.meter) ? `<div class="meter"><i class="anim-grow" style="width:${Math.min(100, it.meter)}%;background:${it.mcol}"></i></div>` : ''}
+    </${tag}>`;
+  }).join('');
+  el.querySelectorAll('[data-period]').forEach(b => b.addEventListener('click', () => setPeriod(V, b.dataset.period)));
+  countUp(el);
+}
 
-  const catList = state.categories.map(c => {
-    const ct = state.catTotals[c];
-    const scarto = (pf.rete && ct[pf.pct] !== null && ct[pf.rete] !== null && ct[pf.rete] !== undefined) ? ct[pf.pct] - ct[pf.rete] : null;
-    return {cat:c, val: ct[pf.valore], pct: ct[pf.pct], scarto: scarto};
-  }).filter(c => c.val !== null);
-  const withPct = catList.filter(c => c.pct !== null);
-  const best = withPct.length ? withPct.reduce((a,b)=> b.pct>a.pct?b:a) : null;
-  const worst = withPct.length ? withPct.reduce((a,b)=> b.pct<a.pct?b:a) : null;
 
-  document.getElementById('summaryRow').innerHTML = [
-    best ? {lbl:'Categoria migliore: ' + shortCat(best.cat), val: best.val, pct: best.pct} : null,
-    worst ? {lbl:'Categoria da monitorare: ' + shortCat(worst.cat), val: worst.val, pct: worst.pct} : null
-  ].filter(Boolean).map(s => `
-    <div class="summary-item">
-      <div class="slabel">${s.lbl}</div>
-      <div class="sval">${fmtEur(s.val)} <span class="badge ${badgeClass(s.pct)}">${fmtPct(s.pct)}</span></div>
-    </div>
-  `).join('');
-
-  const selDrill = document.getElementById('catDrilldown');
-  const prevDrill = selDrill.value;
-  selDrill.innerHTML = '<option value="">Tutte le categorie (vista per Category)</option>' + state.categories.map(c => `<option value="${c}">${shortCat(c)}</option>`).join('');
-  if(state.categories.includes(prevDrill)) selDrill.value = prevDrill;
-  selDrill.onchange = renderHero;
-  const drillCat = selDrill.value;
-
-  const chartData = buildChartData(state, pf, drillCat);
-  if(drillCat){
-    document.getElementById('chartTitle').textContent = 'Reparti / brand in ' + shortCat(drillCat);
-    document.getElementById('chartSubtitle').textContent = 'Confronto tra reparti/brand della categoria, periodo selezionato';
-    document.getElementById('treemapTitle').textContent = 'Peso e performance in ' + shortCat(drillCat);
-  } else {
-    document.getElementById('chartTitle').textContent = 'Vendite per Category';
-    document.getElementById('chartSubtitle').textContent = 'Confronto tra categorie, periodo selezionato';
-    document.getElementById('treemapTitle').textContent = 'Peso e performance per Category';
+/* --- quadrante (versione demo): assi compressi verso i bordi, nomi senza sovrapposizioni --- */
+function symlog(v){ return Math.sign(v) * Math.log10(1 + Math.abs(v) / 10); }
+function svgEl(tag, attrs){ const el = document.createElementNS('http://www.w3.org/2000/svg', tag); for(const k in attrs) el.setAttribute(k, attrs[k]); return el; }
+function textW(str, size){ return String(str).length * size * 0.58; }
+function renderQuadrantB(el, data, chartKey, sigKey){
+  tipReset(chartKey);
+  data = data.filter(d => isNum(d.pct) && isNum(d.scarto));
+  if(!data.length){
+    el.innerHTML = '<div class="empty-msg">Per questo periodo manca il dato della rete: il grafico ha bisogno sia della % vs anno scorso sia del confronto con la rete.</div>';
+    el.dataset.sig = '';
+    return;
   }
-  renderQuadrant('catQuadrant', chartData);
-  renderTreemap('catTreemap', chartData);
+  const W = Math.max(300, Math.round(el.clientWidth || 720));
+  const H = Math.round(Math.min(560, Math.max(320, W * 0.62)));
+  const narrow = W < 560;
+  const m = {l:40, r:14, t:26, b:44};
+  const xs = Math.max(symlog(40), ...data.map(d => Math.abs(symlog(d.pct)))) * 1.1;
+  const ys = Math.max(symlog(30), ...data.map(d => Math.abs(symlog(d.scarto)))) * 1.1;
+  const px = v => m.l + (symlog(v) + xs) / (2*xs) * (W - m.l - m.r);
+  const py = v => H - m.b - (symlog(v) + ys) / (2*ys) * (H - m.t - m.b);
+  const cx0 = px(0), cy0 = py(0);
+  const sig = sigKey + '|' + W;
+  let svg = el.querySelector('svg');
+  if(!svg || el.dataset.sig !== sig){
+    el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Grafico a quadranti"><g class="q-bg"></g><g class="q-grid"></g><g class="q-dots"></g><g class="q-zl"></g></svg>`;
+    svg = el.querySelector('svg'); el.dataset.sig = sig;
+  }
+  const zones = [
+    {x:m.l, y:m.t, w:cx0-m.l, h:cy0-m.t, c:COLORS.market, t: narrow ? 'Calo, sopra rete' : 'Cali, ma meglio della rete', tx:m.l+8, ty:m.t+15, a:'start'},
+    {x:cx0, y:m.t, w:W-m.r-cx0, h:cy0-m.t, c:COLORS.pos, t: narrow ? 'Crescita, sopra rete' : 'Cresci più della rete', tx:W-m.r-8, ty:m.t+15, a:'end'},
+    {x:m.l, y:cy0, w:cx0-m.l, h:H-m.b-cy0, c:COLORS.neg, t: narrow ? 'Calo, sotto rete' : 'Cali più della rete', tx:m.l+8, ty:H-m.b-8, a:'start'},
+    {x:cx0, y:cy0, w:W-m.r-cx0, h:H-m.b-cy0, c:COLORS.pos, t: narrow ? 'Crescita, sotto rete' : 'Cresci, ma meno della rete', tx:W-m.r-8, ty:H-m.b-8, a:'end'}
+  ];
+  svg.querySelector('.q-bg').innerHTML = zones.map((z,i) => `<rect x="${z.x}" y="${z.y}" width="${Math.max(0,z.w)}" height="${Math.max(0,z.h)}" fill="${z.c}" fill-opacity="${i===3?0.035:0.07}"/>`).join('');
+  const ticks = narrow ? [-100,-50,0,50,100,300,1000] : [-100,-50,-20,0,20,50,100,300,1000];
+  const xt = ticks.filter(t => Math.abs(symlog(t)) <= xs * 0.98);
+  const yt = [-100,-50,-20,-10,0,10,20,50,100,300].filter(t => Math.abs(symlog(t)) <= ys * 0.98);
+  let grid = '', lastX = -1e9;
+  xt.forEach(t => { const x = px(t); const lbl = (t>0?'+':'') + t + '%'; const show = t === 0 || Math.abs(x - lastX) >= textW(lbl, 10) + 8; if(show) lastX = x; grid += `<line x1="${x}" x2="${x}" y1="${m.t}" y2="${H-m.b}" class="${t===0?'axis':''}"/>` + (show ? `<text x="${x}" y="${H-m.b+16}" text-anchor="middle">${lbl}</text>` : ''); });
+  let lastY = 1e9;
+  yt.forEach(t => { const y = py(t); const show = t === 0 || Math.abs(y - lastY) >= 13; if(show) lastY = y; grid += `<line x1="${m.l}" x2="${W-m.r}" y1="${y}" y2="${y}" class="${t===0?'axis':''}"/>` + (show ? `<text x="${m.l-6}" y="${y+3.5}" text-anchor="end">${t>0?'+':''}${t}</text>` : ''); });
+  grid += `<text class="q-axis-t" x="${W-m.r}" y="${H-6}" text-anchor="end">vs anno scorso →</text>`;
+  grid += `<text class="q-axis-t" x="${m.l}" y="${m.t-10}" text-anchor="start">↑ vs rete</text>`;
+  svg.querySelector('.q-grid').innerHTML = grid;
 
-  renderIncidenzaHero(state, pf, 'incidenzaCatBlock', 'incidenzaCatFilter', 'incidenzaSubBlock');
+  const maxV = Math.max(...data.map(d => d.value));
+  const rMax = Math.min(28, W / 22), rMin = data.length > 25 ? 3.5 : 5;
+  const rOf = v => rMin + (rMax - rMin) * Math.sqrt(Math.max(0, v) / maxV);
+  const pts = data.map(d => Object.assign({}, d, {key: d.label, x: px(d.pct), y: py(d.scarto), r: rOf(d.value), cls: perfClass(d.pct, d.scarto)}));
+  // ingombri: pallini (+ margine) — le etichette delle zone si nascondono se un pallino ci finisce sopra
+  const dotBoxes = pts.map(p => ({x1:p.x-p.r-1, y1:p.y-p.r-1, x2:p.x+p.r+1, y2:p.y+p.r+1, self:p}));
+  const overlaps = (b, q) => !(b.x2 < q.x1 || b.x1 > q.x2 || b.y2 < q.y1 || b.y1 > q.y2);
+  const zoneShown = zones.map(z => { const w = textW(z.t, 11); const x1 = z.a === 'start' ? z.tx : z.tx - w; const b = {x1, y1:z.ty-11, x2:x1+w, y2:z.ty+3}; return dotBoxes.some(q => overlaps(b, q)) ? null : b; });
+  const boxes = dotBoxes.concat(zoneShown.filter(Boolean));
+  // etichette: prima i più grandi e i più lontani dal centro; 8 posizioni possibili attorno al pallino
+  const nLab = narrow ? Math.min(pts.length, 10) : (pts.length > 25 ? 12 : 16);
+  const byVal = [...pts].sort((a,b) => b.value - a.value);
+  const byDist = [...pts].sort((a,b) => Math.hypot(b.x-cx0, b.y-cy0) - Math.hypot(a.x-cx0, a.y-cy0));
+  const cand = [];
+  for(let i = 0; cand.length < nLab && i < pts.length; i++){ [byVal[i], byDist[i]].forEach(p => { if(p && cand.length < nLab && !cand.includes(p)) cand.push(p); }); }
+  const placed = new Map(), fs = 11;
+  cand.forEach(p => {
+    const label = p.label.length > 20 ? p.label.slice(0,19) + '…' : p.label;
+    const w = textW(label, fs), h = fs + 2, g = 4, d = p.r * 0.72;
+    const opts = [
+      {dx:p.r+g, dy:4, a:'start', bx:p.x+p.r+g, by:p.y-h/2},
+      {dx:-p.r-g, dy:4, a:'end', bx:p.x-p.r-g-w, by:p.y-h/2},
+      {dx:0, dy:-p.r-g-1, a:'middle', bx:p.x-w/2, by:p.y-p.r-g-h},
+      {dx:0, dy:p.r+g+10, a:'middle', bx:p.x-w/2, by:p.y+p.r+g},
+      {dx:d+g, dy:-d-g, a:'start', bx:p.x+d+g, by:p.y-d-g-h+3},
+      {dx:-d-g, dy:-d-g, a:'end', bx:p.x-d-g-w, by:p.y-d-g-h+3},
+      {dx:d+g, dy:d+g+9, a:'start', bx:p.x+d+g, by:p.y+d+g},
+      {dx:-d-g, dy:d+g+9, a:'end', bx:p.x-d-g-w, by:p.y+d+g}
+    ];
+    for(const o of opts){
+      const b = {x1:o.bx, y1:o.by, x2:o.bx+w, y2:o.by+h};
+      if(b.x1 < m.l - 4 || b.x2 > W-2 || b.y1 < m.t - 2 || b.y2 > H-m.b+2) continue;
+      if(boxes.some(q => q.self !== p && overlaps(b, q))) continue;
+      boxes.push(b); placed.set(p.key, Object.assign({label}, o)); break;
+    }
+  });
+  svg.querySelector('.q-zl').innerHTML = zones.map((z,i) => zoneShown[i] ? `<text class="q-zlabel" x="${z.tx}" y="${z.ty}" text-anchor="${z.a}">${z.t}</text>` : '').join('');
 
-  renderWatchLists(state, pf, 'watchCatFilter', 'worstTitle', 'bestTitle', 'watchListWorst', 'watchListBest', SOGLIA_RILEVANZA, 'watchSortMode');
-  renderReteLists(state, pf, 'reteCatFilter', 'reteWorstTitle', 'reteBestTitle', 'reteListWorst', 'reteListBest', SOGLIA_RILEVANZA);
+  const gDots = svg.querySelector('.q-dots');
+  const existing = new Map([...gDots.children].map(n => [n.dataset.key, n]));
+  const seen = new Set();
+  [...pts].sort((a,b) => b.value - a.value).forEach((p, i) => {
+    seen.add(p.key);
+    let node = existing.get(p.key);
+    const tip = tipReg(chartKey, tipHtml(p.label, [
+      ['Venduto', fmtEur(p.value)],
+      ['vs anno scorso', fmtPct(p.pct), pctClass(p.pct)],
+      ['vs rete', fmtPct(p.scarto), pctClass(p.scarto)],
+      ['Stato', statusOf(p.pct, p.scarto).lbl]
+    ]));
+    if(!node){
+      node = svgEl('g', {class: REDUCED ? 'dot' : 'dot enter', 'data-key': p.key});
+      node.style.setProperty('--i', i);
+      node.appendChild(svgEl('circle', {cx:0, cy:0, r:p.r}));
+      node.appendChild(svgEl('text', {}));
+      gDots.appendChild(node);
+      setTimeout(() => node.classList.remove('enter'), 1400 + i*28);
+    }
+    gDots.appendChild(node); // i più piccoli disegnati sopra i più grandi
+    node.classList.remove('exit');
+    node.dataset.tip = tip;
+    node.style.transform = `translate(${p.x}px, ${p.y}px)`;
+    const c = node.querySelector('circle');
+    c.setAttribute('r', p.r);
+    c.setAttribute('fill', COLORS[p.cls]); c.setAttribute('fill-opacity', '0.85');
+    const t = node.querySelector('text'), pl = placed.get(p.key);
+    if(pl){ t.textContent = pl.label; t.setAttribute('x', pl.dx); t.setAttribute('y', pl.dy); t.setAttribute('text-anchor', pl.a); t.style.opacity = 1; }
+    else t.style.opacity = 0;
+  });
+  existing.forEach((n, k) => { if(!seen.has(k)){ n.classList.add('exit'); setTimeout(() => { if(n.classList.contains('exit')) n.remove(); }, 450); } });
 }
+
+/* --- treemap (versione demo): riquadri che si spostano quando cambia il periodo --- */
+function mixHex(a, b, t){
+  const pa = [1,3,5].map(i => parseInt(a.slice(i,i+2),16)), pb = [1,3,5].map(i => parseInt(b.slice(i,i+2),16));
+  return 'rgb(' + pa.map((v,i) => Math.round(v*t + pb[i]*(1-t))).join(',') + ')';
+}
+function renderTreemapB(el, data, chartKey){
+  tipReset(chartKey);
+  if(!data.length){ el.innerHTML = '<div class="empty-msg">Nessun dato per questo periodo.</div>'; return; }
+  const W = el.clientWidth || 1000, H = el.clientHeight || 440;
+  const HH = 1000 * H / W;
+  const rects = squarifiedTreemap(data, 0, 0, 1000, HH);
+  const total = data.reduce((s,d) => s + (d.value > 0 ? d.value : 0), 0);
+  const existing = new Map([...el.querySelectorAll('.tm')].map(n => [n.dataset.key, n]));
+  el.querySelectorAll('.empty-msg').forEach(n => n.remove());
+  const seen = new Set();
+  rects.forEach((r, i) => {
+    const key = r.label; seen.add(key);
+    const cls = perfClass(r.pct, r.scarto);
+    const strength = isNum(r.pct) ? Math.min(1, Math.abs(r.pct) / 35) : 0;
+    const bg = mixHex(COLORS[cls], '#16213E', 0.38 + strength * 0.5);
+    const pw = r.w / 1000 * W, ph = r.h / HH * H;
+    const size = (pw < 46 || ph < 30) ? 'xs' : (pw < 110 || ph < 70) ? 's' : (pw < 170 || ph < 110) ? 'm' : 'l';
+    let node = existing.get(key);
+    if(!node){
+      node = document.createElement('div');
+      node.className = REDUCED ? 'tm' : 'tm enter'; node.dataset.key = key;
+      node.style.setProperty('--i', i);
+      node.innerHTML = '<div class="tmi"><div class="tp"></div><div class="tl"></div><div class="tv"></div></div>';
+      el.appendChild(node);
+      setTimeout(() => node.classList.remove('enter'), 1400 + i*30);
+    }
+    node.classList.remove('exit', 'xs', 's', 'm', 'l');
+    node.classList.add(size);
+    Object.assign(node.style, {left: (r.x/10) + '%', top: (r.y/HH*100) + '%', width: (r.w/10) + '%', height: (r.h/HH*100) + '%'});
+    const inner = node.firstChild;
+    inner.style.background = bg;
+    inner.dataset.tip = tipReg(chartKey, tipHtml(r.label, [['Venduto', fmtEur(r.value)], ['Quota', fmtPctPlain(total ? r.value / total * 100 : null)], ['vs anno scorso', fmtPct(r.pct), pctClass(r.pct)], ['vs rete', fmtPct(r.scarto), pctClass(r.scarto)]]));
+    inner.querySelector('.tp').textContent = fmtPct(r.pct);
+    inner.querySelector('.tl').textContent = r.label;
+    inner.querySelector('.tv').textContent = fmtEur(r.value);
+  });
+  existing.forEach((n, k) => { if(!seen.has(k)){ n.classList.add('exit'); setTimeout(() => { if(n.classList.contains('exit')) n.remove(); }, 450); } });
+}
+
+/* ridisegna i grafici che dipendono dalla larghezza (rotazione telefono, cambio scheda) */
+function rerenderSized(V){
+  V = V || V1;
+  if(!V.st.rows.length) return;
+  const w = E(V,'catQuadrant').clientWidth;
+  if(!w || w === V.lastWidth) return;
+  V.lastWidth = w;
+  const pf = PERIOD_FIELDS[V.st.period];
+  const drill = E(V,'catDrilldown').value;
+  const data = buildChartData(V.st, pf, drill);
+  renderQuadrantB(E(V,'catQuadrant'), data, 'q' + V.s, 'v' + V.s + '|' + drill);
+  renderTreemapB(E(V,'catTreemap'), data, 'tm' + V.s);
+  syncSeg(E(V,'periodSwitch'));
+}
+let resizeTimer = null;
+window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { rerenderSized(V1); rerenderSized(V2); }, 200); });
+
+function renderAlerts(V){
+  V = V || V1;
+  const pf = PERIOD_FIELDS[V.st.period];
+  const ALERT_SUFFIX = {giorno:'oggi', sett:'questa settimana', mese:'questo mese', montante:'da inizio anno'};
+  E(V,'alertsTitle').textContent = 'Da guardare ' + ALERT_SUFFIX[V.st.period];
+  const el = E(V,'alertsRow');
+  if(!pf.scarto){ el.innerHTML = '<div class="empty-msg">Dato rete non disponibile per questo periodo.</div>'; return; }
+  // voci sotto la rete, ordinate come "Ordina per variazione €": chi ha perso più euro vs anno scorso
+  const top = V.st.rows.filter(r => isNum(r[pf.valore]) && isNum(r[pf.ly]) && isNum(r[pf.scarto]) && r[pf.scarto] < 0)
+    .map(r => ({r, delta: r[pf.valore] - r[pf.ly]}))
+    .filter(x => x.delta < 0)
+    .sort((a,b) => a.delta - b.delta).slice(0,3);
+  el.innerHTML = top.map(({r, delta}) => `
+    <div class="b-alert">
+      <div class="ba-name">${shortApc(r.apc)}</div>
+      <div class="ba-cat">${shortCat(r.category)}${r.pesoLabel ? ' · ' + r.pesoLabel : ''}</div>
+      <div class="ba-line"><b>${fmtEur(r[pf.valore])}</b> · tu <b class="${pctClass(r[pf.pct])}">${fmtPct(r[pf.pct])}</b>, la rete <b>${fmtPct(r[pf.rete])}</b>${r[pf.incidenza] !== null ? ' · ' + r[pf.incidenza].toFixed(1) + '% della category' : ''}</div>
+      <span class="badge neg">${fmtEurS(delta)} vs anno scorso</span> <span class="badge neg">${fmtPct(r[pf.scarto])} vs Rete</span>
+    </div>`).join('') || '<div class="empty-msg">Nessuna voce sotto la rete in calo rispetto all\'anno scorso: bene così.</div>';
+}
+
+function renderReteBars(containerId, data){
+  const el = document.getElementById(containerId);
+  const list = data.filter(d => d.scarto !== null && d.scarto !== undefined).sort((a,b) => b.scarto - a.scarto);
+  if(!list.length){ el.innerHTML = '<div class="empty-msg">Dato "vs Rete" non disponibile per questo periodo.</div>'; return; }
+  const abs = list.map(d => Math.abs(d.scarto)).sort((a,b) => a - b);
+  const p75 = abs[Math.min(abs.length - 1, Math.floor(abs.length * 0.75))];
+  const max = Math.max(15, p75 * 1.2);
+  const total = list.reduce((s,d) => s + d.value, 0);
+  morphList(el, list.map((d, i) => {
+    const clamped = Math.abs(d.scarto) > max;
+    const w = Math.min(Math.abs(d.scarto), max) / max * 50;
+    const side = d.scarto >= 0 ? 'right' : 'left';
+    const pos = d.scarto >= 0 ? `left:50%;` : `right:50%;`;
+    const color = COLORS[perfClass(d.pct, d.scarto)];
+    const share = total ? d.value / total * 100 : 0;
+    const esc = String(d.label).replace(/"/g, '&quot;');
+    return `<div class="rb-row" data-k="${esc}" data-i="${i}" data-label="${esc}" data-value="${d.value}" data-pct="${d.pct}" data-scarto="${d.scarto}" data-share="${share}" data-clamped="${clamped}">
+      <div class="rb-name" title="${esc}">${d.label}</div>
+      <div class="rb-track"><div class="rb-bar anim-grow${clamped ? ' clamped ' + side : ''}" data-side="${side}" style="${pos}width:${w}%;background:${color};transform-origin:${d.scarto >= 0 ? 'left' : 'right'};--i:${i}"></div></div>
+      <div class="rb-val ${pctClass(d.scarto)}">${fmtPct(d.scarto).replace('%','')}</div>
+    </div>`;
+  }).join(''), {barSel:'.rb-bar'});
+}
+
+function attachReteBarsTap(containerId, infoId){
+  const container = document.getElementById(containerId);
+  const infoEl = document.getElementById(infoId);
+  container.addEventListener('click', e => {
+    const row = e.target.closest('.rb-row');
+    if(!row) return;
+    container.querySelectorAll('.rb-row.sel').forEach(x => x.classList.remove('sel'));
+    row.classList.add('sel');
+    const num = a => { const v = row.getAttribute(a); return (v === null || v === 'null' || v === 'undefined' || v === '') ? null : parseFloat(v); };
+    const clamped = row.getAttribute('data-clamped') === 'true';
+    infoEl.innerHTML = `
+      <span class="qi-close">✕</span>
+      <div class="qi-name">${row.getAttribute('data-label')}${clamped ? ' (oltre il bordo del grafico)' : ''}</div>
+      <div class="qi-row">
+        <div>Valore: <b>${fmtEur(num('data-value'))}</b></div>
+        <div>Quota: <b>${num('data-share').toFixed(1)}%</b></div>
+        <div>vs LY: <b class="${pctClass(num('data-pct'))}">${fmtPct(num('data-pct'))}</b></div>
+        <div>vs Rete: <b class="${pctClass(num('data-scarto'))}">${fmtPct(num('data-scarto'))}</b></div>
+      </div>`;
+    infoEl.classList.remove('hidden');
+    infoEl.querySelector('.qi-close').addEventListener('click', ev => { ev.stopPropagation(); infoEl.classList.add('hidden'); row.classList.remove('sel'); });
+  });
+}
+attachReteBarsTap('reteBars', 'reteBarsInfo');
+attachReteBarsTap('reteBars2', 'reteBarsInfo2');
+
+document.querySelectorAll('.seg-toggle').forEach(seg => {
+  seg.addEventListener('click', e => {
+    const b = e.target.closest('[data-col]');
+    if(!b) return;
+    seg.querySelectorAll('[data-col]').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    document.getElementById(seg.dataset.target).setAttribute('data-show', b.dataset.col);
+  });
+});
+
+document.querySelectorAll('#shareMenu .share-list .btn').forEach(b => b.addEventListener('click', () => document.getElementById('shareMenu').removeAttribute('open')));
+document.addEventListener('click', e => { const m = document.getElementById('shareMenu'); if(m && m.open && !m.contains(e.target)) m.removeAttribute('open'); });
+
+function renderSalesView(V){
+  const st = V.st, pf = PERIOD_FIELDS[st.period];
+  renderSalesHero(V);
+  renderKpis(V);
+  renderAlerts(V);
+
+  const selDrill = E(V,'catDrilldown');
+  const prevDrill = selDrill.value;
+  selDrill.innerHTML = '<option value="">Tutte le category</option>' + st.categories.map(c => `<option value="${c}">${shortCat(c)}</option>`).join('');
+  if(st.categories.includes(prevDrill)) selDrill.value = prevDrill;
+  selDrill.onchange = () => V.onPeriod();
+  const drillCat = selDrill.value;
+  V.lastWidth = E(V,'catQuadrant').clientWidth;
+
+  const chartData = buildChartData(st, pf, drillCat);
+  const Unit = V.unit.charAt(0).toUpperCase() + V.unit.slice(1);
+  const one = V.s ? 'sub-reparto' : 'reparto/brand';
+  if(drillCat){
+    E(V,'reteBarsTitle').textContent = Unit + ' in ' + shortCat(drillCat) + ' vs Rete';
+    E(V,'chartTitle').textContent = Unit + ' in ' + shortCat(drillCat);
+    E(V,'chartSubtitle').textContent = 'Ogni pallino è un ' + one + ': anno scorso in orizzontale, rete in verticale.';
+    E(V,'treemapTitle').textContent = 'Peso e performance in ' + shortCat(drillCat);
+  } else {
+    E(V,'reteBarsTitle').textContent = 'Vendite per category vs Rete';
+    E(V,'chartTitle').textContent = 'Vendite per category';
+    E(V,'chartSubtitle').textContent = 'Ogni pallino è una category: anno scorso in orizzontale, rete in verticale.';
+    E(V,'treemapTitle').textContent = 'Peso e performance per Category';
+  }
+  E(V,'reteBarsInfo').classList.add('hidden');
+  renderReteBars('reteBars' + V.s, chartData);
+  E(V,'bridgeTopN').onchange = () => renderBridge(V, E(V,'catDrilldown').value);
+  renderBridge(V, drillCat);
+  renderQuadrantB(E(V,'catQuadrant'), chartData, 'q' + V.s, 'v' + V.s + '|' + drillCat);
+  renderTreemapB(E(V,'catTreemap'), chartData, 'tm' + V.s);
+
+  renderIncidenzaHero(st, pf, 'incidenzaCatBlock' + V.s, 'incidenzaCatFilter' + V.s, 'incidenzaSubBlock' + V.s);
+
+  renderWatchLists(st, pf, 'watchCatFilter' + V.s, 'worstTitle' + V.s, 'bestTitle' + V.s, 'watchListWorst' + V.s, 'watchListBest' + V.s, V.soglia, 'watchSortMode' + V.s, watchRowHtmlB);
+  renderReteLists(st, pf, 'reteCatFilter' + V.s, 'reteWorstTitle' + V.s, 'reteBestTitle' + V.s, 'reteListWorst' + V.s, 'reteListBest' + V.s, V.soglia, watchRowHtmlB);
+  syncSeg(E(V,'periodSwitch'));
+  observeCards(E(V,'content'));
+}
+function renderHero(){ renderSalesView(V1); }
 
 const PERIOD_SUFFIX = {giorno:'del giorno', sett:'della settimana', mese:'del mese', montante:'da inizio anno'};
 
-function watchRowHtml(r, pf){
-  const p = r[pf.pct];
-  const scarto = pf.scarto ? r[pf.scarto] : null;
+function rowStatus(p, scarto){
   let tagCls = 'amber', tagLbl = 'Da monitorare';
   if(p !== null && p >= 0){
     tagCls = 'pos'; tagLbl = 'In crescita';
@@ -1129,6 +2296,33 @@ function watchRowHtml(r, pf){
       else { tagCls = 'amber'; tagLbl = 'Da monitorare'; }
     }
   }
+  return {tagCls, tagLbl};
+}
+
+/* Riga lista (vista Reparto e brand): posizione, nome, stato, barra di intensità, valori */
+function watchRowHtmlB(r, pf, i, mode, maxAbs){
+  const p = r[pf.pct], scarto = pf.scarto ? r[pf.scarto] : null;
+  const st = statusOf(p, scarto);
+  const v = mode === 'rete' ? scarto : mode === 'euro' ? r._delta : p;
+  const w = isNum(v) ? Math.max(1.5, Math.min(100, Math.abs(v) / (maxAbs || 1) * 100)) : 0;
+  return `<div class="wrow anim-rise" data-k="${escHtml(r.apc)}" data-rank="${i || 0}" style="--i:${i || 0}">
+    <span class="wr">${(i || 0) + 1}</span>
+    <div style="min-width:0"><div class="wn" title="${escHtml(shortApc(r.apc))}">${escHtml(shortApc(r.apc))}</div><div class="wc">${escHtml(shortCat(r.category))}${r.pesoLabel ? ' · ' + escHtml(r.pesoLabel) : ''}</div></div>
+    <span class="badge ${st.cls}">${st.lbl}</span>
+    <div class="wbar">${isNum(v) ? `<i class="${v >= 0 ? 'p' : 'n'} anim-grow" data-side="${v >= 0 ? 'p' : 'n'}" style="width:${w}%;--i:${i || 0}"></i>` : ''}</div>
+    <div class="wmeta">
+      <span><b>${fmtEur(r[pf.valore])}</b></span>
+      <span>LY <b class="${pctClass(p)}">${fmtPct(p)}</b></span>
+      ${pf.avanz ? `<span>budget <b>${fmtPctPlain(r[pf.avanz])}</b></span>` : ''}
+      ${isNum(scarto) ? `<span>rete <b class="${pctClass(scarto)}">${fmtPct(scarto)}</b></span>` : ''}
+    </div>
+  </div>`;
+}
+
+function watchRowHtml(r, pf){
+  const p = r[pf.pct];
+  const scarto = pf.scarto ? r[pf.scarto] : null;
+  const {tagCls, tagLbl} = rowStatus(p, scarto);
   const budgetCell = pf.avanz
     ? `<div>${fmtPctPlain(r[pf.avanz])}</div><div style="font-size:9.5px;color:var(--ink-faint);font-weight:600;">Budget</div>`
     : `<div style="color:var(--ink-faint);">—</div>`;
@@ -1149,7 +2343,8 @@ function watchRowHtml(r, pf){
     </div>`;
 }
 
-function renderWatchLists(st, pf, filterId, worstTitleId, bestTitleId, worstListId, bestListId, soglia, sortModeId){
+function renderWatchLists(st, pf, filterId, worstTitleId, bestTitleId, worstListId, bestListId, soglia, sortModeId, rowFn){
+  rowFn = rowFn || watchRowHtml;
   const catFilter = document.getElementById(filterId).value;
   const sortMode = document.getElementById(sortModeId) ? document.getElementById(sortModeId).value : 'pct';
   let pool = st.rows.filter(r => (!catFilter || r.category === catFilter) && r[pf.valore] !== null && r[pf.valore] >= soglia && r[pf.pct] !== null);
@@ -1168,11 +2363,13 @@ function renderWatchLists(st, pf, filterId, worstTitleId, bestTitleId, worstList
     worst = [...pool].sort((a,b) => a[pf.pct] - b[pf.pct]).slice(0,10);
     best = [...pool].sort((a,b) => b[pf.pct] - a[pf.pct]).slice(0,10);
   }
+  const vOf = r => sortMode === 'rete' ? r[pf.scarto] : sortMode === 'euro' ? r._delta : r[pf.pct];
+  const mxOf = list => Math.max(1, ...list.map(vOf).filter(v => typeof v === 'number' && isFinite(v)).map(Math.abs));
   const suffix = PERIOD_SUFFIX[st.period];
   document.getElementById(worstTitleId).textContent = 'Peggiori 10 ' + suffix;
   document.getElementById(bestTitleId).textContent = 'Migliori 10 ' + suffix;
-  document.getElementById(worstListId).innerHTML = worst.map(r => watchRowHtml(r, pf)).join('') || '<div class="empty-msg">Nessun dato sopra soglia' + (sortMode==='rete' && !pf.scarto ? ' (dato rete non disponibile per questo periodo)' : '') + '.</div>';
-  document.getElementById(bestListId).innerHTML = best.map(r => watchRowHtml(r, pf)).join('') || '<div class="empty-msg">Nessun dato sopra soglia' + (sortMode==='rete' && !pf.scarto ? ' (dato rete non disponibile per questo periodo)' : '') + '.</div>';
+  morphList(document.getElementById(worstListId), worst.map((r,i) => rowFn(r, pf, i, sortMode, mxOf(worst))).join('') || '<div class="empty-msg">Nessun dato sopra soglia' + (sortMode==='rete' && !pf.scarto ? ' (dato rete non disponibile per questo periodo)' : '') + '.</div>', {barSel:'.wbar i', rank:true});
+  morphList(document.getElementById(bestListId), best.map((r,i) => rowFn(r, pf, i, sortMode, mxOf(best))).join('') || '<div class="empty-msg">Nessun dato sopra soglia' + (sortMode==='rete' && !pf.scarto ? ' (dato rete non disponibile per questo periodo)' : '') + '.</div>', {barSel:'.wbar i', rank:true});
 }
 
 /* ===== Treemap (algoritmo squarified) ===== */
@@ -1244,136 +2441,10 @@ function perfClass(pct, scarto){
   if(scarto !== null && scarto !== undefined && scarto >= 0) return 'market';
   return 'neg';
 }
-const TREEMAP_COLORS = {pos:'#1E8F63', market:'#3B6EA5', neg:'#C1402E', neutral:'#9C9C9C'};
 
-function renderTreemap(containerId, data){
-  const el = document.getElementById(containerId);
-  if(!data.length){ el.innerHTML = '<div class="empty-msg">Nessun dato disponibile.</div>'; return; }
-  const rects = squarifiedTreemap(data, 0, 0, 1000, 560);
-  el.innerHTML = rects.map(r => {
-    const cls = perfClass(r.pct, r.scarto);
-    const color = TREEMAP_COLORS[cls];
-    const wPct = (r.w/1000*100), hPct = (r.h/560*100);
-    const small = (r.w < 90 || r.h < 55);
-    const title = r.label + ' — ' + fmtEur(r.value) + (r.pct !== null ? ' · ' + fmtPct(r.pct) + ' vs LY' : '') + (r.scarto !== null && r.scarto !== undefined ? ' · ' + fmtPct(r.scarto) + ' vs Rete' : '');
-    return `<div class="treemap-tile" style="left:${r.x/1000*100}%;top:${r.y/560*100}%;width:${wPct}%;height:${hPct}%;background:${color};" title="${title}">
-      <div class="tt-label">${r.label}</div>
-      ${!small ? `<div class="tt-val">${fmtEur(r.value)}</div><div class="tt-pct">${fmtPct(r.pct)} LY</div>` : ''}
-    </div>`;
-  }).join('');
-}
 
 /* ===== Grafico a quadranti (SVG) ===== */
-function attachQuadrantTapHandler(containerId, infoId){
-  const container = document.getElementById(containerId);
-  const infoEl = document.getElementById(infoId);
-  container.addEventListener('click', e => {
-    const circle = e.target.closest('circle');
-    if(!circle){ return; }
-    const label = circle.getAttribute('data-label');
-    const value = parseFloat(circle.getAttribute('data-value'));
-    const pctAttr = circle.getAttribute('data-pct');
-    const scartoAttr = circle.getAttribute('data-scarto');
-    const pctVal = (pctAttr === 'null' || pctAttr === '') ? null : parseFloat(pctAttr);
-    const scartoVal = (scartoAttr === 'null' || scartoAttr === '' || scartoAttr === 'undefined') ? null : parseFloat(scartoAttr);
-    const clamped = circle.getAttribute('data-clamped') === 'true';
-    infoEl.innerHTML = `
-      <span class="qi-close">✕</span>
-      <div class="qi-name">${label}${clamped ? ' (fuori scala nel grafico)' : ''}</div>
-      <div class="qi-row">
-        <div>Valore: <b>${fmtEur(value)}</b></div>
-        <div>vs LY: <b class="${pctClass(pctVal)}">${fmtPct(pctVal)}</b></div>
-        <div>vs Rete: <b class="${pctClass(scartoVal)}">${fmtPct(scartoVal)}</b></div>
-      </div>`;
-    infoEl.classList.remove('hidden');
-    infoEl.querySelector('.qi-close').addEventListener('click', () => infoEl.classList.add('hidden'));
-  });
-}
-attachQuadrantTapHandler('catQuadrant', 'catQuadrantInfo');
-attachQuadrantTapHandler('catQuadrant2', 'catQuadrantInfo2');
 
-function renderQuadrant(containerId, data){
-  const el = document.getElementById(containerId);
-  data = data.filter(d => d.pct !== null && d.scarto !== null && d.scarto !== undefined);
-  if(!data.length){
-    el.innerHTML = '<div class="empty-msg">Dato "vs Rete" non disponibile per questo periodo: il grafico a quadranti richiede sia la % vs anno scorso sia il confronto con la rete.</div>';
-    return;
-  }
-  const dense = data.length > 15;
-  const W = 640, H = dense ? 560 : 420, PAD = 56;
-  const xs = data.map(d => d.pct), ys = data.map(d => d.scarto);
-
-  function percentileAxisMax(values, minMax){
-    const abs = values.map(Math.abs).filter(v => Number.isFinite(v));
-    if(!abs.length) return minMax;
-    const sorted = [...abs].sort((a,b) => a - b);
-    const idx = Math.min(sorted.length - 1, Math.floor(sorted.length * 0.75));
-    return Math.max(minMax, sorted[idx] * 1.2);
-  }
-  const xMax = percentileAxisMax(xs, 15);
-  const yMax = percentileAxisMax(ys, 15);
-  const anyClamped = xs.some(v => Math.abs(v) > xMax) || ys.some(v => Math.abs(v) > yMax);
-
-  const vals = data.map(d => d.value);
-  const maxVal = Math.max(...vals), minVal = Math.min(...vals);
-  const rScale = v => {
-    if(maxVal === minVal) return dense ? 8 : 14;
-    const base = dense ? [5, 20] : [8, 22];
-    return base[0] + ((v - minVal) / (maxVal - minVal)) * (base[1]-base[0]);
-  };
-  const px = x => PAD + ((x + xMax) / (2*xMax)) * (W - 2*PAD);
-  const py = y => H - PAD - ((y + yMax) / (2*yMax)) * (H - 2*PAD);
-  const cx0 = px(0), cy0 = py(0);
-
-  let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
-  svg += `<rect x="${PAD}" y="${PAD}" width="${cx0-PAD}" height="${cy0-PAD}" fill="#E9EEF5" opacity="0.6"/>`;
-  svg += `<rect x="${cx0}" y="${PAD}" width="${W-PAD-cx0}" height="${cy0-PAD}" fill="#E3F2EA" opacity="0.6"/>`;
-  svg += `<rect x="${PAD}" y="${cy0}" width="${cx0-PAD}" height="${H-PAD-cy0}" fill="#FBE9E7" opacity="0.6"/>`;
-  svg += `<rect x="${cx0}" y="${cy0}" width="${W-PAD-cx0}" height="${H-PAD-cy0}" fill="#EEF7EF" opacity="0.6"/>`;
-  svg += `<line x1="${PAD}" y1="${cy0}" x2="${W-PAD}" y2="${cy0}" stroke="#C7C4BC" stroke-width="1" stroke-dasharray="4 3"/>`;
-  svg += `<line x1="${cx0}" y1="${PAD}" x2="${cx0}" y2="${H-PAD}" stroke="#C7C4BC" stroke-width="1" stroke-dasharray="4 3"/>`;
-  svg += `<text x="${W-PAD}" y="${H-PAD+22}" text-anchor="end" font-size="11" fill="#8B8894" font-family="Inter,sans-serif">% vs anno scorso →</text>`;
-  svg += `<text x="${PAD}" y="${PAD-14}" text-anchor="start" font-size="11" fill="#8B8894" font-family="Inter,sans-serif">↑ vs rete diretti</text>`;
-  let noteY = H-PAD+38;
-  if(anyClamped){
-    svg += `<text x="${PAD}" y="${noteY}" text-anchor="start" font-size="10.5" fill="#B4B0BC" font-family="Inter,sans-serif">Assi limitati per leggibilità: i pallini con bordo tratteggiato hanno un valore reale oltre il bordo — passa il mouse o toccalo per vederlo esatto.</text>`;
-    noteY += 16;
-  }
-
-  const withPos = data.map(d => {
-    const clampedX = Math.max(-xMax, Math.min(xMax, d.pct));
-    const clampedY = Math.max(-yMax, Math.min(yMax, d.scarto));
-    const cx = px(clampedX), cy = py(clampedY);
-    const dist = Math.hypot(cx - cx0, cy - cy0);
-    return Object.assign({}, d, {clampedX, clampedY, cx, cy, dist, isClamped: (clampedX !== d.pct) || (clampedY !== d.scarto)});
-  });
-
-  const maxLabels = Math.min(dense ? 7 : 9, withPos.length);
-  const labelSet = new Set([...withPos].sort((a,b) => b.dist - a.dist).slice(0, maxLabels).map(d => d.label));
-  if(withPos.length > maxLabels){
-    svg += `<text x="${PAD}" y="${noteY}" text-anchor="start" font-size="10.5" fill="#B4B0BC" font-family="Inter,sans-serif">Nome scritto solo per i ${maxLabels} casi più fuori dalla norma — passa il mouse o tocca i pallini per gli altri nomi.</text>`;
-  }
-
-  const sortedForDraw = [...withPos].sort((a,b) => b.value - a.value);
-
-  sortedForDraw.forEach((d, idx) => {
-    const cx = d.cx, cy = d.cy;
-    const r = rScale(d.value);
-    const cls = perfClass(d.pct, d.scarto);
-    const color = TREEMAP_COLORS[cls];
-    const title = d.label + ' — ' + fmtEur(d.value) + ' · ' + fmtPct(d.pct) + ' vs LY · ' + fmtPct(d.scarto) + ' vs rete' + (d.isClamped ? ' (fuori scala nel grafico)' : '');
-    const strokeAttrs = d.isClamped ? `stroke="#17161B" stroke-width="1.5" stroke-dasharray="2 2"` : `stroke="#fff" stroke-width="1.5"`;
-    const escLabel = String(d.label).replace(/"/g, '&quot;');
-    svg += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${color}" fill-opacity="0.82" ${strokeAttrs} style="cursor:pointer;" data-label="${escLabel}" data-value="${d.value}" data-pct="${d.pct}" data-scarto="${d.scarto}" data-clamped="${d.isClamped}"><title>${title}</title></circle>`;
-    if(labelSet.has(d.label)){
-      const above = idx % 2 === 0;
-      const ty = above ? cy - r - 6 : cy + r + 12;
-      svg += `<text x="${cx}" y="${ty}" text-anchor="middle" font-size="${dense?'10':'11'}" font-weight="700" fill="#17161B" font-family="Inter,sans-serif" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">${d.label}</text>`;
-    }
-  });
-  svg += `</svg>`;
-  el.innerHTML = svg;
-}
 
 const NOISE_SHARE_THRESHOLD = 0.005;
 
@@ -1390,12 +2461,12 @@ function buildChartData(st, pf, drilldownCat){
     list = st.categories.map(c => {
       const ct = st.catTotals[c];
       const scarto = (pf.rete && ct[pf.pct] !== null && ct[pf.rete] !== null && ct[pf.rete] !== undefined) ? ct[pf.pct] - ct[pf.rete] : null;
-      return {label: shortCat(c), value: ct[pf.valore], pct: ct[pf.pct], scarto: scarto};
+      return {label: shortCat(c), value: ct[pf.valore], pct: ct[pf.pct], scarto: scarto, ly: calcLyValue(ct[pf.valore], ct[pf.pct])};
     }).filter(c => c.value !== null && c.value > 0);
   } else {
     list = st.rows.filter(r => r.category === drilldownCat && r[pf.valore] !== null && r[pf.valore] > 0).map(r => ({
       label: shortApc(r.apc), value: r[pf.valore], pct: r[pf.pct],
-      scarto: pf.scarto ? r[pf.scarto] : null
+      scarto: pf.scarto ? r[pf.scarto] : null, ly: r[pf.ly]
     }));
   }
   return filterNoise(list);
@@ -1437,7 +2508,8 @@ function renderIncidenzaSub(st, pf, filterId, subBlockId){
   `).join('') || '<div class="empty-msg">Nessun dato disponibile.</div>';
 }
 
-function renderReteLists(st, pf, filterId, worstTitleId, bestTitleId, worstListId, bestListId, soglia){
+function renderReteLists(st, pf, filterId, worstTitleId, bestTitleId, worstListId, bestListId, soglia, rowFn){
+  rowFn = rowFn || watchRowHtml;
   const worstTitleEl = document.getElementById(worstTitleId);
   const bestTitleEl = document.getElementById(bestTitleId);
   if(!pf.scarto){
@@ -1454,8 +2526,8 @@ function renderReteLists(st, pf, filterId, worstTitleId, bestTitleId, worstListI
   const suffix = PERIOD_SUFFIX[st.period];
   worstTitleEl.textContent = 'Sotto la rete — peggiori 10 ' + suffix;
   bestTitleEl.textContent = 'Sopra la rete — migliori 10 ' + suffix;
-  document.getElementById(worstListId).innerHTML = worst.map(r => watchRowHtml(r, pf)).join('') || '<div class="empty-msg">Nessun dato sopra soglia.</div>';
-  document.getElementById(bestListId).innerHTML = best.map(r => watchRowHtml(r, pf)).join('') || '<div class="empty-msg">Nessun dato sopra soglia.</div>';
+  morphList(document.getElementById(worstListId), worst.map((r,i) => rowFn(r, pf, i, 'rete', Math.max(1, ...worst.map(x => Math.abs(x[pf.scarto]))))).join('') || '<div class="empty-msg">Nessun dato sopra soglia.</div>', {barSel:'.wbar i', rank:true});
+  morphList(document.getElementById(bestListId), best.map((r,i) => rowFn(r, pf, i, 'rete', Math.max(1, ...best.map(x => Math.abs(x[pf.scarto]))))).join('') || '<div class="empty-msg">Nessun dato sopra soglia.</div>', {barSel:'.wbar i', rank:true});
 }
 
 function renderWatchControls(){
@@ -1473,13 +2545,7 @@ function renderWatchControls(){
   selRete.onchange = renderHero;
 }
 
-document.querySelectorAll('#periodSwitch [data-period]').forEach(b => {
-  b.addEventListener('click', () => {
-    document.querySelectorAll('#periodSwitch [data-period]').forEach(x => x.classList.remove('active'));
-    b.classList.add('active'); state.period = b.dataset.period;
-    renderHero();
-  });
-});
+document.querySelectorAll('#periodSwitch [data-period]').forEach(b => b.addEventListener('click', () => setPeriod(V1, b.dataset.period)));
 
 function renderDetailControls(){
   const sel = document.getElementById('filterCat');
@@ -1581,6 +2647,9 @@ document.querySelectorAll('.pillnav .pill').forEach(b => {
     document.querySelectorAll('.view').forEach(x => x.classList.add('hidden'));
     b.classList.add('active');
     document.getElementById(b.dataset.view).classList.remove('hidden');
+    if(b.dataset.view === 'view1') requestAnimationFrame(() => rerenderSized(V1));
+    if(b.dataset.view === 'view2') requestAnimationFrame(() => rerenderSized(V2));
+    if(b.dataset.view === 'view3') setTimeout(() => ST3.resize(), 50);
   });
 });
 
@@ -1699,83 +2768,15 @@ function parseWorkbook2(rows){
 }
 
 function render2(){
-  document.getElementById('content2').classList.remove('hidden');
+  const content = document.getElementById('content2');
+  content.classList.remove('hidden');
+  if(!REDUCED){ content.classList.add('first-in'); setTimeout(() => content.classList.remove('first-in'), 1200); }
   renderKpis2(); renderWatchControls2(); renderHero2(); renderDetailControls2(); renderDetailTable2(); renderIncidenza2(); renderAnnoScorso2();
 }
 
-function renderKpis2(){
-  const g = state2.grandTotal || {};
-  const el = document.getElementById('kpis2');
-  const items = [
-    {icon:'☀️', lbl:'Venduto oggi', val: fmtEur(g.giornoValore), pct: g.giornoPct},
-    {icon:'📅', lbl:'Venduto settimana', val: fmtEur(g.settValore), pct: g.settPct},
-    {icon:'🗓️', lbl:'Venduto mese', val: fmtEur(g.meseValore), pct: g.mesePct, avanz: g.meseAvanzPrev, rete: scartoOf(g.mesePct, g.meseRete)},
-    {icon:'📈', lbl:'Montante anno', val: fmtEur(g.montanteValore), pct: g.montantePct, avanz: g.montanteAvanzPrev, rete: scartoOf(g.montantePct, g.montanteRete)},
-    {icon:'🎯', lbl:'Budget mese', val: fmtEur(g.meseBudgetValore), badgeOnly: fmtPctPlain(g.meseAvanzPrev) + ' raggiunto'},
-    {icon:'📦', lbl:'Stock corrente', val: fmtEur(g.stockValore), pct: g.stockPct},
-  ];
-  el.innerHTML = items.map(i => `
-    <div class="card kpi-card">
-      <div class="icon">${i.icon}</div>
-      <div class="kval">${i.val}</div>
-      <div class="klbl">${i.lbl}</div>
-      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
-        ${i.badgeOnly ? `<span class="badge info">${i.badgeOnly}</span>` : `
-          <span class="badge ${badgeClass(i.pct)}">${fmtPct(i.pct)} LY</span>
-          ${i.avanz !== undefined ? `<span class="badge info">${fmtPctPlain(i.avanz)} budget</span>` : ''}
-          ${i.rete !== undefined ? `<span class="badge ${badgeClass(i.rete)}">${fmtPct(i.rete)} rete</span>` : ''}
-        `}
-      </div>
-    </div>
-  `).join('');
-}
+function renderKpis2(){ renderKpis(V2); }
 
-function renderHero2(){
-  const pf = PERIOD_FIELDS[state2.period];
-  const catList = state2.categories.map(c => {
-    const ct = state2.catTotals[c];
-    const scarto = (pf.rete && ct[pf.pct] !== null && ct[pf.rete] !== null && ct[pf.rete] !== undefined) ? ct[pf.pct] - ct[pf.rete] : null;
-    return {cat:c, val: ct[pf.valore], pct: ct[pf.pct], scarto: scarto};
-  }).filter(c => c.val !== null);
-  const withPct = catList.filter(c => c.pct !== null);
-  const best = withPct.length ? withPct.reduce((a,b)=> b.pct>a.pct?b:a) : null;
-  const worst = withPct.length ? withPct.reduce((a,b)=> b.pct<a.pct?b:a) : null;
-
-  document.getElementById('summaryRow2').innerHTML = [
-    best ? {lbl:'Categoria migliore: ' + shortCat(best.cat), val: best.val, pct: best.pct} : null,
-    worst ? {lbl:'Categoria da monitorare: ' + shortCat(worst.cat), val: worst.val, pct: worst.pct} : null
-  ].filter(Boolean).map(s => `
-    <div class="summary-item">
-      <div class="slabel">${s.lbl}</div>
-      <div class="sval">${fmtEur(s.val)} <span class="badge ${badgeClass(s.pct)}">${fmtPct(s.pct)}</span></div>
-    </div>
-  `).join('');
-
-  const selDrill2 = document.getElementById('catDrilldown2');
-  const prevDrill2 = selDrill2.value;
-  selDrill2.innerHTML = '<option value="">Tutte le categorie (vista per Category)</option>' + state2.categories.map(c => `<option value="${c}">${shortCat(c)}</option>`).join('');
-  if(state2.categories.includes(prevDrill2)) selDrill2.value = prevDrill2;
-  selDrill2.onchange = renderHero2;
-  const drillCat2 = selDrill2.value;
-
-  const chartData2 = buildChartData(state2, pf, drillCat2);
-  if(drillCat2){
-    document.getElementById('chartTitle2').textContent = 'Sub-reparti in ' + shortCat(drillCat2);
-    document.getElementById('chartSubtitle2').textContent = 'Confronto tra sub-reparti della categoria, periodo selezionato';
-    document.getElementById('treemapTitle2').textContent = 'Peso e performance in ' + shortCat(drillCat2);
-  } else {
-    document.getElementById('chartTitle2').textContent = 'Vendite per Category';
-    document.getElementById('chartSubtitle2').textContent = 'Confronto tra categorie, periodo selezionato';
-    document.getElementById('treemapTitle2').textContent = 'Peso e performance per Category';
-  }
-  renderQuadrant('catQuadrant2', chartData2);
-  renderTreemap('catTreemap2', chartData2);
-
-  renderIncidenzaHero(state2, pf, 'incidenzaCatBlock2', 'incidenzaCatFilter2', 'incidenzaSubBlock2');
-
-  renderWatchLists(state2, pf, 'watchCatFilter2', 'worstTitle2', 'bestTitle2', 'watchListWorst2', 'watchListBest2', SOGLIA_RILEVANZA_2, 'watchSortMode2');
-  renderReteLists(state2, pf, 'reteCatFilter2', 'reteWorstTitle2', 'reteBestTitle2', 'reteListWorst2', 'reteListBest2', SOGLIA_RILEVANZA_2);
-}
+function renderHero2(){ renderSalesView(V2); }
 
 function renderWatchControls2(){
   const sel = document.getElementById('watchCatFilter2');
@@ -1792,13 +2793,7 @@ function renderWatchControls2(){
   selRete.onchange = renderHero2;
 }
 
-document.querySelectorAll('#periodSwitch2 [data-period2]').forEach(b => {
-  b.addEventListener('click', () => {
-    document.querySelectorAll('#periodSwitch2 [data-period2]').forEach(x => x.classList.remove('active'));
-    b.classList.add('active'); state2.period = b.dataset.period2;
-    renderHero2(); renderIncidenza2(); renderAnnoScorso2();
-  });
-});
+document.querySelectorAll('#periodSwitch2 [data-period]').forEach(b => b.addEventListener('click', () => setPeriod(V2, b.dataset.period)));
 
 function renderDetailControls2(){
   const selCat = document.getElementById('filterCat2');
@@ -2113,6 +3108,12 @@ function stItemCode(s){
   const m = String(s).match(/^(\d+)\s*~/);
   return m ? m[1] : '';
 }
+/* data di prima vendita: numero seriale Excel o testo -> 'aaaa-mm-gg' */
+function stDateIso(v){
+  if(typeof v === 'number' && isFinite(v) && v > 20000) return new Date(Math.round((v - 25569) * 86400000)).toISOString().slice(0,10);
+  if(typeof v === 'string'){ const m = v.match(/(\d{4})-(\d{2})-(\d{2})/) || v.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/); if(m) return m[1].length === 4 ? `${m[1]}-${m[2]}-${m[3]}` : `${m[3]}-${String(m[2]).padStart(2,'0')}-${String(m[1]).padStart(2,'0')}`; }
+  return null;
+}
 function stTierClass(pct){ if(pct === null || pct === undefined) return ''; if(pct >= 25) return 'pos'; if(pct >= 15) return 'amber'; return 'neg'; }
 function stTierLabel(pct){ if(pct === null || pct === undefined) return '—'; if(pct >= 25) return 'Buono'; if(pct >= 15) return 'Da monitorare'; return 'Critico'; }
 
@@ -2153,7 +3154,8 @@ function parseSellThrough(rows){
     stores: colMap['# STORES'], deliveredDepth: colMap['DELIVERED DEPTH'],
     avgCollectionPrice: colMap['AVG. COLLECTION PRICE'], avgRetailPrice: colMap['AVG. RETAIL PRICE'],
     sales: colMap['TOTAL SALES'], salesMix: colMap['SALES MIX'], totalST: colMap['TOTAL ST'],
-    soldDepth: colMap['SOLD DEPTH'], pctUnsold: colMap['% UNSOLD'], unsoldDelivered: colMap['UNSOLD DELIVERED']
+    soldDepth: colMap['SOLD DEPTH'], pctUnsold: colMap['% UNSOLD'], unsoldDelivered: colMap['UNSOLD DELIVERED'],
+    firstSale: colMap['1ST SALE'], st2: colMap['ST (WEEK 2)']
   };
   const num = v => (v === null || v === undefined || v === '') ? null : Number(v);
   const extract = r => ({
@@ -2162,7 +3164,9 @@ function parseSellThrough(rows){
     avgCollectionPrice: num(r[IDX.avgCollectionPrice]), avgRetailPrice: num(r[IDX.avgRetailPrice]),
     sales: num(r[IDX.sales]), salesMix: num(r[IDX.salesMix]),
     totalST: num(r[IDX.totalST]), soldDepth: num(r[IDX.soldDepth]),
-    pctUnsold: num(r[IDX.pctUnsold]), unsoldDelivered: num(r[IDX.unsoldDelivered])
+    pctUnsold: num(r[IDX.pctUnsold]), unsoldDelivered: num(r[IDX.unsoldDelivered]),
+    st2: (IDX.st2 !== undefined && typeof r[IDX.st2] === 'number') ? r[IDX.st2] : null,
+    firstSale: stDateIso(IDX.firstSale !== undefined ? r[IDX.firstSale] : null)
   });
 
   const dataRows = rows.slice(1);
@@ -2189,153 +3193,346 @@ function parseSellThrough(rows){
   state3 = { rows: details, deptTotals, funcTotals, grandTotal, departments: Object.keys(deptTotals) };
 }
 
+const ST3 = (() => {
+
+const isNum = v => typeof v === 'number' && isFinite(v);
+const EUR = new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR',maximumFractionDigits:0});
+const fE = v => isNum(v) ? EUR.format(v) : '—';
+const fK = v => !isNum(v) ? '—' : Math.abs(v) >= 1000 ? (v/1000).toLocaleString('it-IT',{maximumFractionDigits:1}) + 'k €' : EUR.format(v);
+const fP = v => isNum(v) ? v.toLocaleString('it-IT',{minimumFractionDigits:1,maximumFractionDigits:1}) + '%' : '—';
+const tier = p => !isNum(p) ? '' : p >= 25 ? 'pos' : p >= 15 ? 'amb' : 'neg';
+const tierLbl = p => !isNum(p) ? '—' : p >= 25 ? 'Buono' : p >= 15 ? 'Da monitorare' : 'Critico';
+const COL = {pos:'#3DD9A0', amb:'#FFC15E', neg:'#FF6F7D', '':'#8692B2'};
+const code = s => { const m = String(s||'').match(/^(\d+)\s*~/); return m ? m[1] : ''; };
+const nm = s => { const m = String(s||'').match(/^\s*\d+\s*~\s*(.+)/); return m ? m[1].trim() : String(s||''); };
+const xdate = n => isNum(n) ? new Date(Math.round((n - 25569) * 86400000)) : null;
+const fD = d => d ? d.toLocaleDateString('it-IT',{day:'numeric',month:'short'}) : '—';
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+let ITEMS = [], DEPTS = [];
+
+
+/* dati dalla dashboard (state3): stesso lettore del file Qlik */
+function buildFromState(){
+  const S = (typeof state3 !== 'undefined' && state3) ? state3 : {rows:[], deptTotals:{}};
+  ITEMS = (S.rows || []).map(r => {
+    const first = r.firstSale ? new Date(r.firstSale + 'T12:00:00') : null;
+    const i = {dept: r.department, deptName: nm(r.department), func: r.function, funcName: nm(r.function), item: r.item, code: code(r.item), name: nm(r.item), pic: r.picture,
+      del: r.delivered, sal: r.sales, st: r.totalST, price: r.avgRetailPrice, coll: r.avgCollectionPrice, st2: isNum(r.st2) ? r.st2 : null, first: first && !isNaN(first) ? first : null};
+    i.stp = isNum(i.st) ? i.st * 100 : null; i.rest = (i.del || 0) - (i.sal || 0);
+    // pezzi: consegnati = consegnato € / prezzo collezione (affidabile);
+    // venduti = venduto € / prezzo di vendita, arrotondato per eccesso (con sconti in cassa resta una stima)
+    i.pzDel = isNum(i.del) && isNum(i.coll) && i.coll > 0 ? Math.round(i.del / i.coll) : null;
+    i.pzSold = isNum(i.sal) && isNum(i.price) && i.price > 0 ? Math.ceil(i.sal / i.price - 0.02) : null;
+    i.pzRest = isNum(i.pzDel) && isNum(i.pzSold) ? Math.max(0, i.pzDel - i.pzSold) : null;
+    return i;
+  });
+  DEPTS = Object.keys(S.deptTotals || {}).map(k => ({key:k, name: nm(k), del: S.deptTotals[k].delivered || 0, sal: S.deptTotals[k].sales || 0}));
+  const ds = fDept, prev = ds.value;
+  ds.innerHTML = '<option value="">Tutti i reparti</option>' + [...DEPTS].sort((a,b) => a.name.localeCompare(b.name)).map(d => `<option value="${esc(d.key)}">${esc(d.name)}</option>`).join('');
+  if(DEPTS.some(d => d.key === prev)) ds.value = prev;
+  fillFuncs();
+}
+
+/* ---------- filtri ---------- */
+function filtered(){
+  const d = fDept.value, f = fFunc.value, q = fSearch.value.trim().toLowerCase();
+  return ITEMS.filter(i => (!d || i.dept === d) && (!f || i.func === f) && (!q || i.name.toLowerCase().includes(q) || i.code.includes(q)));
+}
+function sortItems(list, mode){
+  const L = [...list];
+  if(mode === 'stDesc') L.sort((a,b) => (b.stp ?? -1) - (a.stp ?? -1));
+  else if(mode === 'pz') L.sort((a,b) => (b.pzRest ?? -1) - (a.pzRest ?? -1));
+  else if(mode === 'rest') L.sort((a,b) => b.rest - a.rest);
+  else if(mode === 'new') L.sort((a,b) => (b.first || 0) - (a.first || 0) || (a.stp ?? 999) - (b.stp ?? 999));
+  else L.sort((a,b) => (a.stp ?? 999) - (b.stp ?? 999));
+  return L;
+}
+function fillFuncs(){
+  const d = fDept.value, prev = fFunc.value;
+  const funcs = [...new Map(ITEMS.filter(i => !d || i.dept === d).map(i => [i.func, i.funcName])).entries()].sort((a,b) => a[1].localeCompare(b[1]));
+  fFunc.innerHTML = '<option value="">Tutte le funzioni/brand</option>' + funcs.map(([k,v]) => `<option value="${esc(k)}">${esc(v)}</option>`).join('');
+  if(funcs.some(([k]) => k === prev)) fFunc.value = prev;
+}
+const sum = (L, k) => L.reduce((s,i) => s + (i[k] || 0), 0);
+
+/* ---------- riquadro grande ---------- */
+function renderHero(list){
+  const del = sum(list,'del'), sal = sum(list,'sal'), st = del ? sal / del * 100 : null, rest = del - sal;
+  const dSel = fDept.value ? DEPTS.find(d => d.key === fDept.value) : null;
+  const scope = dSel ? dSel.name : 'Negozio';
+  const byDept = DEPTS.map(d => ({n: d.name, rest: (d.del||0) - (d.sal||0), st: d.del ? d.sal/d.del*100 : null})).sort((a,b) => b.rest - a.rest);
+  const worstItem = [...list].sort((a,b) => b.rest - a.rest)[0];
+  const insight = !fDept.value && byDept.length
+    ? `<b>${esc(byDept[0].n)}</b> ha più merce da vendere: <b>${fE(byDept[0].rest)}</b> (Sell Through ${fP(byDept[0].st)}).` + (worstItem ? ` L'articolo con più merce rimasta è <b>${esc(worstItem.code)} · ${esc(worstItem.name)}</b> (${fE(worstItem.rest)}).` : '')
+    : (worstItem ? `In ${esc(scope)} l'articolo con più merce rimasta è <b>${esc(worstItem.code)} · ${esc(worstItem.name)}</b>: ${fE(worstItem.rest)} con Sell Through ${fP(worstItem.stp)}.` : '');
+  const off = 100 - Math.max(0, Math.min(100, st || 0));
+  const el = document.getElementById('stHero');
+  const prevRing = el.querySelector('.val');
+  const fromOff = prevRing ? prevRing.style.strokeDashoffset : 100;
+  el.innerHTML = `
+    <div class="ring"><svg viewBox="-80 -80 160 160"><circle class="trk" r="66" stroke-width="13"/><circle class="val" r="66" stroke-width="13" stroke="${COL[tier(st)]}" pathLength="100" stroke-dasharray="100" style="stroke-dashoffset:${fromOff}" transform="rotate(-90)"/><text class="c" text-anchor="middle" y="6">${fP(st)}</text><text class="s" text-anchor="middle" y="24">Sell Through</text></svg></div>
+    <div>
+      <div class="hk">${esc(scope)}${fFunc.value ? ' · ' + esc(ITEMS.find(i => i.func === fFunc.value)?.funcName || '') : ''} <span class="badge ${tier(st)}" style="margin-left:6px">${tierLbl(st)}</span></div>
+      <div class="figs">
+        <div><b>${fE(del)}</b><span>Consegnato</span></div>
+        <div><b>${fE(sal)}</b><span>Venduto</span></div>
+        <div><b>${fE(rest)}</b><span>Merce rimasta</span></div>
+        <div><b>${list.length}</b><span>Articoli</span></div>
+      </div>
+      ${insight ? `<p class="insight">${insight}</p>` : ''}
+    </div>`;
+  const v = el.querySelector('.val'); void v.getBoundingClientRect(); v.style.strokeDashoffset = off;
+}
+
+/* ---------- reparti ---------- */
+function renderDepts(){
+  const el = document.getElementById('stDepts');
+  const L = DEPTS.filter(d => d.del > 0).map(d => ({k:d.key, n:d.name, st: d.sal / d.del * 100})).sort((a,b) => a.st - b.st);
+  const max = Math.max(40, ...L.map(d => d.st)) ;
+  const b1 = 15 / max * 100, b2 = 25 / max * 100;
+  const bg = `linear-gradient(90deg,rgba(255,111,125,.10) 0 ${b1}%,rgba(255,193,94,.10) ${b1}% ${b2}%,rgba(61,217,160,.10) ${b2}% 100%)`;
+  morph(el, L, d => d.k, (n, d) => {
+    if(!n.firstChild) n.innerHTML = '<div class="n"></div><div class="t"><i style="width:0"></i></div><div class="v"></div>';
+    n.className = 'dr' + (fDept.value === d.k ? ' sel' : '');
+    n.querySelector('.n').textContent = d.n; n.title = d.n;
+    n.querySelector('.t').style.background = bg;
+    const i = n.querySelector('i'); i.style.background = COL[tier(d.st)]; i.style.width = Math.min(100, d.st / max * 100) + '%';
+    const v = n.querySelector('.v'); v.textContent = fP(d.st); v.className = 'v ' + tier(d.st);
+    n.onclick = () => { fDept.value = fDept.value === d.k ? '' : d.k; onFilter(true); };
+  }, 'button');
+}
+
+/* ---------- dove resta la merce ---------- */
+function renderRest(list){
+  const el = document.getElementById('stRest');
+  let L;
+  if(!fDept.value){
+    L = DEPTS.filter(d => d.del > 0).map(d => ({k:d.key, n:d.name, rest:d.del - d.sal, st:d.sal/d.del*100, click:true})).sort((a,b) => b.rest - a.rest);
+    const top = L.slice(0, 10), others = L.slice(10);
+    if(others.length) top.push({k:'__altri', n:`Altri ${others.length} reparti`, rest: others.reduce((s,d) => s + d.rest, 0), st:null});
+    L = top;
+  } else {
+    L = [...list].sort((a,b) => b.rest - a.rest).slice(0, 10).map(i => ({k:i.item, n:i.code + ' · ' + i.name, rest:i.rest, st:i.stp, it:i}));
+  }
+  const max = Math.max(1, ...L.map(d => d.rest));
+  const tot = L.reduce((s,d) => s + d.rest, 0);
+  morph(el, L, d => d.k, (n, d) => {
+    if(!n.firstChild) n.innerHTML = '<div class="n"></div><div class="t"><i style="width:0"></i></div><div class="v"></div>';
+    n.className = 'rm' + (fDept.value === d.k ? ' sel' : '');
+    n.querySelector('.n').textContent = d.n; n.title = d.n;
+    const i = n.querySelector('i'); i.style.background = d.st === null ? 'var(--faint)' : COL[tier(d.st)]; i.style.width = (d.rest / max * 100) + '%';
+    n.querySelector('.v').innerHTML = `${fK(d.rest)}<small>ST ${fP(d.st)}</small>`;
+    n.onclick = d.click ? () => { fDept.value = d.k; onFilter(true); } : d.it ? () => openDetail(d.it) : null;
+  }, 'button');
+}
+
+/* ---------- mappa articoli ---------- */
+function renderScatter(list){
+  const el = document.getElementById('stSc');
+  const W = Math.max(300, el.clientWidth || 600), H = Math.round(Math.min(460, Math.max(300, W * 0.66)));
+  const m = {l:42, r:12, t:22, b:40};
+  const pts = list.filter(i => isNum(i.stp) && i.del > 0);
+  if(!pts.length){ el.innerHTML = '<div class="muted">Nessun articolo.</div>'; return; }
+  const xMax = Math.max(...pts.map(p => p.rest)) * 1.08 || 1;
+  const sorted = pts.map(p => p.stp).sort((a,b) => a - b);
+  const p95 = sorted[Math.floor(sorted.length * 0.95)] || 40;
+  const yMax = Math.min(100, Math.max(40, p95 * 1.15));
+  const yc = v => Math.min(v, yMax);
+  const X = v => m.l + Math.sqrt(Math.max(0, v) / xMax) * (W - m.l - m.r);
+  const Y = v => H - m.b - (v / yMax) * (H - m.t - m.b);
+  const dMax = Math.max(...pts.map(p => p.del));
+  const R = v => 3 + 9 * Math.sqrt(v / dMax);
+  let svg = el.querySelector('svg');
+  if(!svg || svg.dataset.w != W){
+    el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" data-w="${W}"><g class="bg"></g><g class="dots"></g><g class="lbls"></g></svg>`; svg = el.querySelector('svg');
+  }
+  const xTicks = [0, 1000, 5000, 10000, 20000, 40000].filter(t => t <= xMax);
+  const yTicks = [0, 15, 25, 50, 75, 100].filter(t => t <= yMax);
+  svg.querySelector('.bg').innerHTML =
+    `<rect x="${m.l}" y="${Y(15)}" width="${W-m.l-m.r}" height="${H-m.b-Y(15)}" fill="#FF6F7D" fill-opacity=".06"/>` +
+    `<rect x="${m.l}" y="${Y(25)}" width="${W-m.l-m.r}" height="${Y(15)-Y(25)}" fill="#FFC15E" fill-opacity=".05"/>` +
+    xTicks.map(t => `<line class="gl" x1="${X(t)}" x2="${X(t)}" y1="${m.t}" y2="${H-m.b}"/><text class="tk" x="${X(t)}" y="${H-m.b+15}" text-anchor="middle">${t ? fK(t).replace(' €','') : '0'}</text>`).join('') +
+    yTicks.map(t => `<line class="${t===15||t===25?'ax':'gl'}" x1="${m.l}" x2="${W-m.r}" y1="${Y(t)}" y2="${Y(t)}"/><text class="tk" x="${m.l-6}" y="${Y(t)+3.5}" text-anchor="end">${t}%</text>`).join('') +
+    `<text class="at" x="${W-m.r}" y="${H-6}" text-anchor="end">merce rimasta (€) →</text><text class="at" x="${m.l}" y="${m.t-8}">↑ Sell Through</text>` +
+    `<text class="zl" x="${W-m.r-6}" y="${H-m.b-8}" text-anchor="end">Priorità</text>`;
+  tipReset('st3');
+  const g = svg.querySelector('.dots');
+  const ex = new Map([...g.children].map(c => [c.dataset.k, c]));
+  const seen = new Set();
+  [...pts].sort((a,b) => b.del - a.del).forEach(p => {
+    seen.add(p.item);
+    let c = ex.get(p.item);
+    if(!c){ c = document.createElementNS('http://www.w3.org/2000/svg','circle'); c.dataset.k = p.item; c.setAttribute('cx', X(0)); c.setAttribute('cy', Y(0)); c.setAttribute('r', 0); }
+    g.appendChild(c);
+    c.setAttribute('fill', COL[tier(p.stp)]); c.setAttribute('fill-opacity', '.8');
+    void c.getBoundingClientRect();
+    c.setAttribute('cx', X(p.rest)); c.setAttribute('cy', Y(yc(p.stp))); c.setAttribute('r', R(p.del));
+    if(p.stp > yMax){ c.setAttribute('stroke', '#EEF2FB'); c.setAttribute('stroke-dasharray', '2 2'); } else { c.removeAttribute('stroke'); c.removeAttribute('stroke-dasharray'); }
+    c.onclick = () => openDetail(p);
+    c.dataset.tip = tipReg('st3', tipHtml(p.code + ' · ' + p.name, [['Sell Through', fP(p.stp)], ['Merce rimasta', fE(p.rest)], ['Reparto', esc(p.deptName)]]));
+  });
+  ex.forEach((c,k) => { if(!seen.has(k)) c.remove(); });
+  // etichette: le 6 priorità (tanta merce, ST basso)
+  const pri = [...pts].filter(p => p.stp < 25).sort((a,b) => b.rest - a.rest).slice(0, W < 520 ? 4 : 6);
+  const boxes = [];
+  svg.querySelector('.lbls').innerHTML = pri.map(p => {
+    const nm2 = p.name.length > 14 ? p.name.slice(0,13) + '…' : p.name, t = p.code + ' ' + nm2, w = t.length * 6.2;
+    let x = X(p.rest) - R(p.del) - 4, a = 'end', y = Y(yc(p.stp)) + 4;
+    if(x - w < m.l){ x = X(p.rest) + R(p.del) + 4; a = 'start'; }
+    const b = {x1: a === 'end' ? x - w : x, x2: a === 'end' ? x : x + w, y1: y - 10, y2: y + 2};
+    const hit = bb => boxes.some(q => !(bb.x2 < q.x1 || bb.x1 > q.x2 || bb.y2 < q.y1 || bb.y1 > q.y2));
+    const opts = [[x, y, a, b], [X(p.rest), Y(yc(p.stp)) - R(p.del) - 5, 'middle', {x1:X(p.rest)-w/2, x2:X(p.rest)+w/2, y1:Y(yc(p.stp))-R(p.del)-15, y2:Y(yc(p.stp))-R(p.del)-3}], [X(p.rest), Y(yc(p.stp)) + R(p.del) + 13, 'middle', {x1:X(p.rest)-w/2, x2:X(p.rest)+w/2, y1:Y(yc(p.stp))+R(p.del)+3, y2:Y(yc(p.stp))+R(p.del)+15}]];
+    const ok = opts.find(o => !hit(o[3]) && o[3].x2 <= W - 2 && o[3].x1 >= m.l - 4);
+    if(!ok) return '';
+    boxes.push(ok[3]);
+    return `<text class="lbl" x="${ok[0]}" y="${ok[1]}" text-anchor="${ok[2]}">${esc(t)}</text>`;
+  }).join('');
+}
+
+/* ---------- settimana di ingresso ---------- */
+function renderCohort(list){
+  const el = document.getElementById('stCo');
+  const by = new Map();
+  list.forEach(i => { const k = i.first ? i.first.toISOString().slice(0,10) : 'n.d.'; const o = by.get(k) || {k, d:i.first, del:0, sal:0, n:0}; o.del += i.del || 0; o.sal += i.sal || 0; o.n++; by.set(k, o); });
+  const L = [...by.values()].sort((a,b) => (a.d || 0) - (b.d || 0)).map(o => Object.assign(o, {st: o.del ? o.sal / o.del * 100 : null}));
+  const max = Math.max(30, ...L.map(o => o.st || 0));
+  morph(el, L, o => o.k, (n, o) => {
+    if(!n.firstChild) n.innerHTML = '<div class="cv"></div><div class="bar2" style="height:0"></div><div class="cl"></div>';
+    n.className = 'cb';
+    n.querySelector('.cv').textContent = fP(o.st); n.querySelector('.cv').className = 'cv ' + tier(o.st);
+    const b = n.querySelector('.bar2'); b.style.background = COL[tier(o.st)]; b.style.height = Math.max(2, (o.st || 0) / max * 120) + 'px';
+    n.querySelector('.cl').innerHTML = `dal ${fD(o.d)}<small>${o.n} articoli · ${fK(o.del - o.sal)} rimasti</small>`;
+  });
+}
+
+/* ---------- articoli ---------- */
+function cardHtml(i){
+  const st = i.stp, c = COL[tier(st)];
+  return `<div class="pc" data-k="${esc(i.item)}">
+    <div class="pimg"><img src="${esc(i.pic || '')}" loading="lazy" alt="" onerror="this.parentElement.classList.add('fail')"><div class="noimg"><b>${esc(i.code)}</b><span>foto non disponibile</span></div>
+      <div class="pring"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="none" stroke="rgba(214,224,255,.15)" stroke-width="4"/><circle cx="20" cy="20" r="17" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" pathLength="100" stroke-dasharray="${Math.max(0, Math.min(100, st || 0))} 100"/></svg><b>${isNum(st) ? Math.round(st) + '%' : '—'}</b></div>
+      ${isNum(i.pzRest) ? `<div class="ppz"><b>≈ ${i.pzRest}</b> pz rimasti</div>` : ''}</div>
+    <div class="pb"><div class="pcode">Master Item ${esc(i.code)} · dal ${fD(i.first)}</div><div class="pname">${esc(i.name)}</div>
+      <div class="pstats"><div>Rimasta<b>${fK(i.rest)}</b></div><div>Pezzi<b>${isNum(i.pzSold) && isNum(i.pzDel) ? '≈' + i.pzSold + ' / ' + i.pzDel : '—'}</b></div><div>Prezzo<b>${fE(i.price)}</b></div><div>ST 2 sett.<b>${fP(isNum(i.st2) ? i.st2 * 100 : null)}</b></div></div>
+    </div></div>`;
+}
+function bindCards(root, list){
+  const map = new Map(list.map(i => [i.item, i]));
+  root.querySelectorAll('.pc').forEach(n => { if(!n.onclick) n.onclick = () => openDetail(map.get(n.dataset.k)); });
+}
+function renderPreview(list){
+  const L = sortItems(list, fSort.value).slice(0, 12);
+  document.getElementById('stPreview').innerHTML = L.map(cardHtml).join('') || '<div class="muted">Nessun articolo con questi filtri.</div>';
+  bindCards(document.getElementById('stPreview'), L);
+  document.getElementById('stArtSub').textContent = `Primi ${Math.min(12, list.length)} di ${list.length}, secondo filtri e ordinamento.`;
+  document.getElementById('stOpenAll').textContent = `Vedi tutti gli articoli (${list.length})`;
+}
+
+/* galleria completa: carica 36 articoli per volta mentre scorri */
+let ovList = [], ovShown = 0, ovObs = null;
+function ovRender(reset){
+  const grid = document.getElementById('stOvGrid');
+  if(reset){ ovList = sortItems(filtered(), document.getElementById('stOvSort').value); ovShown = 0; grid.innerHTML = ''; document.getElementById('stOvBody').scrollTop = 0; }
+  const next = ovList.slice(ovShown, ovShown + 36);
+  grid.insertAdjacentHTML('beforeend', next.map(cardHtml).join(''));
+  ovShown += next.length;
+  bindCards(grid, ovList);
+  document.getElementById('stOvCnt').textContent = `· ${ovList.length} articoli${fDept.value ? ' · ' + (DEPTS.find(d => d.key === fDept.value)?.name || '') : ''}`;
+}
+function openAll(){
+  document.getElementById('stOvSort').value = fSort.value;
+  document.getElementById('stOv').classList.add('on'); document.body.classList.add('st-lock');
+  ovRender(true);
+  if(!ovObs){ ovObs = new IntersectionObserver(e => { if(e[0].isIntersecting && ovShown < ovList.length) ovRender(false); }, {root: document.getElementById('stOvBody'), rootMargin:'600px'}); ovObs.observe(document.getElementById('stSentinel')); }
+}
+function closeAll(){ document.getElementById('stOv').classList.remove('on'); document.body.classList.remove('st-lock'); }
+
+/* dettaglio */
+function openDetail(i){
+  if(!i) return;
+  const disc = isNum(i.coll) && isNum(i.price) && i.coll > 0 ? (1 - i.price / i.coll) * 100 : null;
+  document.getElementById('stMdc').innerHTML = `
+    <div class="pimg"><img src="${esc(i.pic || '')}" alt="" onerror="this.parentElement.classList.add('fail')"><div class="noimg"><b>${esc(i.code)}</b><span>foto non disponibile</span></div></div>
+    <div class="mdb"><button class="mdx" id="stMdx" aria-label="Chiudi">✕</button><div class="pcode">Master Item ${esc(i.code)}</div><h4 style="padding-right:36px">${esc(i.name)}</h4>
+      <div class="rows">
+        <div><span>Reparto</span><b>${esc(i.deptName)}</b></div>
+        <div><span>Funzione</span><b>${esc(i.funcName)}</b></div>
+        <div><span>Sell Through</span><b class="${tier(i.stp)}">${fP(i.stp)} · ${tierLbl(i.stp)}</b></div>
+        <div><span>Consegnato / Venduto</span><b>${fE(i.del)} / ${fE(i.sal)}</b></div>
+        <div><span>Merce rimasta</span><b>${fE(i.rest)}</b></div>
+        <div><span>Prima vendita</span><b>${fD(i.first)}</b></div>
+        <div><span>ST a 2 settimane</span><b>${fP(isNum(i.st2) ? i.st2 * 100 : null)}</b></div>
+        <div><span>Pezzi consegnati</span><b>${isNum(i.pzDel) ? i.pzDel : '—'}</b></div>
+        <div><span>Pezzi venduti / rimasti (stima)</span><b>${isNum(i.pzSold) ? '≈ ' + i.pzSold : '—'} / ${isNum(i.pzRest) ? '≈ ' + i.pzRest : '—'}</b></div>
+        <div><span>Prezzo medio</span><b>${fE(i.price)}${disc && disc > 0.5 ? ` (−${fP(disc)} vs collezione)` : ''}</b></div>
+      </div>
+      <button class="copy" id="stCp">Copia codice ${esc(i.code)}</button>
+    </div>`;
+  document.getElementById('stCp').onclick = e => { navigator.clipboard?.writeText(i.code); e.target.textContent = 'Codice copiato'; };
+  document.getElementById('stMdx').onclick = () => document.getElementById('stMd').classList.remove('on');
+  document.getElementById('stMd').classList.add('on');
+}
+document.getElementById('stMd').addEventListener('click', e => { if(e.target.id === 'stMd') e.currentTarget.classList.remove('on'); });
+
+/* aggiorna una lista mantenendo gli elementi: le barre scorrono dal vecchio al nuovo valore */
+function morph(el, data, keyOf, fill, tag){
+  const ex = new Map([...el.children].map(n => [n.dataset.k, n]));
+  const seen = new Set();
+  data.forEach(d => { const k = keyOf(d); seen.add(k); let n = ex.get(k); if(!n){ n = document.createElement(tag || 'div'); n.dataset.k = k; el.appendChild(n); fill(n, Object.assign({}, d)); void n.offsetWidth; } el.appendChild(n); fill(n, d); });
+  ex.forEach((n,k) => { if(!seen.has(k)) n.remove(); });
+}
+
+
+/* ---------- tabella dettaglio ---------- */
+let dtSort = {k:'stp', asc:true};
+function renderTable(list){
+  const k = dtSort.k, dir = dtSort.asc ? 1 : -1;
+  const L = [...list].sort((a,b) => {
+    let va = a[k], vb = b[k];
+    if(k === 'first'){ va = va ? +va : null; vb = vb ? +vb : null; }
+    if(typeof va === 'string' || typeof vb === 'string') return String(va||'').localeCompare(String(vb||'')) * dir;
+    if(va === null || va === undefined) return 1; if(vb === null || vb === undefined) return -1;
+    return (va - vb) * dir;
+  });
+  document.getElementById('stDtBody').innerHTML = L.map(i => `<tr data-k="${esc(i.item)}">
+    <td><b title="${esc(i.name)}">${esc(i.name)}</b><small>${esc(i.code)}</small></td>
+    <td>${esc(i.deptName)}</td><td>${esc(i.funcName)}</td><td>${fD(i.first)}</td>
+    <td class="num">${fE(i.del)}</td><td class="num">${fE(i.sal)}</td><td class="num"><b>${fE(i.rest)}</b></td>
+    <td class="num ${tier(i.stp)}"><b>${fP(i.stp)}</b></td><td class="num">${fP(isNum(i.st2) ? i.st2 * 100 : null)}</td><td class="num">${isNum(i.pzRest) ? i.pzRest : '—'}</td><td class="num">${fE(i.price)}</td>
+  </tr>`).join('') || '<tr><td colspan="11" class="muted">Nessun articolo con questi filtri.</td></tr>';
+  document.querySelectorAll('#stDt th').forEach(th => { th.classList.toggle('on', th.dataset.s === k); th.classList.toggle('asc', th.dataset.s === k && dtSort.asc); });
+  document.getElementById('stDtSub').textContent = `${L.length} articoli secondo i filtri in alto. Tocca un'intestazione per ordinare, una riga per il dettaglio.`;
+  const map = new Map(L.map(i => [i.item, i]));
+  document.querySelectorAll('#stDtBody tr[data-k]').forEach(tr => tr.onclick = () => openDetail(map.get(tr.dataset.k)));
+}
+document.querySelectorAll('#stDt th').forEach(th => th.addEventListener('click', () => {
+  const k = th.dataset.s;
+  dtSort = dtSort.k === k ? {k, asc: !dtSort.asc} : {k, asc: ['name','deptName','funcName','stp'].includes(k)};
+  renderTable(filtered());
+}));
+
+function renderAll(){
+  const list = filtered();
+  renderHero(list); renderDepts(); renderRest(list); renderScatter(list); renderCohort(list); renderPreview(list); renderTable(list);
+}
+function onFilter(deptChanged){ if(deptChanged) fillFuncs(); renderAll(); }
+const fDept = document.getElementById('stDept'), fFunc = document.getElementById('stFunc'), fSearch = document.getElementById('stSearch'), fSort = document.getElementById('stSort');
+fDept.onchange = () => onFilter(true); fFunc.onchange = () => onFilter(false); fSort.onchange = () => renderPreview(filtered());
+let stT; fSearch.oninput = () => { clearTimeout(stT); stT = setTimeout(() => onFilter(false), 200); };
+document.getElementById('stReset').onclick = () => { fDept.value = ''; fSearch.value = ''; fillFuncs(); fFunc.value = ''; renderAll(); };
+document.getElementById('stOpenAll').onclick = openAll;
+document.getElementById('stOvClose').onclick = closeAll;
+document.getElementById('stOvSort').onchange = () => ovRender(true);
+document.addEventListener('keydown', e => { if(e.key === 'Escape'){ closeAll(); document.getElementById('stMd').classList.remove('on'); } });
+let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => renderScatter(filtered()), 200); });
+
+return { render(){ buildFromState(); renderAll(); }, resize(){ if(ITEMS.length) renderScatter(filtered()); } };
+})();
+
 function render3(){
   document.getElementById('content3').classList.remove('hidden');
-  renderKpis3();
-  renderStFilters();
-  renderProductGrid3();
-  renderDeptRollup3();
-  renderStDetailTable();
-}
-
-function renderKpis3(){
-  const el = document.getElementById('kpis3');
-  const depts = state3.departments
-    .map(d => ({dept: d, pct: (state3.deptTotals[d] && state3.deptTotals[d].totalST !== null) ? state3.deptTotals[d].totalST*100 : null}))
-    .filter(x => x.pct !== null)
-    .sort((a,b) => a.pct - b.pct);
-  el.innerHTML = depts.map(x => `
-    <div class="card kpi-card">
-      <div class="klbl" style="margin-bottom:8px;">${stShortName(x.dept)}</div>
-      <div class="kval" style="font-size:20px;">${fmtPctPlain(x.pct)}</div>
-      <div style="margin-top:8px;"><span class="badge ${stTierClass(x.pct)}">${stTierLabel(x.pct)}</span></div>
-    </div>
-  `).join('');
-}
-
-function renderStFilters(){
-  const deptSel = document.getElementById('stDeptFilter');
-  const prevDept = deptSel.value;
-  deptSel.innerHTML = '<option value="">Tutti i reparti</option>' + state3.departments.map(d => `<option value="${d}">${stShortName(d)}</option>`).join('');
-  if(state3.departments.includes(prevDept)) deptSel.value = prevDept;
-  deptSel.onchange = () => { renderFuncFilter(); renderProductGrid3(); renderStDetailTable(); };
-  deptSel.oninput = null;
-
-  renderFuncFilter();
-
-  document.getElementById('stSearchBox').oninput = () => { renderProductGrid3(); renderStDetailTable(); };
-  document.getElementById('stSortMode').onchange = () => { renderProductGrid3(); renderStDetailTable(); };
-}
-
-function renderFuncFilter(){
-  const dept = document.getElementById('stDeptFilter').value;
-  const funcSel = document.getElementById('stFuncFilter');
-  const prevFunc = funcSel.value;
-  const funcs = Array.from(new Set(state3.rows.filter(r => !dept || r.department === dept).map(r => r.function))).filter(Boolean);
-  funcSel.innerHTML = '<option value="">Tutte le funzioni/brand</option>' + funcs.map(f => `<option value="${f}">${stShortName(f)}</option>`).join('');
-  if(funcs.includes(prevFunc)) funcSel.value = prevFunc;
-  funcSel.onchange = () => { renderProductGrid3(); renderStDetailTable(); };
-}
-
-function getFilteredRows3(){
-  const dept = document.getElementById('stDeptFilter').value;
-  const func = document.getElementById('stFuncFilter').value;
-  const search = document.getElementById('stSearchBox').value.trim().toLowerCase();
-  const sortMode = document.getElementById('stSortMode').value;
-  let rows = state3.rows.filter(r => {
-    if(dept && r.department !== dept) return false;
-    if(func && r.function !== func) return false;
-    if(search && !r.item.toLowerCase().includes(search)) return false;
-    return true;
-  });
-  rows = [...rows];
-  if(sortMode === 'st_asc') rows.sort((a,b) => (a.totalST ?? 999) - (b.totalST ?? 999));
-  else if(sortMode === 'st_desc') rows.sort((a,b) => (b.totalST ?? -999) - (a.totalST ?? -999));
-  else if(sortMode === 'sales_desc') rows.sort((a,b) => (b.sales||0) - (a.sales||0));
-  else if(sortMode === 'unsold_desc') rows.sort((a,b) => (b.unsoldDelivered||0) - (a.unsoldDelivered||0));
-  return rows;
-}
-
-function renderProductGrid3(){
-  const rows = getFilteredRows3();
-  const el = document.getElementById('stProductGrid');
-  const noteEl = document.getElementById('stGridMoreNote');
-  const maxShown = 24;
-  const shown = rows.slice(0, maxShown);
-  el.innerHTML = shown.map(r => {
-    const stPct = r.totalST !== null ? r.totalST*100 : null;
-    const unsoldPct = r.pctUnsold !== null ? r.pctUnsold*100 : null;
-    return `
-      <div class="product-card">
-        <div class="pc-imgwrap"><img src="${r.picture||''}" loading="lazy" alt="" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=&quot;font-size:11px;color:var(--ink-faint);&quot;>Immagine non disponibile</span>';"></div>
-        <div class="pc-body">
-          <div class="pc-code">Cod. ${stItemCode(r.item)}</div>
-          <div class="pc-name">${stShortName(r.item)}</div>
-          <div class="pc-stats">
-            <div>Sell Through: <b class="${stTierClass(stPct)}">${fmtPctPlain(stPct)}</b></div>
-            <div>Venduto/Consegnato: <b>${fmtNum(r.sales)}/${fmtNum(r.delivered)}</b></div>
-            <div>Invenduto: <b>${fmtPctPlain(unsoldPct)}</b></div>
-            <div>Prezzo medio: <b>${fmtEur(r.avgRetailPrice)}</b></div>
-          </div>
-        </div>
-      </div>`;
-  }).join('') || '<div class="empty-msg">Nessun articolo trovato con questi filtri.</div>';
-  noteEl.textContent = rows.length > maxShown ? `Mostrati ${maxShown} articoli su ${rows.length} trovati — restringi con i filtri per vederne altri.` : '';
-}
-
-function renderDeptRollup3(){
-  const el = document.getElementById('stDeptRollup');
-  const depts = state3.departments.map(d => ({dept: d, m: state3.deptTotals[d]})).filter(x => x.m && x.m.totalST !== null);
-  depts.sort((a,b) => a.m.totalST - b.m.totalST);
-  el.innerHTML = depts.map(x => {
-    const pct = x.m.totalST*100;
-    return `
-      <div class="st-dept-row">
-        <div class="std-name">${stShortName(x.dept)}</div>
-        <div class="std-track"><div class="std-fill" style="width:${Math.min(pct,100)}%;background:var(--${stTierClass(pct)});"></div></div>
-        <div class="std-val ${stTierClass(pct)}">${fmtPctPlain(pct)} — ${fmtNum(x.m.delivered)} pz</div>
-      </div>`;
-  }).join('') || '<div class="empty-msg">Nessun dato disponibile.</div>';
-}
-
-let sortState3 = {key:'totalST', dir:1};
-document.querySelectorAll('#stDetailTable th').forEach(th => {
-  th.addEventListener('click', () => {
-    const key = th.dataset.sort3;
-    sortState3.dir = (sortState3.key === key) ? -sortState3.dir : 1;
-    sortState3.key = key;
-    renderStDetailTable();
-  });
-});
-
-function renderStDetailTable(){
-  let rows = getFilteredRows3();
-  const key = sortState3.key;
-  rows = [...rows].sort((a,b) => {
-    let va = a[key], vb = b[key];
-    if(key === 'item' || key === 'department' || key === 'function'){
-      va = va || ''; vb = vb || ''; return va.localeCompare(vb) * sortState3.dir;
-    }
-    va = (va === null || va === undefined) ? -Infinity : va;
-    vb = (vb === null || vb === undefined) ? -Infinity : vb;
-    return (va - vb) * sortState3.dir;
-  });
-  document.getElementById('stDetailBody').innerHTML = rows.map(r => {
-    const stPct = r.totalST !== null ? r.totalST*100 : null;
-    const unsoldPct = r.pctUnsold !== null ? r.pctUnsold*100 : null;
-    return `
-      <tr>
-        <td class="label">${stShortName(r.item)}<div class="cat-tag">Cod. ${stItemCode(r.item)}</div></td>
-        <td class="label">${stShortName(r.department)}</td>
-        <td class="label">${stShortName(r.function)}</td>
-        <td class="num">${fmtNum(r.delivered)}</td>
-        <td class="num">${fmtNum(r.sales)}</td>
-        <td class="num ${stTierClass(stPct)}">${fmtPctPlain(stPct)}</td>
-        <td class="num">${fmtPctPlain(unsoldPct)}</td>
-        <td class="num">${fmtEur(r.avgRetailPrice)}</td>
-        <td class="num">${r.stores !== null ? r.stores : '—'}</td>
-      </tr>`;
-  }).join('');
+  ST3.render();
 }
 
 (function loadSnapshotIfPresent(){
