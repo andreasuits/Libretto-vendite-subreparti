@@ -707,6 +707,23 @@
 @media(prefers-reduced-motion:reduce){}
 
 
+  /* settimana di ingresso: colonne su PC, righe su telefono (e su PC se le settimane sono più di 6) */
+  #view3 .cb .bar2{height:calc(var(--v,0) * 120px);transition:height .8s var(--ease),width .8s var(--ease),background .5s;}
+  #view3 .co.rows{display:block;height:auto;padding-top:0;}
+  #view3 .co.rows .cb{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr) 62px;grid-template-areas:"cl bar cv";align-items:center;gap:12px;height:auto;padding:7px 0;border-bottom:1px solid var(--line);}
+  #view3 .co.rows .cb:last-child{border-bottom:0;}
+  #view3 .co.rows .cb .cl{grid-area:cl;text-align:left;font-size:12.5px;}
+  #view3 .co.rows .cb .bar2{grid-area:bar;height:12px;width:calc(var(--v,0) * 100%);max-width:none;border-radius:4px;}
+  #view3 .co.rows .cb .cv{grid-area:cv;text-align:right;font-size:15px;letter-spacing:-.3px;}
+  @media(max-width:640px){
+    #view3 .co{display:block;height:auto;padding-top:0;}
+    #view3 .co .cb{display:grid;grid-template-columns:minmax(0,1fr) 58px;grid-template-areas:"cl cv" "bar bar";align-items:center;gap:6px 10px;height:auto;padding:10px 0;border-bottom:1px solid var(--line);}
+    #view3 .co .cb:last-child{border-bottom:0;}
+    #view3 .co .cb .cl{grid-area:cl;text-align:left;font-size:13px;}
+    #view3 .co .cb .bar2{grid-area:bar;height:10px;width:calc(var(--v,0) * 100%);max-width:none;border-radius:4px;}
+    #view3 .co .cb .cv{grid-area:cv;text-align:right;font-size:17px;}
+  }
+
   @media print{
     :root{--bg:#fff;--bg-2:#fff;--card:#fff;--card-solid:#fff;--surface-2:#f4f5f8;--surface-3:#eceef3;--ink:#111827;--ink-2:#374151;--ink-soft:#6B7280;--ink-faint:#9CA3AF;--line:#E5E7EB;--line-2:#D1D5DB;}
     .hero{background:#fff;}
@@ -3397,11 +3414,12 @@ function renderCohort(list){
   list.forEach(i => { const k = i.first ? i.first.toISOString().slice(0,10) : 'n.d.'; const o = by.get(k) || {k, d:i.first, del:0, sal:0, n:0}; o.del += i.del || 0; o.sal += i.sal || 0; o.n++; by.set(k, o); });
   const L = [...by.values()].sort((a,b) => (a.d || 0) - (b.d || 0)).map(o => Object.assign(o, {st: o.del ? o.sal / o.del * 100 : null}));
   const max = Math.max(30, ...L.map(o => o.st || 0));
+  el.classList.toggle('rows', L.length > 6);
   morph(el, L, o => o.k, (n, o) => {
-    if(!n.firstChild) n.innerHTML = '<div class="cv"></div><div class="bar2" style="height:0"></div><div class="cl"></div>';
+    if(!n.firstChild) n.innerHTML = '<div class="cv"></div><div class="bar2" style="--v:0"></div><div class="cl"></div>';
     n.className = 'cb';
     n.querySelector('.cv').textContent = fP(o.st); n.querySelector('.cv').className = 'cv ' + tier(o.st);
-    const b = n.querySelector('.bar2'); b.style.background = COL[tier(o.st)]; b.style.height = Math.max(2, (o.st || 0) / max * 120) + 'px';
+    const b = n.querySelector('.bar2'); b.style.background = COL[tier(o.st)]; b.style.height = ''; b.style.setProperty('--v', Math.max(0.02, (o.st || 0) / max));
     n.querySelector('.cl').innerHTML = `dal ${fD(o.d)}<small>${o.n} articoli · ${fK(o.del - o.sal)} rimasti</small>`;
   });
 }
