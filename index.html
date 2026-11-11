@@ -1316,21 +1316,21 @@
     <details>
       <summary>Riquadro in alto, schede e "Da guardare"</summary>
       <div class="legend-body">
-        <p><strong>Riquadro in alto</strong>: venduto del periodo, confronto con anno scorso e rete, stato, la category più forte e la più debole, anelli del budget e "Ritmo vs anno scorso" (barra = negozio, tacca bianca = rete) per i quattro periodi.</p>
+        <p><strong>Riquadro in alto</strong>: venduto del periodo, confronto con anno scorso e rete, stato, il category più forte e il più debole, anelli del budget e "Ritmo vs anno scorso" (barra = negozio, tacca bianca = rete) per i quattro periodi.</p>
         <p><strong>Da guardare</strong>: le 3 voci <strong>sotto la rete</strong> che hanno perso più euro rispetto all'anno scorso, con lo stesso criterio di "Ordina per variazione €".</p>
       </div>
     </details>
     <details>
       <summary>Barre vs Rete e Ponte dall'anno scorso</summary>
       <div class="legend-body">
-        <p><strong>Barre vs Rete</strong>: scostamento dalla rete in punti, per category (o reparto/brand, sub-reparto se scegli una category nella barra in alto). A sinistra peggio della rete, a destra meglio. Le voci molto lontane arrivano al bordo con un tratteggio; il valore vero è scritto accanto.</p>
+        <p><strong>Barre vs Rete</strong>: scostamento dalla rete in punti, per category (o reparto/brand, sub-reparto se scegli un category nella barra in alto). A sinistra peggio della rete, a destra meglio. Le voci molto lontane arrivano al bordo con un tratteggio; il valore vero è scritto accanto.</p>
         <p><strong>Ponte dall'anno scorso</strong>: parte dal venduto stimato dell'anno scorso e arriva a quello di oggi; ogni barra rossa toglie, ogni verde aggiunge. "Voci una per una" sceglie quante mostrarne; le altre finiscono in <strong>Altri</strong>. <strong>Non stimabili</strong> chiude il conto con il totale vero di Power BI (voci a −100% o senza dato, e piccole differenze di arrotondamento). L'asse non parte da zero.</p>
       </div>
     </details>
     <details>
       <summary>Grafico a quadranti e treemap</summary>
       <div class="legend-body">
-        <p><strong>Quadranti</strong>: ogni pallino è una category (o reparto/brand, sub-reparto se ne scegli una). Orizzontale = % vs anno scorso, verticale = scostamento vs rete, grandezza = venduto. Gli assi sono compressi verso i bordi, così anche i valori estremi restano nel grafico. I nomi non si sovrappongono: quelli che non ci stanno si leggono toccando il pallino.</p>
+        <p><strong>Quadranti</strong>: ogni pallino è un category (o reparto/brand, sub-reparto se ne scegli uno). Orizzontale = % vs anno scorso, verticale = scostamento vs rete, grandezza = venduto. Gli assi sono compressi verso i bordi, così anche i valori estremi restano nel grafico. I nomi non si sovrappongono: quelli che non ci stanno si leggono toccando il pallino.</p>
         <p><strong>Treemap</strong>: area = quota di venduto, colore = andamento; più il colore è pieno, più forte la variazione. Tocca un riquadro per i dettagli.</p>
       </div>
     </details>
@@ -1901,7 +1901,7 @@ function renderSalesHero(V){
   let insight = '';
   if(cats.length >= 2){
     const best = cats.reduce((a,b) => b.p > a.p ? b : a), worst = cats.reduce((a,b) => b.p < a.p ? b : a);
-    insight = `<b>${escHtml(shortCat(best.c))}</b> è la category più forte (${fmtPct(best.p)} vs anno scorso), <b>${escHtml(shortCat(worst.c))}</b> la più debole (${fmtPct(worst.p)}).`;
+    insight = `<b>${escHtml(shortCat(best.c))}</b> è il category più forte (${fmtPct(best.p)} vs anno scorso), <b>${escHtml(shortCat(worst.c))}</b> il più debole (${fmtPct(worst.p)}).`;
   }
   const st = statusOf(pct, sc);
   const mA = g.meseAvanzPrev, yA = g.montanteAvanzPrev;
@@ -2186,7 +2186,7 @@ function renderAlerts(V){
     <div class="b-alert">
       <div class="ba-name">${shortApc(r.apc)}</div>
       <div class="ba-cat">${shortCat(r.category)}${r.pesoLabel ? ' · ' + r.pesoLabel : ''}</div>
-      <div class="ba-line"><b>${fmtEur(r[pf.valore])}</b> · tu <b class="${pctClass(r[pf.pct])}">${fmtPct(r[pf.pct])}</b>, la rete <b>${fmtPct(r[pf.rete])}</b>${r[pf.incidenza] !== null ? ' · ' + r[pf.incidenza].toFixed(1) + '% della category' : ''}</div>
+      <div class="ba-line"><b>${fmtEur(r[pf.valore])}</b> · tu <b class="${pctClass(r[pf.pct])}">${fmtPct(r[pf.pct])}</b>, la rete <b>${fmtPct(r[pf.rete])}</b>${r[pf.incidenza] !== null ? ' · ' + r[pf.incidenza].toFixed(1) + '% del category' : ''}</div>
       <span class="badge neg">${fmtEurS(delta)} vs anno scorso</span> <span class="badge neg">${fmtPct(r[pf.scarto])} vs Rete</span>
     </div>`).join('') || '<div class="empty-msg">Nessuna voce sotto la rete in calo rispetto all\'anno scorso: bene così.</div>';
 }
@@ -2262,7 +2262,7 @@ function renderSalesView(V){
 
   const selDrill = E(V,'catDrilldown');
   const prevDrill = selDrill.value;
-  selDrill.innerHTML = '<option value="">Tutte le category</option>' + st.categories.map(c => `<option value="${c}">${shortCat(c)}</option>`).join('');
+  selDrill.innerHTML = '<option value="">Tutti i category</option>' + st.categories.map(c => `<option value="${c}">${shortCat(c)}</option>`).join('');
   if(st.categories.includes(prevDrill)) selDrill.value = prevDrill;
   selDrill.onchange = () => V.onPeriod();
   const drillCat = selDrill.value;
@@ -2279,7 +2279,7 @@ function renderSalesView(V){
   } else {
     E(V,'reteBarsTitle').textContent = 'Vendite per category vs Rete';
     E(V,'chartTitle').textContent = 'Vendite per category';
-    E(V,'chartSubtitle').textContent = 'Ogni pallino è una category: anno scorso in orizzontale, rete in verticale.';
+    E(V,'chartSubtitle').textContent = 'Ogni pallino è un category: anno scorso in orizzontale, rete in verticale.';
     E(V,'treemapTitle').textContent = 'Peso e performance per Category';
   }
   E(V,'reteBarsInfo').classList.add('hidden');
